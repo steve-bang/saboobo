@@ -7,7 +7,7 @@ public class Topping : AggregateRoot
 
     public long Price { get; }
 
-    public DateTime CreatedDate { get; }
+    public DateTime CreatedDate { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
     public Topping(string name, long price)
     {
@@ -15,7 +15,5 @@ public class Topping : AggregateRoot
 
         Name = name;
         Price = price;
-
-        CreatedDate = DateTime.Now;
     }
 }

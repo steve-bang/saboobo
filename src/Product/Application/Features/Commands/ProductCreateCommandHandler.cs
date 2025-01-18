@@ -1,7 +1,5 @@
 
-
 using SaBooBo.Product.Domain.AggregatesModel;
-using SaBooBo.Product.Domain.Repository;
 
 namespace SaBooBo.Product.Application.Features.Commands;
 

@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using SaBooBo.Product.Application.Features.Commands;
+using SaBooBo.Product.Application.Features.Queries;
 
 namespace SaBooBo.Product.Api;
 
@@ -10,7 +11,17 @@ public static class ProductApi
     {
         var api = endpointRouteBuilder.MapGroup("api/v1/products");
 
+        // Create a new product
+        // POST api/v1/products
         api.MapPost("", CreateProduct);
+
+        // Get product by id
+        // GET api/v1/products/:id
+        api.MapGet("{id}", GetProductById);
+
+        // Delete product by id
+        // DELETE api/v1/products/:id
+        api.MapDelete("{id}", DeleteProductById);
 
         return api;
     }
@@ -21,6 +32,30 @@ public static class ProductApi
     )
     {
         var result = await productServices.Mediator.Send(productCreateCommand);
+
+        return result;
+    }
+
+    public static async Task<Domain.AggregatesModel.Product?> GetProductById(
+        Guid id, 
+        [AsParameters] ProductServices productServices
+    )
+    {
+        var productGetByIdQuery = new GetProductByIdQuery(id);
+
+        var result = await productServices.Mediator.Send(productGetByIdQuery);
+
+        return result;
+    }
+
+    public static async Task<bool> DeleteProductById(
+        Guid id, 
+        [AsParameters] ProductServices productServices
+    )
+    {
+        var productGetByIdQuery = new DeleteProductCommand(id);
+
+        var result = await productServices.Mediator.Send(productGetByIdQuery);
 
         return result;
     }

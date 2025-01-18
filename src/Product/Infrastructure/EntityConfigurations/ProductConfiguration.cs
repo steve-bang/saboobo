@@ -20,17 +20,33 @@ public class ProductConfiguration : IEntityTypeConfiguration<Domain.AggregatesMo
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id) // Configure the property
+        .HasColumnOrder(0)
         .ValueGeneratedNever(); // Never generate a value for this property
 
         builder.Property(x => x.Name)
+        .HasColumnOrder(1)
         .IsRequired()
         .HasMaxLength(500);
 
+        builder.Property(x => x.Sku)
+        .HasColumnOrder(2)
+        .HasMaxLength(50);
+
+        builder.Property(x => x.Price)
+        .HasColumnOrder(3)
+        .IsRequired();
+
+
         builder.Property(x => x.Description)
+        .HasColumnOrder(4)
         .IsRequired()
         .HasMaxLength(1000);
 
+        builder.Property(x => x.UrlImage)
+        .HasColumnOrder(5);
+
         builder.Property(x => x.CreatedDate)
+        .HasColumnOrder(6)
         .HasDefaultValue(DateTime.UtcNow);
 
     }
