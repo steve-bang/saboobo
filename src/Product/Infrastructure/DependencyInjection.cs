@@ -25,6 +25,7 @@ public static class DependencyInjection
 
         #region Repositories
         builder.Services.AddScoped<IProductRepository, ProductRepository>();
+        builder.Services.AddScoped<IToppingRepository, ToppingRepository>();
 
         #endregion
 

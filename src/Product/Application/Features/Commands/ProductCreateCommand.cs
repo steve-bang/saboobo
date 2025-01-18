@@ -7,10 +7,12 @@ public record ProductCreateCommand(
     long Price,
     string? Description,
     string? UrlImage,
-    ToppingCreate[] Toppings
+    ToppingRequest[] Toppings
 ) : IRequest<Guid>;
 
-public record ToppingCreate(
-    string Name,
-    long Price
-);
+public record ToppingRequest
+{
+    public string Name { get; set; } = null!;
+
+    public long Price { get; set; }
+}

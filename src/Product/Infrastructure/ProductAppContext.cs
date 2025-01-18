@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using SaBooBo.Domain.Shared;
+using SaBooBo.Product.Domain.AggregatesModel;
 
 namespace SaBooBo.Product.Infrastructure;
 
@@ -16,6 +17,8 @@ public class ProductAppContext(
 ) : DbContext(options), IUnitOfWork
 {
     public DbSet<Domain.AggregatesModel.Product> Products { get; set; } = null!;
+
+    public DbSet<Topping> Toppings { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

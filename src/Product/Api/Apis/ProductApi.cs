@@ -19,6 +19,10 @@ public static class ProductApi
         // GET api/v1/products/:id
         api.MapGet("{id}", GetProductById);
 
+        // Update product by id
+        // PUT api/v1/products/:id
+        api.MapPut("{id}", UpdateProductById);
+
         // Delete product by id
         // DELETE api/v1/products/:id
         api.MapDelete("{id}", DeleteProductById);
@@ -59,4 +63,40 @@ public static class ProductApi
 
         return result;
     }
+
+    public static async Task<Domain.AggregatesModel.Product> UpdateProductById(
+        Guid id, 
+        [FromBody] UpdateProductRequest request,
+        [AsParameters] ProductServices productServices
+    )
+    {
+        UpdateProductCommand updateProductCommand = new UpdateProductCommand(
+            Id: id,
+            Name: request.Name,
+            Sku: request.Sku,
+            Price: request.Price,
+            Description: request.Description,
+            UrlImage: request.UrlImage,
+            Toppings: request.Toppings
+        );
+
+        var result = await productServices.Mediator.Send(updateProductCommand);
+
+        return result;
+    }
+}
+
+public class UpdateProductRequest 
+{
+    public string Name { get; set; } = null!;
+
+    public string? Sku { get; set; }
+
+    public long Price { get; set; }
+
+    public string? Description { get; set; }
+
+    public string? UrlImage { get; set; }
+
+    public ToppingUpdateRequest[]? Toppings { get; set; }
 }

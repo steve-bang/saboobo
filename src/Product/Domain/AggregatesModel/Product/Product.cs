@@ -5,15 +5,15 @@ public class Product : AggregateRoot
 {
     private List<Topping> _toppings = new();
 
-    public string Name { get; } = null!;
+    public string Name { get; private set; } = null!;
 
-    public string? Sku { get; }
+    public string? Sku { get; private set; }
 
-    public long Price { get; }
+    public long Price { get; private set; }
 
-    public string? Description { get; } 
+    public string? Description { get; private set; } 
 
-    public string? UrlImage { get; }
+    public string? UrlImage { get; private set; }
 
     public DateTime CreatedDate { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
@@ -43,5 +43,31 @@ public class Product : AggregateRoot
     public static Product Create(string name, string? sku, long price, string? description, string? urlImage, Topping[]? toppings)
     {
         return new(name, sku, price, description, urlImage, toppings);
+    }
+
+    public void Update(string name, string? sku, long price, string? description, string? urlImage)
+    {
+        Name = name;
+        Sku = sku;
+        Price = price;
+        Description = description;
+        UrlImage = urlImage;
+    }
+
+    public void AddTopping(Topping topping)
+    {
+        _toppings.Add(topping);
+    }
+
+    public void UpdateTopping(Guid toppingId, string name, long price)
+    {
+       var topping =  _toppings.Find(x => x.Id == toppingId);
+       if(topping is null) return;
+       topping.Update(name, price);
+    }
+
+    public void RemoveTopping(Topping topping)
+    {
+        _toppings.Remove(topping);
     }
 }
