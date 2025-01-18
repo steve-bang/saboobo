@@ -1,4 +1,5 @@
 
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using SaBooBo.Domain.Shared;
 
 namespace SaBooBo.Product.Infrastructure;
@@ -27,6 +28,12 @@ public class ProductAppContext(
                 .ApplyConfigurationsFromAssembly(typeof(ProductAppContext).Assembly);
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
 
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)

@@ -1,0 +1,13 @@
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/bin/Debug/net9.0/MigrationService.deps.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/bin/Debug/net9.0/MigrationService.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/bin/Debug/net9.0/MigrationService.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.csproj.AssemblyReference.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.AssemblyInfoInputs.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.AssemblyInfo.cs
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.csproj.CoreCompileInputs.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.sourcelink.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/refint/MigrationService.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/MigrationService.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/Debug/net9.0/ref/MigrationService.dll

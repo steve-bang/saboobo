@@ -1,0 +1,12 @@
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/bin/Debug/net9.0/AppHost.Shared.deps.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/bin/Debug/net9.0/AppHost.Shared.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/bin/Debug/net9.0/AppHost.Shared.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.AssemblyInfoInputs.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.AssemblyInfo.cs
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.csproj.CoreCompileInputs.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.sourcelink.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/refint/AppHost.Shared.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/AppHost.Shared.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/Debug/net9.0/ref/AppHost.Shared.dll

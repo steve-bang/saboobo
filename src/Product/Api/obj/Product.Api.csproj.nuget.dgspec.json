@@ -1,0 +1,497 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Api/Product.Api.csproj": {}
+  },
+  "projects": {
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/AppHost.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/AppHost.Shared.csproj",
+        "projectName": "AppHost.Shared",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/AppHost.Shared.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/Domain.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/Domain.Shared.csproj",
+        "projectName": "Domain.Shared",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/Domain.Shared.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/MigrationService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/MigrationService.csproj",
+        "projectName": "MigrationService",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/MigrationService.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Aspire.Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Hosting.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Api/Product.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Api/Product.Api.csproj",
+        "projectName": "Product.Api",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Api/Product.Api.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Api/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Application/Application.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Application/Application.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Aspire.Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Application/Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Application/Application.csproj",
+        "projectName": "Application",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Application/Application.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj"
+              },
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Infrastructure/Infrastructure.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Infrastructure/Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/Domain.Shared.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/Domain.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Infrastructure/Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Infrastructure/Infrastructure.csproj",
+        "projectName": "Infrastructure",
+        "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Infrastructure/Infrastructure.csproj",
+        "packagesPath": "/Users/mrsteve.bang/.nuget/packages/",
+        "outputPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/mrsteve.bang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/AppHost.Shared.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/AppHost.Shared/AppHost.Shared.csproj"
+              },
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/MigrationService.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/MigrationService/MigrationService.csproj"
+              },
+              "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj": {
+                "projectPath": "/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

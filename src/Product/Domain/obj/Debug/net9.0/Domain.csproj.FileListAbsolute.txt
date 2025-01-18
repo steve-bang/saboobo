@@ -1,0 +1,16 @@
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/bin/Debug/net9.0/Domain.deps.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/bin/Debug/net9.0/Domain.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/bin/Debug/net9.0/Domain.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.AssemblyInfoInputs.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.AssemblyInfo.cs
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.csproj.CoreCompileInputs.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.sourcelink.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/refint/Domain.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/ref/Domain.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/bin/Debug/net9.0/Domain.Shared.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/bin/Debug/net9.0/Domain.Shared.pdb
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.csproj.AssemblyReference.cache
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Product/Domain/obj/Debug/net9.0/Domain.csproj.Up2Date
