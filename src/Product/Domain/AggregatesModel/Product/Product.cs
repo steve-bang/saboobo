@@ -15,9 +15,10 @@ public class Product : AggregateRoot
 
     public string? UrlImage { get; private set; }
 
-    public DateTime CreatedDate { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
     public IReadOnlyCollection<Topping> Toppings => _toppings.AsReadOnly();
+
+    public DateTime CreatedDate { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
     public Product() {}
 

@@ -26,32 +26,39 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("SaBooBo.Product.Domain.AggregatesModel.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2025, 1, 18, 14, 20, 54, 114, DateTimeKind.Utc).AddTicks(4360));
+                        .HasDefaultValue(new DateTime(2025, 1, 19, 6, 20, 13, 309, DateTimeKind.Utc).AddTicks(9700))
+                        .HasColumnOrder(6);
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnOrder(4);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnOrder(1);
 
                     b.Property<long>("Price")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(3);
 
                     b.Property<string>("Sku")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("UrlImage")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
@@ -72,7 +79,7 @@ namespace Infrastructure.Migrations
                             b1.Property<DateTime>("CreatedDate")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("timestamp with time zone")
-                                .HasDefaultValue(new DateTime(2025, 1, 18, 14, 20, 54, 134, DateTimeKind.Utc).AddTicks(9090));
+                                .HasDefaultValue(new DateTime(2025, 1, 19, 6, 20, 13, 341, DateTimeKind.Utc).AddTicks(3380));
 
                             b1.Property<string>("Name")
                                 .IsRequired()

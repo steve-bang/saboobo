@@ -27,7 +27,7 @@ kind: Deployment
 metadata:
   name: pg-product-deploy
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: pg-product-deploy
@@ -44,6 +44,14 @@ spec:
           envFrom:
             - configMapRef:
                 name: pg-product-configmap
+          volumeMounts:
+            - mountPath: /mnt/azure
+              name: azure
+              readOnly: false
+      volumes:
+      - name: azure
+        persistentVolumeClaim:
+          claimName: azfile-pvc
 ---
 apiVersion: v1
 kind: Service

@@ -45,6 +45,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Domain.AggregatesMo
         builder.Property(x => x.UrlImage)
         .HasColumnOrder(5);
 
+        // builder.Property(x => x.RowVersion)
+        // .IsRowVersion()
+        // .IsConcurrencyToken(); 
+
+
         builder.Property(x => x.CreatedDate)
         .HasColumnOrder(6)
         .HasDefaultValue(DateTime.UtcNow);
@@ -69,6 +74,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Domain.AggregatesMo
 
             sb.Property(x => x.Price)
             .IsRequired();
+
+            // sb.Property(x => x.RowVersion)
+            // .IsRowVersion()
+            // .IsConcurrencyToken(); 
 
             sb.Property(x => x.CreatedDate)
             .HasDefaultValue(DateTime.UtcNow);
