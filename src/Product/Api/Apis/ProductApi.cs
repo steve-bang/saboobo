@@ -27,12 +27,16 @@ public static class ProductApi
         // DELETE api/v1/products/:id
         api.MapDelete("{id}", DeleteProductById);
 
+        // Get all products
+        // GET api/v1/products
+        api.MapGet("", GetAllProducts);
+
         return api;
     }
 
     public static async Task<Guid> CreateProduct(
-        [FromBody] ProductCreateCommand productCreateCommand, 
-        [AsParameters] ProductServices productServices
+        [FromBody] CreateProductCommand productCreateCommand,
+        [AsParameters] ProviderServices productServices
     )
     {
         var result = await productServices.Mediator.Send(productCreateCommand);
@@ -41,8 +45,8 @@ public static class ProductApi
     }
 
     public static async Task<Domain.AggregatesModel.Product?> GetProductById(
-        Guid id, 
-        [AsParameters] ProductServices productServices
+        Guid id,
+        [AsParameters] ProviderServices productServices
     )
     {
         var productGetByIdQuery = new GetProductByIdQuery(id);
@@ -53,8 +57,8 @@ public static class ProductApi
     }
 
     public static async Task<bool> DeleteProductById(
-        Guid id, 
-        [AsParameters] ProductServices productServices
+        Guid id,
+        [AsParameters] ProviderServices productServices
     )
     {
         var productGetByIdQuery = new DeleteProductCommand(id);
@@ -65,9 +69,9 @@ public static class ProductApi
     }
 
     public static async Task<Domain.AggregatesModel.Product> UpdateProductById(
-        Guid id, 
+        Guid id,
         [FromBody] UpdateProductRequest request,
-        [AsParameters] ProductServices productServices
+        [AsParameters] ProviderServices productServices
     )
     {
         UpdateProductCommand updateProductCommand = new UpdateProductCommand(
@@ -84,9 +88,20 @@ public static class ProductApi
 
         return result;
     }
+
+    public static async Task<List<Domain.AggregatesModel.Product>> GetAllProducts(
+    [AsParameters] ProviderServices productServices
+    )
+    {
+        ListProductQuery listProductQuery = new();
+
+        var result = await productServices.Mediator.Send(listProductQuery);
+
+        return result;
+    }
 }
 
-public class UpdateProductRequest 
+public class UpdateProductRequest
 {
     public string Name { get; set; } = null!;
 

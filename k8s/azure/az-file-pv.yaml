@@ -19,6 +19,10 @@ spec:
     nodeStageSecretRef:
       name: azure-secret
       namespace: default
+  # azureFile:
+  #   secretName: azure-secret
+  #   shareName: saboobo-azfile
+  #   readOnly: false
   mountOptions:
     - dir_mode=0777
     - file_mode=0777

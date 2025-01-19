@@ -22,6 +22,12 @@ public class ProductConfiguration : IEntityTypeConfiguration<Domain.AggregatesMo
         builder.Property(x => x.Id) // Configure the property
         .HasColumnOrder(0)
         .ValueGeneratedNever(); // Never generate a value for this property
+        
+        builder.Property(x => x.MerchantId)
+        .IsRequired();
+
+        builder.Property(x => x.CategoryId)
+        .IsRequired();
 
         builder.Property(x => x.Name)
         .HasColumnOrder(1)
@@ -45,14 +51,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Domain.AggregatesMo
         builder.Property(x => x.UrlImage)
         .HasColumnOrder(5);
 
-        // builder.Property(x => x.RowVersion)
-        // .IsRowVersion()
-        // .IsConcurrencyToken(); 
+        builder.Property(x => x.TotalPurchased)
+        .IsRequired();
 
-
-        builder.Property(x => x.CreatedDate)
-        .HasColumnOrder(6)
-        .HasDefaultValue(DateTime.UtcNow);
+        builder.Property(x => x.CreatedDate);
 
     }
 
@@ -79,8 +81,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Domain.AggregatesMo
             // .IsRowVersion()
             // .IsConcurrencyToken(); 
 
-            sb.Property(x => x.CreatedDate)
-            .HasDefaultValue(DateTime.UtcNow);
+            sb.Property(x => x.CreatedDate);
         });
 
         // Configure the navigation with field access, this is required because the navigation is a collection of value objects

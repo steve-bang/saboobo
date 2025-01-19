@@ -1,7 +1,8 @@
-public class ProductServices(
+public class ProviderServices(
     IMediator mediator,
-    ILogger<ProductServices> logger)
+    ILogger<ProviderServices> logger
+)
 {
     public IMediator Mediator { get; set; } = mediator;
-    public ILogger<ProductServices> Logger { get; } = logger;
+    public ILogger<ProviderServices> Logger { get; } = logger;
 }

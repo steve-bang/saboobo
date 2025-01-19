@@ -3,11 +3,11 @@ using SaBooBo.Product.Domain.AggregatesModel;
 
 namespace SaBooBo.Product.Application.Features.Commands;
 
-public class ProductCreateCommandHandler(
+public class CreateProductCommandHandler(
     IProductRepository ProductRepository
-) : IRequestHandler<ProductCreateCommand, Guid>
+) : IRequestHandler<CreateProductCommand, Guid>
 {
-    public async Task<Guid> Handle(ProductCreateCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var product = Domain.AggregatesModel.Product.Create(
             name: request.Name,

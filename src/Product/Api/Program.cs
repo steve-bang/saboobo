@@ -26,6 +26,6 @@ app.UseHttpsRedirection();
 app.MapGet("", () => "Welcome product service." );
 
 app.MapProductApi();
+app.MapCategoryApi();
 
 app.Run();
-

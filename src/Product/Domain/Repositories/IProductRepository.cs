@@ -12,4 +12,6 @@ public interface IProductRepository : IRepository
     Task<bool> DeleteByIdAsync(Guid id);
 
     Task<List<AggregatesModel.Product>> ListAllAsync(Guid merchantId);
+
+    Task<List<AggregatesModel.Product>> ListAllAsync();
 }

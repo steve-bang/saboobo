@@ -16,6 +16,7 @@ public class ProductAppContext(
     IMediator _mediator
 ) : DbContext(options), IUnitOfWork
 {
+    public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Domain.AggregatesModel.Product> Products { get; set; } = null!;
 
     public DbSet<Topping> Toppings { get; set; } = null!;

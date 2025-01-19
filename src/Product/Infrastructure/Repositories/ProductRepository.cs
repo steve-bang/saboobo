@@ -41,6 +41,13 @@ public class ProductRepository(ProductAppContext _dbContext) : IProductRepositor
                     .ToListAsync();
     }
 
+    public async Task<List<Domain.AggregatesModel.Product>> ListAllAsync()
+    {
+        return await _dbContext
+                    .Products
+                    .ToListAsync();
+    }
+
     public Domain.AggregatesModel.Product UpdateByIdAsync(Domain.AggregatesModel.Product product)
     {
         return _dbContext

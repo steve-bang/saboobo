@@ -1,7 +1,7 @@
 
 namespace SaBooBo.Product.Application.Features.Commands;
 
-public record ProductCreateCommand(
+public record CreateProductCommand(
     string? Sku,
     string Name,
     long Price,

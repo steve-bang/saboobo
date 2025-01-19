@@ -5,6 +5,10 @@ public class Product : AggregateRoot
 {
     private List<Topping> _toppings = new();
 
+    public Guid CategoryId { get; private set; }
+
+    public Guid MerchantId { get; private set; }
+
     public string Name { get; private set; } = null!;
 
     public string? Sku { get; private set; }
@@ -15,6 +19,7 @@ public class Product : AggregateRoot
 
     public string? UrlImage { get; private set; }
 
+    public int TotalPurchased { get; private set; } = 0;
 
     public IReadOnlyCollection<Topping> Toppings => _toppings.AsReadOnly();
 
@@ -70,5 +75,10 @@ public class Product : AggregateRoot
     public void RemoveTopping(Topping topping)
     {
         _toppings.Remove(topping);
+    }
+
+    public void Purchased()
+    {
+        TotalPurchased += 1;
     }
 }
