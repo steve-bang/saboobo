@@ -11,7 +11,12 @@ public class UpdateCategoryCommandHandler(
     {
         var category = await CategoryRepository.GetByIdAsync(request.Id);
 
-        if(category is null) return null;
+        if (category is null) 
+            throw new NotFoundException(
+                ErrorCodes.CategoryNotFound,
+                "The category was not found.",
+                "The category was not found in the system, please check your id request."
+            );
 
         category.Update(
             code: request.Code,

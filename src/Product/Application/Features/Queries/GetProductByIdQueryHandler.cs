@@ -9,6 +9,12 @@ public class GetProductByIdQueryHandler(
     {
         var product = await ProductRepository.GetByIdAsync(request.Id);
 
+        if (product is null) throw new NotFoundException(
+            ErrorCodes.CategoryNotFound,
+            "The product was not found.",
+            "The product was not found in the system, please check your id request."
+        );
+
         return product;
     }
 }

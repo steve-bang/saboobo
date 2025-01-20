@@ -7,8 +7,16 @@ public record GetCategoryByIdQueryHandler(
     ICategoryRepository CategoryRepository
 ) : IRequestHandler<GetCategoryByIdQuery, Category>
 {
-    public async Task<Category?> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Category> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        return await CategoryRepository.GetByIdAsync(request.Id);
+        var category = await CategoryRepository.GetByIdAsync(request.Id);
+
+        if(category is null) throw new NotFoundException(
+            ErrorCodes.CategoryNotFound,
+            "The category was not found.",
+            "The category was not found in the system, please check your id request."
+        );
+
+        return category;
     }
 }

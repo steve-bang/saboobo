@@ -17,7 +17,12 @@ public class UpdateProductCommandHandler(
         // 1. Find product
         var product = await ProductRepository.GetByIdAsync(request.Id);
 
-        if (product is null) throw new ArgumentNullException(nameof(product));
+        if (product is null)             
+            throw new NotFoundException(
+                ErrorCodes.CategoryNotFound,
+                "The category was not found.",
+                "The category was not found in the system, please check your id request."
+            );
 
         // 2. Update product
         product.Update(

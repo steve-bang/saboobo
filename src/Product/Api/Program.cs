@@ -1,3 +1,5 @@
+
+using SaBooBo.Domain.Shared.Extentions;
 using SaBooBo.Product.Api;
 using SaBooBo.Product.Infrastructure;
 
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddGlobalExceptionHandler();
 
 builder
     .AddApplication()
@@ -21,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseGlobalExceptionHandler();
 // Maps all API endpoints
 
 app.MapGet("", () => "Welcome product service." );

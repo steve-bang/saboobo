@@ -1,12 +1,12 @@
-/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/bin/Debug/net9.0/Domain.Shared.deps.json
-/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/bin/Debug/net9.0/Domain.Shared.dll
-/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/bin/Debug/net9.0/Domain.Shared.pdb
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.csproj.AssemblyReference.cache
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.GeneratedMSBuildEditorConfig.editorconfig
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.AssemblyInfoInputs.cache
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.AssemblyInfo.cs
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.csproj.CoreCompileInputs.cache
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.sourcelink.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/bin/Debug/net9.0/Domain.Shared.deps.json
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/bin/Debug/net9.0/Domain.Shared.dll
+/Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/bin/Debug/net9.0/Domain.Shared.pdb
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.dll
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/refint/Domain.Shared.dll
 /Users/mrsteve.bang/Documents/_projects/SaBooBo/src/Domain.Shared/obj/Debug/net9.0/Domain.Shared.pdb
