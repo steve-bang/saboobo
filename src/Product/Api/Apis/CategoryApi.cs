@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using SaBooBo.Domain.Shared.ApiResponse;
 using SaBooBo.Product.Application.Features.Commands;
 using SaBooBo.Product.Application.Features.Queries;
 using SaBooBo.Product.Domain.AggregatesModel;
@@ -54,7 +55,7 @@ public static class CategoryApi
         return result;
     }
 
-    public static async Task<Category?> GetCategoryById(
+    public static async Task<ApiResponseSuccess<Category>> GetCategoryById(
         Guid merchantId,
         Guid id,
         [AsParameters] ProviderServices providerServices
@@ -64,10 +65,10 @@ public static class CategoryApi
 
         var result = await providerServices.Mediator.Send(query);
 
-        return result;
+        return ApiResponseSuccess<Category>.BuildSuccess(result);
     }
 
-    public static async Task<bool> DeleteCategoryById(
+    public static async Task<ApiResponseSuccess<bool>> DeleteCategoryById(
         Guid merchantId,
         Guid id,
         [AsParameters] ProviderServices providerServices
@@ -77,10 +78,10 @@ public static class CategoryApi
 
         var result = await providerServices.Mediator.Send(command);
 
-        return result;
+        return ApiResponseSuccess<bool>.BuildSuccess(result);
     }
 
-    public static async Task<List<Category>> ListCategory(
+    public static async Task<ApiResponseSuccess<List<Category>>> ListCategory(
         Guid merchantId,
         [AsParameters] ProviderServices providerServices
     )
@@ -89,10 +90,10 @@ public static class CategoryApi
 
         var result = await providerServices.Mediator.Send(query);
 
-        return result;
+        return ApiResponseSuccess<List<Category>>.BuildSuccess(result);
     }
 
-    public static async Task<Category> UpdateCategory(
+    public static async Task<ApiResponseSuccess<Category>> UpdateCategory(
         Guid merchantId,
         Guid id,
         [FromBody] CategoryCommandRequest payload,
@@ -109,7 +110,7 @@ public static class CategoryApi
 
         var result = await providerServices.Mediator.Send(command);
 
-        return result;
+        return ApiResponseSuccess<Category>.BuildSuccess(result);
     }
 
 }

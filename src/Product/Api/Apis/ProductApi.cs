@@ -1,7 +1,9 @@
 
 using Microsoft.AspNetCore.Mvc;
+using SaBooBo.Domain.Shared.ApiResponse;
 using SaBooBo.Product.Application.Features.Commands;
 using SaBooBo.Product.Application.Features.Queries;
+using SaBooBo.Product.Domain.AggregatesModel;
 
 namespace SaBooBo.Product.Api;
 
@@ -34,17 +36,17 @@ public static class ProductApi
         return api;
     }
 
-    public static async Task<Guid> CreateProduct(
+    public static async Task<IResult> CreateProduct(
         [FromBody] CreateProductCommand productCreateCommand,
         [AsParameters] ProviderServices productServices
     )
     {
-        var result = await productServices.Mediator.Send(productCreateCommand);
+        Guid result = await productServices.Mediator.Send(productCreateCommand);
 
-        return result;
+        return Results.Created("api/v1/products", ApiResponseSuccess<Guid>.BuildCreated(result));
     }
 
-    public static async Task<Domain.AggregatesModel.Product?> GetProductById(
+    public static async Task<ApiResponseSuccess<Domain.AggregatesModel.Product>> GetProductById(
         Guid id,
         [AsParameters] ProviderServices productServices
     )
@@ -53,10 +55,10 @@ public static class ProductApi
 
         var result = await productServices.Mediator.Send(productGetByIdQuery);
 
-        return result;
+        return ApiResponseSuccess<Domain.AggregatesModel.Product>.BuildSuccess(result);
     }
 
-    public static async Task<bool> DeleteProductById(
+    public static async Task<ApiResponseSuccess<bool>> DeleteProductById(
         Guid id,
         [AsParameters] ProviderServices productServices
     )
@@ -65,10 +67,10 @@ public static class ProductApi
 
         var result = await productServices.Mediator.Send(productGetByIdQuery);
 
-        return result;
+        return ApiResponseSuccess<bool>.BuildSuccess(result);
     }
 
-    public static async Task<Domain.AggregatesModel.Product> UpdateProductById(
+    public static async Task<ApiResponseSuccess<Domain.AggregatesModel.Product>> UpdateProductById(
         Guid id,
         [FromBody] UpdateProductRequest request,
         [AsParameters] ProviderServices productServices
@@ -86,10 +88,10 @@ public static class ProductApi
 
         var result = await productServices.Mediator.Send(updateProductCommand);
 
-        return result;
+        return ApiResponseSuccess<Domain.AggregatesModel.Product>.BuildSuccess(result);
     }
 
-    public static async Task<List<Domain.AggregatesModel.Product>> GetAllProducts(
+    public static async Task<ApiResponseSuccess<List<Domain.AggregatesModel.Product>>> GetAllProducts(
     [AsParameters] ProviderServices productServices
     )
     {
@@ -97,7 +99,7 @@ public static class ProductApi
 
         var result = await productServices.Mediator.Send(listProductQuery);
 
-        return result;
+        return ApiResponseSuccess<List<Domain.AggregatesModel.Product>>.BuildSuccess(result);
     }
 }
 
