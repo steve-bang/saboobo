@@ -36,7 +36,7 @@ public static class CategoryApi
         return api;
     }
 
-    public static async Task<Guid> CreateCategory(
+    public static async Task<IResult> CreateCategory(
     Guid merchantId,
     [FromBody] CategoryCommandRequest payload,
     [AsParameters] ProviderServices providerServices
@@ -52,7 +52,7 @@ public static class CategoryApi
 
         var result = await providerServices.Mediator.Send(command);
 
-        return result;
+        return Results.Created("api/v1/merchants/{merchantId}/categories", ApiResponseSuccess<Guid>.BuildCreated(result));
     }
 
     public static async Task<ApiResponseSuccess<Category>> GetCategoryById(

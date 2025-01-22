@@ -5,8 +5,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: my-azurefile
-  volumeName: azfile-saboobo-pv
+  #storageClassName: ""
+  #volumeName: azfile-pv
   resources:
     requests:
       storage: 1Gi

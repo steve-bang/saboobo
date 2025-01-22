@@ -2,6 +2,8 @@
 namespace SaBooBo.Product.Application.Features.Commands;
 
 public record CreateProductCommand(
+    Guid MerchantId,
+    Guid CategoryId,
     string? Sku,
     string Name,
     long Price,

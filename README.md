@@ -71,8 +71,27 @@ Create the secret in `k8s\azure\az-file-secret.yaml`
 kubectl apply -f ./k8s/azure/az-file-secret.yaml
 ```
 
-# Apply deloy postgre sql product service
+Apply PV
+
+ ``` bash
+kubectl apply -f ./k8s/azure/az-file-sc.yaml
+```
+
+ ``` bash
+kubectl apply -f ./k8s/azure/az-file-pv.yaml
+```
+
+ ``` bash
+kubectl apply -f ./k8s/azure/az-file-pvc.yaml
+```
+
+
+# Deploy db postgres sql
 ``` bash
 kubectl apply -f ./k8s/pg-product.yaml
+```
+
+``` bash
+kubectl apply -f ./k8s/pg-admin-product.yaml
 ```
 

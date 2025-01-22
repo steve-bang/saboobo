@@ -10,6 +10,8 @@ public class CreateProductCommandHandler(
     public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var product = Domain.AggregatesModel.Product.Create(
+            merchantId: request.MerchantId,
+            categoryId: request.CategoryId,
             name: request.Name,
             sku: request.Sku,
             price: request.Price,
