@@ -3,21 +3,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 WORKDIR /src
 
 # Copy project files to take advantage of Docker layer caching
-COPY ["src/Product/Api/","Product/Api/"]
-COPY ["src/Product/Application/","Product/Application/"]
-COPY ["src/Product/Domain/","Product/Domain/"]
-COPY ["src/Product/Infrastructure/","Product/Infrastructure/"]
-COPY ["src/Product/Constract/","Product/Constract/"]
-COPY ["src/Domain.Shared/", "Domain.Shared/"]
-COPY ["src/MigrationService/", "MigrationService/"]
-COPY ["src/AppHost.Shared/", "AppHost.Shared/"]
-
+COPY ["src/ApiGateway/","ApiGateway/"]
 
 # Restore dependencies
-RUN dotnet restore Product/Api/Product.Api.csproj
+RUN dotnet restore ApiGateway/ApiGateway.csproj
 
 # Build the project in release mode
-RUN dotnet publish Product/Api/Product.Api.csproj -c Release -o /app/out
+RUN dotnet publish ApiGateway/ApiGateway.csproj -c Release -o /app/out
 
 # Use the official .NET 9.0 runtime image for running the application
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
@@ -25,10 +17,10 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # Expose the port your application is running on
-EXPOSE 5154
+EXPOSE 8080
 
 # Set the entry point to the built application
-ENTRYPOINT ["dotnet", "Product.Api.dll"]
+ENTRYPOINT ["dotnet", "ApiGateway.dll"]
 
 # Exec: 
 #   Cd root project

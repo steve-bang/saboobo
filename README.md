@@ -71,27 +71,66 @@ Create the secret in `k8s\azure\az-file-secret.yaml`
 kubectl apply -f ./k8s/azure/az-file-secret.yaml
 ```
 
-Apply PV
+Apply SC
 
  ``` bash
 kubectl apply -f ./k8s/azure/az-file-sc.yaml
 ```
 
+Apply PV
  ``` bash
 kubectl apply -f ./k8s/azure/az-file-pv.yaml
 ```
 
+Apply PVC
  ``` bash
 kubectl apply -f ./k8s/azure/az-file-pvc.yaml
 ```
 
 
 # Deploy db postgres sql
+
+Deploy pg
 ``` bash
 kubectl apply -f ./k8s/pg-product.yaml
 ```
 
+Deploy pg admin
 ``` bash
 kubectl apply -f ./k8s/pg-admin-product.yaml
 ```
 
+
+# Deploy Product API Service
+
+Build image product
+``` bash 
+docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-apigateway-api -f src/ApiGateway/Dockerfile .
+```
+
+Push image to docker registry
+``` bash 
+docker buildx build push mrstevebang/saboobo-apigateway-api
+```
+
+Deploy product deployment and product service in k8s
+``` bash
+kubectl apply -f ./k8s/product-service.yaml
+```
+
+# Deploy Api Gateway Service
+
+Build api gateway image
+``` bash
+docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-apigateway-api:1.0.0 -f src/ApiGateway/Dockerfile .
+```
+
+Push image
+``` bash
+docker buildx push mrstevebang/saboobo-apigateway-api
+```
+
+Deploy api gateway deployment and service in k8s
+``` bash
+kubectl apply -f ./k8s/apigateway-service.yaml
+```

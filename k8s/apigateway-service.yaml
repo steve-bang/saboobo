@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway-service-deployment
+  labels:
+    app: apigateway-service-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: apigateway-service-deployment
+  template:
+    metadata:
+      labels:
+        app: apigateway-service-deployment
+    spec:
+      containers:
+      - name: apigateway-container
+        image: mrstevebang/saboobo-apigateway-api:1.0.1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"  # Set the environment to Development
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway-service
+spec:
+  selector:
+    app: apigateway-service-deployment
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
