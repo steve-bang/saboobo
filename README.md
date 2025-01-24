@@ -90,9 +90,14 @@ kubectl apply -f ./k8s/azure/az-file-pvc.yaml
 
 # Deploy db postgres sql
 
-Deploy pg
+Deploy pg product
 ``` bash
 kubectl apply -f ./k8s/pg-product.yaml
+```
+
+Deploy pg customer
+``` bash
+kubectl apply -f ./k8s/pg-customer.yaml
 ```
 
 Deploy pg admin

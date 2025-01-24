@@ -23,7 +23,7 @@ public class CustomerRepository(CustomerAppContext _dbContext) : ICustomerReposi
             .Entity;
     }
 
-    public async Task<Customer?> GetAsync(Guid id)
+    public async Task<Customer?> GetByIdAsync(Guid id)
     {
         return await _dbContext
             .Customers
@@ -40,7 +40,7 @@ public class CustomerRepository(CustomerAppContext _dbContext) : ICustomerReposi
 
     public async Task DeleteAsync(Guid id)
     {
-        var customer = await GetAsync(id);
+        var customer = await GetByIdAsync(id);
 
         if (customer is null) return;
 
@@ -59,5 +59,13 @@ public class CustomerRepository(CustomerAppContext _dbContext) : ICustomerReposi
         return _dbContext
             .Customers
             .FirstOrDefaultAsync(c => c.EmailAddress == emailAddress);
+    }
+
+    public Task<List<Customer>> ListCustomersByMerchantId(Guid merchantId)
+    {
+        return _dbContext
+            .Customers
+            .Where(c => c.MerchantId == merchantId)
+            .ToListAsync();
     }
 }

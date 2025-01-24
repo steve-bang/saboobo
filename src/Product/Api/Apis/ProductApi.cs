@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SaBooBo.Domain.Shared.ApiResponse;
 using SaBooBo.Product.Application.Features.Commands;
 using SaBooBo.Product.Application.Features.Queries;
-using SaBooBo.Product.Domain.AggregatesModel;
 
 namespace SaBooBo.Product.Api;
 

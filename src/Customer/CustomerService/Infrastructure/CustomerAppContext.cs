@@ -1,18 +1,15 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using SaBooBo.CustomerService.Domain.AggregatesModel;
-using SaBooBo.Domain.Shared;
 
 namespace SaBooBo.CustomerService.Infrastructure;
 
-public class CustomerAppContext : DbContext, IUnitOfWork
+public class CustomerAppContext(
+    DbContextOptions<CustomerAppContext> options
+) : DbContext(options), IUnitOfWork
 {
-    public CustomerAppContext(DbContextOptions<CustomerAppContext> options) : base(options)
-    {
-    }
 
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Customer> Customers { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

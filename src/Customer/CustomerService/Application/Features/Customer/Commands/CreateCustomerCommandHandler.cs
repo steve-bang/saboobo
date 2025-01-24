@@ -14,7 +14,7 @@ public class CreateCustomerCommandHandler(
             phoneNumber: request.PhoneNumber,
             emailAddress: request.EmailAddress,
             avatarUrl: request.AvatarUrl,
-            dateOfBirth: request.DateOfBirth,
+            dateOfBirth: null,
             gender: request.Gender
         );
 

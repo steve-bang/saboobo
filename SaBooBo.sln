@@ -27,10 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationService", "src\Mig
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constract", "src\Product\Constract\Constract.csproj", "{DFDFE91F-B9ED-4F7A-BD04-E32D3946D51A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiResponse", "src\ApiResponse\ApiResponse.csproj", "{47B2624C-F257-4A6B-B96E-86FED958BA11}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonModel", "src\CommonModel\CommonModel.csproj", "{07D2E3F7-5032-41DC-938E-0ABB1F3415B0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "src\ApiGateway\ApiGateway.csproj", "{50549EE8-8516-4C77-B586-60C1DD07B14F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cart", "Cart", "{59C0AC13-706A-49D6-8FD6-DC5F975070FF}"

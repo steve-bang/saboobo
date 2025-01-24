@@ -14,7 +14,7 @@ public class Customer : AggregateRoot
 
     public string? AvatarUrl { get; private set; }
 
-    public DateTime? DateOfBirth { get; private set; }
+    public DateOnly? DateOfBirth { get; private set; }
 
     public bool IsActive { get; private set; } = false;
 
@@ -28,7 +28,7 @@ public class Customer : AggregateRoot
         string? emailAddress,
         string phoneNumber,
         string? avatarUrl,
-        DateTime? dateOfBirth,
+        DateOnly? dateOfBirth,
         Gender? gender
     )
     {
@@ -45,12 +45,11 @@ public class Customer : AggregateRoot
 
     public void Update(
         string name,
-        string emailAddress,
+        string? emailAddress,
         string phoneNumber,
-        string avatarUrl,
-        DateTime? dateOfBirth,
-        bool isActive,
-        Gender gender
+        string? avatarUrl,
+        DateOnly? dateOfBirth,
+        Gender? gender
     )
     {
         Name = name;
@@ -58,7 +57,6 @@ public class Customer : AggregateRoot
         PhoneNumber = phoneNumber;
         AvatarUrl = avatarUrl;
         DateOfBirth = dateOfBirth;
-        IsActive = isActive;
         Gender = gender;
     }
 
@@ -79,7 +77,7 @@ public class Customer : AggregateRoot
         string? emailAddress,
         string phoneNumber,
         string? avatarUrl,
-        DateTime? dateOfBirth,
+        DateOnly? dateOfBirth,
         Gender? gender
     )
     {

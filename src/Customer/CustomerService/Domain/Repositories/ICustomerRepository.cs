@@ -7,7 +7,7 @@ public interface ICustomerRepository : IRepository
 
     Customer Update(Customer customer);
 
-    Task<Customer> GetAsync(Guid id);
+    Task<Customer> GetByIdAsync(Guid id);
 
     Task<List<Customer>> GetAllByMerchantIdAsync(Guid merchantId);
 
@@ -16,4 +16,6 @@ public interface ICustomerRepository : IRepository
     Task<Customer?> GetByPhoneNumberAsync(string phoneNumber);
 
     Task<Customer?> GetByEmailAsync(string email);
+
+    Task<List<Customer>> ListCustomersByMerchantId(Guid merchantId);
 }
