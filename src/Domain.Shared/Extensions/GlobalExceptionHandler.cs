@@ -1,7 +1,8 @@
 
-using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using SaBooBo.Domain.Shared.ExceptionHandler;
 
 namespace SaBooBo.Domain.Shared.Extentions;
@@ -40,7 +41,11 @@ public class GlobalExceptionHandler : IGlobalExceptionHandler
 
         // Await the WriteAsJsonAsync method to ensure the response is written before the method returns
         await httpContext.Response.WriteAsync(
-            JsonSerializer.Serialize(exceptionHandler.Error)
+            JsonConvert.SerializeObject(exceptionHandler.Error,
+            new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            })
         );
 
     }

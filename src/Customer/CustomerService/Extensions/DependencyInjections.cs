@@ -1,7 +1,7 @@
 
-using Microsoft.EntityFrameworkCore;
 using SaBooBo.CustomerService.Infrastructure;
 using SaBooBo.CustomerService.Infrastructure.Repositories;
+using SaBooBo.Domain.Shared.Behaviour;
 using SaBooBo.MigrationService;
 
 namespace CustomerService.Extensions;
@@ -28,8 +28,10 @@ public static class DependencyInjections
             config.RegisterServicesFromAssembly(typeof(Program).Assembly);
 
             // Register the ValidationBehavior
-            //config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+            config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
         });
+
+        builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjections).Assembly);
 
         builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 

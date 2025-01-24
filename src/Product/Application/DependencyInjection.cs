@@ -1,6 +1,8 @@
 
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SaBooBo.Domain.Shared.Behaviour;
 
 public static class DependencyInjection
 {
@@ -13,8 +15,10 @@ public static class DependencyInjection
             config.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
 
             // Register the ValidationBehavior
-            //config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+            config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
         });
+
+        builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         return builder;
     }

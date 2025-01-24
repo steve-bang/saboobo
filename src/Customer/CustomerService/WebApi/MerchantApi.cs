@@ -4,7 +4,6 @@ using SaBooBo.Domain.Shared.ApiResponse;
 
 namespace SaBooBo.CustomerService.WebApi;
 
-
 public static class MerchantApi
 {
     public static RouteGroupBuilder MapMerchantApi(this IEndpointRouteBuilder builder)

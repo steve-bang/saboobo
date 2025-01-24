@@ -1,5 +1,4 @@
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace SaBooBo.CustomerService.Infrastructure;

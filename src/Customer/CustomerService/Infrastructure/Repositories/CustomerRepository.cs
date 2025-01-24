@@ -1,7 +1,4 @@
 
-
-using Microsoft.EntityFrameworkCore;
-
 namespace SaBooBo.CustomerService.Infrastructure.Repositories;
 
 public class CustomerRepository(CustomerAppContext _dbContext) : ICustomerRepository
