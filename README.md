@@ -123,6 +123,23 @@ Deploy product deployment and product service in k8s
 kubectl apply -f ./k8s/product-service.yaml
 ```
 
+# Deploy Customer API Service
+
+Build image customer
+``` bash 
+docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-customer-api:1.0.0 -f src/Customer/Dockerfile .
+```
+
+Push image to docker registry
+``` bash 
+docker push mrstevebang/saboobo-customer-api:1.0.0 
+```
+
+Deploy product deployment and customer service in k8s
+``` bash
+kubectl apply -f ./k8s/customer-service.yaml
+```
+
 # Deploy Api Gateway Service
 
 Build api gateway image

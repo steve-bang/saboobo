@@ -3,6 +3,7 @@ namespace SaBooBo.CustomerService.Infrastructure.EntitiesConfiguration
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
     using SaBooBo.CustomerService.Domain.AggregatesModel;
 
     public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
@@ -38,12 +39,20 @@ namespace SaBooBo.CustomerService.Infrastructure.EntitiesConfiguration
                 .HasDefaultValue(false)
                 .IsRequired();
 
-            builder.Property(x => x.DateOfBirth);
+            // Apply a value converter for DateOnly
+            var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+                d => d.ToDateTime(TimeOnly.MinValue), // Convert DateOnly to DateTime
+                d => DateOnly.FromDateTime(d));      // Convert DateTime back to DateOnly
+
+            builder.Property(e => e.DateOfBirth)
+                  .HasConversion(dateOnlyConverter) // Apply the converter
+                  .HasColumnType("date");           // Specify PostgreSQL type
+
 
             builder.Property(x => x.Gender)
                 .HasConversion(
-                    v => (short)v, // Parse the enum to string.
-                    value => (Gender)value // Parse the string to enum.
+                    v => (short?)v, // Parse the enum to string.
+                    value => (Gender?)value // Parse the string to enum.
                 );
 
             builder.Property(x => x.CreatedDate)
