@@ -110,12 +110,12 @@ kubectl apply -f ./k8s/pg-admin-product.yaml
 
 Build image product
 ``` bash 
-docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-apigateway-api -f src/ApiGateway/Dockerfile .
+docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-product-api -f src/Product/Dockerfile .
 ```
 
 Push image to docker registry
 ``` bash 
-docker buildx build push mrstevebang/saboobo-apigateway-api
+docker buildx build push mrstevebang/saboobo-product-api
 ```
 
 Deploy product deployment and product service in k8s

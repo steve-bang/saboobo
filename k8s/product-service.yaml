@@ -16,13 +16,12 @@ spec:
     spec:
       containers:
       - name: product-service-api
-        image: mrstevebang/saboobo-product-api:1.0.0
+        image: mrstevebang/saboobo-product-api:1.0.1
         ports:
         - containerPort: 5154
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"  # Set the environment to Development
-        env:
         - name: ASPNETCORE_URLS
           value: "http://+:5154"
 
