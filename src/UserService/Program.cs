@@ -24,7 +24,12 @@ app.UseHttpsRedirection();
 
 app.UseGlobalExceptionHandler();
 
+// Register the APIs
 app.MapAuthApi();
+app.MapUserApi();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 

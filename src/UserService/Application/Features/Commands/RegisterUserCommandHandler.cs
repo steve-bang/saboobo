@@ -2,17 +2,25 @@
 using System.Security.Cryptography;
 using PasswordTheBest;
 using SaBooBo.UserService.Domain.AggregatesModel;
+using SaBooBo.UserService.Domain.Exceptions;
 using SaBooBo.UserService.Domain.Repositories;
 
 namespace SaBooBo.UserService.Application.Features.Commands;
 
 public class RegisterUserCommandHandler(
-    IUserReposiroty _userRepository
+    IUserRepository _userRepository
 ) : IRequestHandler<RegisterUserCommand, Guid>
 {
 
     public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
+        // Pre check if user already exists
+        var userExists = await _userRepository.GetByPhoneAsync(request.PhoneNumber);
+        if (userExists is not null)
+        {
+            throw new UserAlreadyExistsException();
+        }
+
         string passwordHash = PasswordTheBestFactory.Create(HashAlgorithmName.SHA256).Hash(
             request.Password,
             out string passwordSalt

@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apigateway-service-deployment
+  name: user-service-deployment
   labels:
-    app: apigateway-service-deployment
+    app: user-service-deployment
 spec:
   replicas: 1
   selector: 
     matchLabels:
-      app: apigateway-service-deployment
+      app: user-service-deployment
   template:
     metadata:
       labels:
-        app: apigateway-service-deployment
+        app: user-service-deployment
     spec:
       containers:
-      - name: apigateway-container
-        image: mrstevebang/saboobo-apigateway-api:1.0.3
+      - name: user-service-api
+        image: mrstevebang/saboobo-user-api:1.0.0
         ports:
         - containerPort: 8080
         env:
@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: apigateway-service
+  name: user-api-service
 spec:
   selector:
-    app: apigateway-service-deployment
+    app: user-service-deployment
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: LoadBalancer
+  

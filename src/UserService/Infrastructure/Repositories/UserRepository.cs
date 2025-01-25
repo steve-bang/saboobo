@@ -6,7 +6,7 @@ namespace SaBooBo.UserService.Infrastructure.Repositories;
 
 public class UserRepository(
     UserAppContext _context
-) : IUserReposiroty
+) : IUserRepository
 {
     public IUnitOfWork UnitOfWork => _context;
 
@@ -29,7 +29,7 @@ public class UserRepository(
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id)
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
     }
