@@ -1,16 +1,23 @@
-"use client"
+'use client'
 
 import { useState, FormEvent } from "react";
-import { redirect } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import { signIn } from "@/lib/actions/auth.action";
+import { Spinner } from "@/components/ui/spinner";
+import { redirect, useRouter } from "next/navigation";
 
 interface FormData {
-  email: string;
+  phoneNumber: string;
   password: string;
 }
 
-const SignIn = () => {
-  const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
+export default function SignIn() {
+
+  const [formData, setFormData] = useState<FormData>({ phoneNumber: "", password: "" });
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,16 +28,21 @@ const SignIn = () => {
     e.preventDefault();
 
     // Form validation
-    if (!formData.email || !formData.password) {
-      setError("Both fields are required");
+    if (!formData.phoneNumber || !formData.password) {
+      setError("Phone number and password are required.");
       return;
     }
 
-    // Simulate form submission (you can replace this with actual API logic)
-    console.log("Form submitted:", formData);
+    setLoading(true);
 
-    // Redirect user after successful login (you can replace this with your actual authentication logic)
-    redirect("/dashboard");
+    try {
+      await signIn(formData);
+      router.push("/profile");
+    } catch (error) {
+      setError("Your phone number or password is incorrect.");
+    }
+    setLoading(false);
+
   };
 
   return (
@@ -48,7 +60,7 @@ const SignIn = () => {
               id="phoneNumber"
               name="phoneNumber"
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.email}
+              value={formData.phoneNumber}
               onChange={handleChange}
               placeholder="Enter your phone number"
             />
@@ -67,12 +79,23 @@ const SignIn = () => {
             />
           </div>
 
-          <button
+          {/* <button
             type="submit"
             className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
           >
             Sign In
-          </button>
+          </button> */}
+          {
+            loading ? (
+              <Button type="submit" className="w-full rounded-lg" disabled>
+                <Spinner />
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full px-4 rounded-lg">
+                Sign In
+              </Button>
+            )
+          }
         </form>
 
         {/* <p className="mt-4 text-center text-gray-600">
@@ -84,4 +107,3 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
