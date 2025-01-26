@@ -13,14 +13,6 @@ public static class AuthenticationExtensions
         var servivces = builder.Services;
         var configuration = builder.Configuration;
 
-        // {
-        //   "Identity": {
-        //     "Issuer": "http://identity",
-        //     "Audience": "basket",
-        //     "SecretKey": "*******"
-        //    }
-        // }
-
         var identitySection = configuration.GetSection("Identity");
 
         if (!identitySection.Exists())

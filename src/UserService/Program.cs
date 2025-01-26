@@ -10,7 +10,7 @@ builder.Services.AddOpenApi();
 
 builder.AddServices();
 
-builder.Services.AddGlobalExceptionHandler();
+builder.Services.AddServiceDefault();
 
 var app = builder.Build();
 
@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseGlobalExceptionHandler();
+app.UseServiceDefault();
 
 // Register the APIs
 app.MapAuthApi();

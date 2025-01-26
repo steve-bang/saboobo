@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: merchant-service-deployment
+  labels:
+    app: merchant-service-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: merchant-service-deployment
+  template:
+    metadata:
+      labels:
+        app: merchant-service-deployment
+    spec:
+      containers:
+      - name: merchant-service-api
+        image: mrstevebang/saboobo-merchant-api:1.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"  # Set the environment to Development
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: merchant-api-service
+spec:
+  selector:
+    app: merchant-service-deployment
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  

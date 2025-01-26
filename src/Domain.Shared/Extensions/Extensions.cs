@@ -7,14 +7,16 @@ namespace SaBooBo.Domain.Shared.Extentions;
 
 public static class DomainSharedExtensions
 {
-    public static IServiceCollection AddGlobalExceptionHandler(this IServiceCollection services)
+    public static IServiceCollection AddServiceDefault(this IServiceCollection services)
     {
         services.AddScoped<IGlobalExceptionHandler, GlobalExceptionHandler>();
         return services;
     }
 
-    public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app)
+    public static IApplicationBuilder UseServiceDefault(this IApplicationBuilder app)
     {
-        return app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+        return app;
     }
 }

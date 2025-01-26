@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddGlobalExceptionHandler();
+builder.Services.AddServiceDefault();
 
 builder.AddCustomerService();
 
@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseGlobalExceptionHandler();
+app.UseServiceDefault();
 
 app.MapCustomerApi();
 app.MapMerchantApi();
