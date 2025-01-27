@@ -9,7 +9,7 @@ export const GetAccessTokenFromCookie = async () => {
             return '';
         }
 
-        return accessTokenFromCookie.value
+        return accessTokenFromCookie.value;
     }
     catch (error) {
         console.error(error);

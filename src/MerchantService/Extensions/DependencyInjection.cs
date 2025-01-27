@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using SaBooBo.Domain.Shared.Behaviour;
 using SaBooBo.Domain.Shared.Extensions;
 using SaBooBo.MerchantService.Domain.Repositories;
 using SaBooBo.MerchantService.Infrastructure;
@@ -33,7 +34,7 @@ public static class DependencyInjection
             config.RegisterServicesFromAssembly(typeof(Program).Assembly);
 
             // Register the ValidationBehavior
-            //config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+            config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
         });
 
         //builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);

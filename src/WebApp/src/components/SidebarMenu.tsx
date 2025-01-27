@@ -24,7 +24,7 @@ const Sidebar = () => {
     });
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen relative"> 
             {/* Desktop Sidebar */}
             <div className="hidden lg:flex flex-shrink-0 flex-col w-64 bg-gray-800 text-white">
                 <div className="p-6 text-xl font-bold">SaBooBo</div>

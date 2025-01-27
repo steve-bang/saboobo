@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex h-screen">
         <Sidebar />
-        <div className="flex-1 p-6">{children}</div>
+        <div className="flex-1 p-6 relative">{children}</div>
       </body>
     </html>
   );
