@@ -38,13 +38,10 @@ export const signIn = async ({ phoneNumber, password }: SignInParams) => {
         httpOnly: true,
         secure: true,
       })
-
-      console.log('authResult', authResult)
   
       // Return the result so the client can process it
       return authResult
     } catch (error) {
-      console.error(error)
       throw new Error('Authentication failed')
     }
   }

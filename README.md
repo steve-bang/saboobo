@@ -1,6 +1,6 @@
 # SaBooBo
 
-A project for food store app with multiple Merchant join free. A simple microservice architecture.
+A project for food store app with multiple Merchant join free. A simple microservice architecture and deploy on Kubernet Azure Service.
 
 # Getting Started
 This version of eShop is based on .NET 9.

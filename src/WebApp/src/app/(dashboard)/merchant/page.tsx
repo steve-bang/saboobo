@@ -13,9 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getMerchantsByUserLogged, updateMerchant } from "@/lib/actions/merchant.action";
 import { MerchantType } from "@/types/Merchant";
 import { useToast } from "@/hooks/use-toast";
-
-const coverImageDefault =
-  "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80";
+import { coverImageDefault } from "@/constants/Common";
+import { useMerchantContext } from "@/lib/MerchantContext";
 
 // Schema validation using Zod
 const merchantSchema = z.object({
@@ -43,6 +42,8 @@ export default function Merchant() {
 
   const [merchantUser, setMerchantUser] = useState<MerchantType>();
 
+  const { merchant, setMerchant } = useMerchantContext();
+
   const { toast } = useToast();
 
   const {
@@ -68,6 +69,7 @@ export default function Merchant() {
       try {
         const merchant = await getMerchantsByUserLogged();
         setMerchantUser(merchant);
+        setMerchant(merchant);
 
         // Update form values after fetching the merchant
         if (merchant) {
@@ -103,7 +105,6 @@ export default function Merchant() {
   // Form submission handler
   const onSubmit = async (data: MerchantForm) => {
     try {
-      console.log("Form data:", data);
 
       // Update the merchant (logo and cover images should be handled separately)
       if (merchantUser) {
@@ -145,7 +146,7 @@ export default function Merchant() {
         <h1 className="text-xl font-semibold">Merchant</h1>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 max-w-2xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 w-full">
         {/* Logo Field */}
         <div>
           <Label>Logo</Label>

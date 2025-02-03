@@ -1,13 +1,5 @@
+import { BaseType } from "./Common";
 
-export interface BaseType {
-    id: string;
-}
-
-export interface ResponseApiType<T> {
-    success: boolean;
-    httpStatus: number;
-    data: T;
-}
 
 export interface MerchantType extends BaseType {
     userId: string;

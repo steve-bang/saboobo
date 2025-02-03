@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: azfile-pvc
+  name: saboobo-pvc
 spec:
   accessModes:
     - ReadWriteMany
-  #storageClassName: ""
-  #volumeName: azfile-pv
+  storageClassName: saboobo-azfile-sc
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi

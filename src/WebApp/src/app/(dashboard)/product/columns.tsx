@@ -1,0 +1,95 @@
+
+import { CategoryType } from "@/types/Category";
+import { ColumnDef } from "@tanstack/react-table";
+
+import { Button } from "@/components/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
+import { ProductType } from "@/types/Product";
+
+export const columnsProduct: ColumnDef<ProductType>[] = [
+    {
+        accessorKey: "name",
+        header: "Name",
+        cell: ({ row }) => {
+
+            const product = row.original as ProductType;
+
+            return <div className="font-medium flex items-center gap-2">
+                {
+                    product.urlImage &&
+                    <img src={product.urlImage} alt={product.name} className="w-12 h-12 rounded-md" />
+                }
+                {product.name}
+            </div>
+        }
+    },
+    {
+        accessorKey: "sku",
+        header: "Sku",
+    },
+    {
+        accessorKey: "price",
+        header: "Price",
+        cell: ({ row }) => {
+            const amount = parseInt(row.getValue("price"))
+            const formatted = new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            }).format(amount)
+
+            return <div className="font-medium">{formatted}</div>
+        },
+    },
+    {
+        accessorKey: "description",
+        header: "Description",
+    },
+    {
+        accessorKey: "createdDate",
+        header: "Created At",
+        accessorFn: (data) => {
+            return new Date(data.createdDate).toLocaleDateString();
+        }
+    },
+    {
+        id: "actions",
+        cell: ({ row }) => {
+            const payment = row.original as ProductType;
+
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem
+                            className="cursor-pointer"
+                        >
+                            <Link href={`/product/${payment.id}`} target="_blank">
+                                Edit
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            className="text-rose-600 focus:text-rose-700 cursor-pointer focus:bg-rose-50"
+                        >
+                            Delete
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
+        },
+    },
+
+];

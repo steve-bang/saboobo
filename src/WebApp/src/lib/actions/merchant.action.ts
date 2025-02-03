@@ -1,7 +1,8 @@
 'use server'
 
-import { MerchantForm, MerchantType, ResponseApiType } from "@/types/Merchant";
+import { MerchantForm, MerchantType } from "@/types/Merchant";
 import { GetAccessTokenFromCookie as getAccessTokenFromCookie } from "../HttpUtils";
+import { ResponseApiType } from "@/types/Common";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
 
