@@ -1,7 +1,6 @@
 
 using MerchantService.Application.Features.Commands;
 using MerchantService.Application.Features.Queries;
-using Microsoft.AspNetCore.Mvc;
 using SaBooBo.Domain.Shared.ApiResponse;
 
 namespace SaBooBo.MerchantService.Apis;

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: merchant-service-api
-        image: mrstevebang/saboobo-merchant-api:1.0.0
+        image: mrstevebang/saboobo-merchant-api:1.0.1
         ports:
         - containerPort: 8080
         env:
