@@ -1,6 +1,4 @@
 
-using System.Security.Cryptography.X509Certificates;
-using SaBooBo.Domain.Shared;
 
 namespace SaBooBo.MerchantService.Domain.AggregatesModel;
 

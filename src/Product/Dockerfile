@@ -32,4 +32,4 @@ ENTRYPOINT ["dotnet", "Product.Api.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-product-api:1.0.0 -f src/Product/Dockerfile .
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-product-api:1.0.2 -f src/Product/Dockerfile .

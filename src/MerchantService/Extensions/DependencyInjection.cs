@@ -1,5 +1,4 @@
 
-using Microsoft.EntityFrameworkCore;
 using SaBooBo.Domain.Shared.Behaviour;
 using SaBooBo.Domain.Shared.Extensions;
 using SaBooBo.MerchantService.Domain.Repositories;
@@ -40,6 +39,7 @@ public static class DependencyInjection
         //builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
+        builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 
         builder.Services.AddScoped<IIdentityService, IdentityService>();
 

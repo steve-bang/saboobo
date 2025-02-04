@@ -24,6 +24,7 @@ app.UseHttpsRedirection();
 
 
 app.MapMerchantApi();
+app.MapBannerApi();
 
 app.UseServiceDefault();
 

@@ -1,6 +1,4 @@
 
-using SaBooBo.MerchantService.Domain.AggregatesModel;
-
 namespace MerchantService.Application.Features.Commands;
 
 public record CreateMerchantCommand(

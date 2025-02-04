@@ -1,7 +1,4 @@
 
-using Microsoft.EntityFrameworkCore;
-using SaBooBo.Domain.Shared;
-using SaBooBo.MerchantService.Domain.AggregatesModel;
 using SaBooBo.MerchantService.Domain.Repositories;
 
 namespace SaBooBo.MerchantService.Infrastructure.Repositories;

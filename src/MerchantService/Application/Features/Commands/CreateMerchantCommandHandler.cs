@@ -1,5 +1,4 @@
 
-using SaBooBo.MerchantService.Domain.AggregatesModel;
 using SaBooBo.MerchantService.Domain.Repositories;
 
 namespace MerchantService.Application.Features.Commands;

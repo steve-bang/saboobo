@@ -1,16 +1,21 @@
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using SaBooBo.Domain.Shared;
-using SaBooBo.MerchantService.Domain.AggregatesModel;
 
 namespace SaBooBo.MerchantService.Infrastructure;
 
+
+/// <summary>
+/// 
+/// Exec add migration: dotnet ef migrations add <Message> --context MerchantAppContext
+/// </summary>
+/// <param name="options"></param>
 public class MerchantAppContext(
     DbContextOptions<MerchantAppContext> options
 ) : DbContext(options), IUnitOfWork
 {
     public DbSet<Merchant> Merchants { get; set; } = null!;
+
+    public DbSet<Banner> Banners { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

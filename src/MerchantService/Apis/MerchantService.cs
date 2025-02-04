@@ -8,6 +8,7 @@ public class MerchantServices(
 )
 {
     public IMediator Mediator { get; set; } = mediator;
+    
     public ILogger<MerchantServices> Logger { get; } = logger;
 
     public IIdentityService IdentityService { get; } = identityService;

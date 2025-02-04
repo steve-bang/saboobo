@@ -1,7 +1,5 @@
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SaBooBo.MerchantService.Domain.AggregatesModel;
 
 namespace MerchantService.Infrastructure.EntitiesConfiguration
 {
