@@ -491,3 +491,16 @@ $RECYCLE.BIN/
 /playwright/.auth/
 /user.json
 .azure
+
+# Project web app
+/src/webapp/node_modules/
+/src/webapp/.next/
+/src/webapp/.env
+
+# Project App Host
+/src/AppHost/bin/
+/src/AppHost/obj/
+
+# Ignore bin and obj folders
+**/bin/
+**/obj/

@@ -87,6 +87,22 @@ Apply PVC
 kubectl apply -f ./k8s/azure/az-file-pvc.yaml
 ```
 
+## Create kafka
+
+Apply Zookeeper
+``` bash
+kubectl apply -f ./k8s/kafka/zookeeper.yaml
+```
+
+Apply Kafka
+``` bash
+kubectl apply -f ./k8s/kafka/kafka.yaml
+```
+
+Apply Kafka UI
+``` bash
+kubectl apply -f ./k8s/kafka/kafka-ui.yaml
+```
 
 # Deploy db postgres sql
 

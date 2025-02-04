@@ -1,4 +1,6 @@
 
+using SaBooBo.Product.Domain.Events;
+
 namespace SaBooBo.Product.Domain.AggregatesModel;
 
 public class Product : AggregateRoot
@@ -35,6 +37,8 @@ public class Product : AggregateRoot
         Price = price;
         Description = description;
         UrlImage = urlImage;
+
+        AddEvent(ProductCreateEvent.Create(this));
     }
 
     public Product(
@@ -88,18 +92,6 @@ public class Product : AggregateRoot
     )
     {
         return new(merchantId, categoryId, name, sku, price, description, urlImage, toppings);
-    }
-
-    public static Product Create(
-        string name, 
-        string? sku, 
-        long price, 
-        string? description, 
-        string? urlImage, 
-        Topping[]? toppings
-    )
-    {
-        return new(name, sku, price, description, urlImage, toppings);
     }
 
     public void Update(string name, string? sku, long price, string? description, string? urlImage)
