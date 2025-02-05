@@ -3,9 +3,11 @@
 import * as React from "react"
 import {
   AudioWaveform,
+  BadgeIndianRupee,
   BookOpen,
   Command,
   GalleryVerticalEnd,
+  Images,
   Layers,
   LayoutDashboard,
   Package2,
@@ -70,14 +72,29 @@ const data = {
           icon: Package2
         },
         {
-          title: "Order",
+          title: "Order (*)",
           url: "#",
           icon: ShoppingBag
         },
         {
-          title: "Payment",
+          title: "Payment (*)",
           url: "#",
           icon: Wallet
+        },
+        {
+          title: "Shipping (*)",
+          url: "#",
+          icon: Command
+        },
+        {
+          title: "Promotion (*)",
+          url: "#",
+          icon: AudioWaveform
+        },
+        {
+          title: "Banner (*)",
+          url: "#",
+          icon: Images
         },
         {
           title: "Settings",
