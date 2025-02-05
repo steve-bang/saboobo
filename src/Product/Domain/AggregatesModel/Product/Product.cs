@@ -124,4 +124,9 @@ public class Product : AggregateRoot
     {
         TotalPurchased += 1;
     }
+
+    public void Delete()
+    {
+        AddEvent(ProductDeleteEvent.Create(Id, CategoryId));
+    }
 }

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: product-service-api
-        image: mrstevebang/saboobo-product-api:1.0.2
+        image: mrstevebang/saboobo-product-api:1.0.3
         ports:
         - containerPort: 5154
         env:

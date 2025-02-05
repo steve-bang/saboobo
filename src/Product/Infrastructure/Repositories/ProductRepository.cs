@@ -22,9 +22,14 @@ public class ProductRepository(ProductAppContext _dbContext) : IProductRepositor
 
         if (product == null) return false;
 
-        _dbContext.Products.Remove(product);
+        return Delete(product);
+    }
 
-        return true;
+    public bool Delete(Domain.AggregatesModel.Product product)
+    {
+        var result = _dbContext.Products.Remove(product);
+
+        return result.State == EntityState.Deleted;
     }
 
     public async Task<Domain.AggregatesModel.Product?> GetByIdAsync(Guid id)
