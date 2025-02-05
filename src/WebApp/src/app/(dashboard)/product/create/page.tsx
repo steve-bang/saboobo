@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
+import { createProduct } from "@/lib/actions/product.action";
 import { useMerchantContext } from "@/lib/MerchantContext";
 import { formatPrice } from "@/lib/utils";
 import { CategoryType } from "@/types/Category";
@@ -18,12 +20,12 @@ import * as z from "zod";
 
 // Schema validation using Zod
 const productSchema = z.object({
-    categoryId: z.string().min(1, { message: "Category is required" }).optional(),
+    categoryId: z.string().min(1, { message: "Category is required" }),
     name: z.string().min(1, { message: "Name is required" }),
-    sku: z.string().min(1, { message: "SKU is required" }).optional(),
+    sku: z.string(),
     price: z.number().min(1, { message: "Price is required" }),
-    description: z.string().min(1, { message: "Description is required" }),
-    urlImage: z.string(),
+    description: z.string(),
+    //urlImage: z.string(),
     // toppings: z.array(
     //     z.object({
     //         name: z.string().min(1, { message: "Name is required" }),
@@ -40,6 +42,8 @@ export default function CreateProduct() {
     const [imageReview, setImageReview] = useState<string | null>(null);
 
     const [categories, setCategories] = useState<CategoryType[]>([]);
+
+    const { toast } = useToast();
 
     // Get the merchant from the context
     const { merchant } = useMerchantContext();
@@ -87,8 +91,38 @@ export default function CreateProduct() {
         setValue("price", isNaN(parsedValue) ? 0 : parsedValue);
     };
 
-    const onSubmit = (data: ProductForm) => {
+    const onSubmit = async (data: ProductForm) => {
         console.log("Data", data);
+
+        try {
+            // Create product
+            var result = await createProduct({
+                merchantId: merchant.id,
+                categoryId: data.categoryId,
+                name: data.name,
+                sku: data.sku,
+                price: data.price,
+                description: data.description,
+                urlImage: null,
+                toppings: [],
+            });
+
+            if (result) {
+                toast({
+                    title: "Product created successfully!",
+                });
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+            toast({
+                title: "Product creation failed!",
+                variant: 'destructive'
+            })
+        }
+
     };
 
     // Handle file input change for logo and cover image

@@ -1,5 +1,4 @@
 
-import { CategoryType } from "@/types/Category";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button"
@@ -11,8 +10,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react";
-import Link from "next/link";
 import { ProductType } from "@/types/Product";
+import { redirect } from "next/navigation";
 
 export const columnsProduct: ColumnDef<ProductType>[] = [
     {
@@ -76,10 +75,9 @@ export const columnsProduct: ColumnDef<ProductType>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
                             className="cursor-pointer"
+                            onClick={() => redirect(`/product/${payment.id}`)}
                         >
-                            <Link href={`/product/${payment.id}`} target="_blank">
-                                Edit
-                            </Link>
+                            Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             className="text-rose-600 focus:text-rose-700 cursor-pointer focus:bg-rose-50"

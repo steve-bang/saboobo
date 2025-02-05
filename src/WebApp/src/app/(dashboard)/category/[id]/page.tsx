@@ -18,7 +18,7 @@ const categorySchema = z.object({
     code: z.string().min(1, { message: "Code is required" }).optional(),
     name: z.string().min(1, { message: "Name is required" }),
     description: z.string().min(1, { message: "Description is required" }),
-    iconUrl: z.string().url({ message: "Invalid icon URL" }).optional(),
+    //iconUrl: z.string().url({ message: "Invalid icon URL" }).optional(),
 });
 
 type CategoryForm = z.infer<typeof categorySchema>;
@@ -44,7 +44,6 @@ export default function Page({
     } = useForm<CategoryForm>({
         resolver: zodResolver(categorySchema),
         defaultValues: {
-            iconUrl: "",
             code: "",
             name: "",
             description: "",
@@ -65,7 +64,6 @@ export default function Page({
                     setValue("code", category.code ?? "");
                     setValue("name", category.name);
                     setValue("description", category.description ?? "");
-                    setValue("iconUrl", category.iconUrl ?? "");
 
                     console.log("Fetched category:", category); // Log the fetched category data
 
@@ -95,11 +93,11 @@ export default function Page({
                     code: data.code ?? null,
                     name: data.name,
                     description: data.description,
-                    iconUrl: data.iconUrl ?? null,
+                    iconUrl: null,
                 });
 
             toast({
-                title: "Category updated successfully"
+                title: 'Category updated successfully!'
             })
         } catch (error) {
             console.error("Error updating category:", error);
@@ -156,7 +154,7 @@ export default function Page({
 
                         {/* Submit Button */}
                         <div>
-                            <Button type="submit">Save Changes</Button>
+                            <Button type="submit">Save</Button>
                         </div>
                     </form>
                 )

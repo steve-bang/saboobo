@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { MerchantContextProvider } from "@/lib/MerchantContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <MerchantContextProvider>
+  
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset >
@@ -39,6 +38,5 @@ export default function RootLayout({
           </div>
         </SidebarInset>
       </SidebarProvider>
-    </MerchantContextProvider>
   );
 }

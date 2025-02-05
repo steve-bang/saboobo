@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "@/lib/actions/auth.action";
 import { Spinner } from "@/components/ui/spinner";
 import { redirect, useRouter } from "next/navigation";
+import { useMerchantContext } from "@/lib/MerchantContext";
+import { getMerchantsByUserLogged } from "@/lib/actions/merchant.action";
 
 interface FormData {
   phoneNumber: string;
@@ -16,6 +18,8 @@ export default function SignIn() {
   const [formData, setFormData] = useState<FormData>({ phoneNumber: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { setMerchant } = useMerchantContext();
 
   const router = useRouter();
 
@@ -37,6 +41,11 @@ export default function SignIn() {
 
     try {
       await signIn(formData);
+
+      // Save merchant user sign in success
+      handleSaveMerchantUserSignInSuccess();
+
+
       router.push("/profile");
     } catch (error) {
       setError("Your phone number or password is incorrect.");
@@ -44,6 +53,11 @@ export default function SignIn() {
     setLoading(false);
 
   };
+
+  const handleSaveMerchantUserSignInSuccess = async () => {
+    const merchant = await getMerchantsByUserLogged();
+    setMerchant(merchant);
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -78,13 +92,6 @@ export default function SignIn() {
               placeholder="Enter your password"
             />
           </div>
-
-          {/* <button
-            type="submit"
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
-          >
-            Sign In
-          </button> */}
           {
             loading ? (
               <Button type="submit" className="w-full rounded-lg" disabled>
@@ -97,11 +104,6 @@ export default function SignIn() {
             )
           }
         </form>
-
-        {/* <p className="mt-4 text-center text-gray-600">
-          {"Don't have an account? "}
-          <a href="/signup" className="text-blue-600 hover:underline">Sign up</a>
-        </p> */}
       </div>
     </div>
   );

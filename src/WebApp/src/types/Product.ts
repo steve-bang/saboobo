@@ -23,6 +23,6 @@ export interface CreateProductParams {
     sku: string | null;
     description: string;
     price: number;
-    urlImage: string;
+    urlImage: string | null;
     toppings: ToppingType[];
 }

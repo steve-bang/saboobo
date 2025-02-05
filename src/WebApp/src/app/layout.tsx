@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/SidebarMenu";
 import { Toaster } from "@/components/ui/toaster";
+import { MerchantContextProvider } from "@/lib/MerchantContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <MerchantContextProvider>
         <div >{children}</div>
         <Toaster />
+        </MerchantContextProvider>  
       </body>
     </html>
   );

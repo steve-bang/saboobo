@@ -26,8 +26,14 @@ import {
 import { NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
 import { TeamSwitcher } from "./team-switcher"
+import { useMerchantContext } from "@/lib/MerchantContext"
 
-// This is sample data.
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const { merchant } = useMerchantContext();
+
+  // This is sample data.
 const data = {
   user: {
     name: "shadcn",
@@ -36,20 +42,10 @@ const data = {
   },
   teams: [
     {
-      name: process.env.NEXT_PUBLIC_APP_NAME ?? "Saboobo",
+      name: merchant.name ?? "Untitled",
       logo: GalleryVerticalEnd,
-      plan: "Ho Chi Minh",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+      plan: merchant.address ?? "No address",
+    }
   ],
   navMain: [
     {
@@ -139,7 +135,6 @@ const data = {
   ]
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
