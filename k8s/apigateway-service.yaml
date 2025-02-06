@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
       - name: apigateway-container
-        image: mrstevebang/saboobo-apigateway-api:1.0.4
+        image: mrstevebang/saboobo-apigateway-api:1.0.6
         ports:
         - containerPort: 8080
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"  # Set the environment to Development
 
----
+--- 
 apiVersion: v1
 kind: Service
 metadata:

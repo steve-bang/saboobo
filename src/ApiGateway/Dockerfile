@@ -24,5 +24,5 @@ ENTRYPOINT ["dotnet", "ApiGateway.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-apigateway-api:1.0.4 -f src/ApiGateway/Dockerfile .
-#   docker push mrstevebang/saboobo-apigateway-api:1.0.4
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-apigateway-api:1.0.6 -f src/ApiGateway/Dockerfile .
+#   docker push mrstevebang/saboobo-apigateway-api:1.0.6

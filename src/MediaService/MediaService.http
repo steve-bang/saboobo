@@ -1,0 +1,21 @@
+@MediaService_HostAddress = http://localhost:5298
+
+GET {{MediaService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+
+curl --location 'http://localhost:5298/api/v1/medias' \
+--form 'file=@"/Users/mrsteve.bang/Downloads/google-ads-logo.png"'
+
+###
+curl --location 'http://localhost:5298/api/v1/medias'
+
+
+###
+curl --location --request DELETE 'http://localhost:5298/api/v1/medias' \
+--header 'Content-Type: application/json' \
+--data '{
+    "fileUrl": "https://sabboboac.blob.core.windows.net/media-service/google-ads-logo.png"
+}'

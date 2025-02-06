@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-service-deployment
+  labels:
+    app: media-service-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: media-service-deployment
+  template:
+    metadata:
+      labels:
+        app: media-service-deployment
+    spec:
+      containers:
+      - name: media-service-api
+        image: mrstevebang/saboobo-media-api:1.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"  # Set the environment to Development
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: media-api-service
+spec:
+  selector:
+    app: media-service-deployment
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

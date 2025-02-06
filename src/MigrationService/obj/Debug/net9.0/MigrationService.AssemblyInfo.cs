@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MigrationService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f351a4e0d2928ca7e722600fb0c7222911581b4b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d55b20dffbcbe465f208b3c4dafc872472cf7c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("MigrationService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MigrationService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
