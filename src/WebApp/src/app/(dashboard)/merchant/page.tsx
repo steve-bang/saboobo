@@ -11,10 +11,14 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getMerchantsByUserLogged, updateMerchant } from "@/lib/actions/merchant.action";
-import { MerchantType } from "@/types/Merchant";
+import { IMerchantType } from "@/types/Merchant";
 import { useToast } from "@/hooks/use-toast";
 import { coverImageDefault } from "@/constants/Common";
-import { useMerchantContext } from "@/lib/MerchantContext";
+import { store, useAppDispatch, useAppSelector } from "@/lib/store/store";
+import { setMerchant } from "@/lib/store/merchantSlice";
+import { Spinner } from "@/components/ui/spinner";
+import { IFileType } from "@/types/Common";
+import { uploadFile } from "@/lib/actions/media.action";
 
 // Schema validation using Zod
 const merchantSchema = z.object({
@@ -37,14 +41,16 @@ const merchantSchema = z.object({
 type MerchantForm = z.infer<typeof merchantSchema>;
 
 export default function Merchant() {
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [logoPreview, setLogoPreview] = useState<IFileType | null>(null);
+  const [coverImagePreview, setCoverImagePreview] = useState<IFileType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [merchantUser, setMerchantUser] = useState<IMerchantType | null>(null);
 
-  const [merchantUser, setMerchantUser] = useState<MerchantType>();
-
-  const { merchant, setMerchant } = useMerchantContext();
-
+  const merchantState = useAppSelector((state) => state.merchant.merchant);
+  const dispatch = useAppDispatch();
   const { toast } = useToast();
+
+  console.log('state store', store.getState())
 
   const {
     register,
@@ -54,27 +60,28 @@ export default function Merchant() {
   } = useForm<MerchantForm>({
     resolver: zodResolver(merchantSchema),
     defaultValues: {
-      name: "",
-      phoneNumber: "",
-      emailAddress: "",
-      description: "",
-      address: "",
-      oaUrl: "",
-      website: "",
+      name: merchantState?.name ?? "",
+      phoneNumber: merchantState?.phoneNumber ?? "",
+      emailAddress: merchantState?.emailAddress ?? "",
+      description: merchantState?.description ?? "",
+      address: merchantState?.address ?? "",
+      oaUrl: merchantState?.oaUrl ?? "",
+      website: merchantState?.website ?? "",
     },
   });
 
   useEffect(() => {
     async function fetchMerchants() {
       try {
+        setIsLoading(true);
         const merchant = await getMerchantsByUserLogged();
         setMerchantUser(merchant);
-        setMerchant(merchant);
+        dispatch(setMerchant(merchant));
 
         // Update form values after fetching the merchant
         if (merchant) {
           setValue("name", merchant.name);
-          setValue("phoneNumber", merchant?.phoneNumber);
+          setValue("phoneNumber", merchant.phoneNumber);
           setValue("emailAddress", merchant.emailAddress ?? "");
           setValue("description", merchant.description ?? "");
           setValue("address", merchant.address ?? "");
@@ -83,10 +90,16 @@ export default function Merchant() {
         }
       } catch (error) {
         console.error("Error fetching merchant:", error);
+        toast({
+          title: "Failed to load merchant!",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchMerchants();
-  }, [setValue]);
+  }, [setValue, dispatch]);
 
   // Handle file input change for logo and cover image
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof MerchantForm) => {
@@ -94,9 +107,15 @@ export default function Merchant() {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       if (field === "logo") {
-        setLogoPreview(objectUrl);
+        setLogoPreview({
+          file: file,
+          url: objectUrl,
+        });
       } else if (field === "coverUrl") {
-        setCoverPreview(objectUrl);
+        setCoverImagePreview({
+          file: file,
+          url: objectUrl,
+        });
       }
       setValue(field, file); // Update form state
     }
@@ -104,195 +123,254 @@ export default function Merchant() {
 
   // Form submission handler
   const onSubmit = async (data: MerchantForm) => {
+    if (!merchantUser) return;
+
     try {
-
       // Update the merchant (logo and cover images should be handled separately)
-      if (merchantUser) {
-        const updatedMerchant = await updateMerchant(merchantUser.id, {
-          name: data.name,
-          phoneNumber: data.phoneNumber,
-          emailAddress: data.emailAddress,
-          description: data.description,
-          address: data.address,
-          oaUrl: data.oaUrl,
-          website: data.website,
-          logoUrl: logoPreview || merchantUser.logoUrl, // Use preview or previous value
-          coverUrl: coverPreview || merchantUser.coverUrl, // Use preview or previous value
-        });
+      const logoUrlUploaded = await uploadLogoFile();
+      const coverImageUrlUploaded = await uploadCoverImageFile();
 
-        // Notify success
-        toast({
-          title: "Merchant updated successfully!"
-        });
+      const updatedMerchant = await updateMerchant(merchantUser.id, {
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        emailAddress: data.emailAddress,
+        description: data.description,
+        address: data.address,
+        oaUrl: data.oaUrl,
+        website: data.website,
+        logoUrl: logoUrlUploaded, // Use preview or previous value
+        coverUrl: coverImageUrlUploaded, // Use preview or previous value
+      });
 
-        // Refresh data after successful update
-        setMerchantUser(updatedMerchant);
-      }
+      // Notify success
+      toast({
+        title: "Merchant updated successfully!",
+      });
+
+      // Refresh data after successful update
+      setMerchantUser(updatedMerchant);
     } catch (error) {
       console.error("Error updating merchant:", error);
       toast({
-        title: "Failed to update merchant"
+        title: "Failed to update merchant",
+        variant: "destructive",
       });
     }
 
     // Clear preview after submission
     setLogoPreview(null);
-    setCoverPreview(null);
+    setCoverImagePreview(null);
+  };
+
+  const uploadLogoFile = async () => {
+    let logoUrlUploaded = merchantState.logoUrl;
+    if (logoPreview?.file) {
+      try {
+        const data = await uploadFile(logoPreview.file);
+        logoUrlUploaded = data.url;
+      } catch (error) {
+        console.error("Error uploading logo:", error);
+        toast({
+          title: "Failed to upload logo",
+          variant: "destructive",
+        });
+      }
+    }
+    return logoUrlUploaded;
+  };
+
+  const uploadCoverImageFile = async () => {
+    let coverImageUrlUploaded = merchantState.coverUrl;
+    if (coverImagePreview?.file) {
+      try {
+        const data = await uploadFile(coverImagePreview.file);
+        coverImageUrlUploaded = data.url;
+      } catch (error) {
+        console.error("Error uploading cover image:", error);
+        toast({
+          title: "Failed to upload cover image",
+          variant: "destructive",
+        });
+      }
+    }
+    return coverImageUrlUploaded;
   };
 
   return (
-    <div className="px-2 py-4">
+    <div>
       <div className="mb-4">
-        <h1 className="text-xl font-semibold">Merchant</h1>
+        <h1 className="title-page">Merchant</h1>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 w-full">
-        {/* Logo Field */}
-        <div>
-          <Label>Logo</Label>
-          <div className="flex items-center space-x-2">
-            <Label htmlFor="logo" className="cursor-pointer">
-              <Avatar>
-                {logoPreview || merchantUser?.logoUrl ? (
-                  <AvatarImage src={logoPreview || merchantUser?.logoUrl} alt="Logo" />
-                ) : (
-                  <AvatarFallback>U</AvatarFallback>
-                )}
-              </Avatar>
+      {
+        isLoading ? (
+          <Spinner />
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 w-full">
 
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+              {/* Logo Field */}
+              <div className="w-1/5 flex items-center justify-center">
+                <div>
+                  <Label>Logo</Label>
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="logo" className="cursor-pointer px-4 py-2 border border-dashed border-gray-300 rounded-lg">
+                      <Avatar
+                        className="w-20 h-20"
+                      >
+                        {logoPreview || merchantUser?.logoUrl ? (
+                          <AvatarImage src={
+                            logoPreview?.url || merchantUser?.logoUrl
+                          } alt="Logo" />
+                        ) : (
+                          <AvatarFallback className="w-20 h-20">L</AvatarFallback>
+                        )}
+                      </Avatar>
+
+                      <Input
+                        id="logo"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleFileChange(e, "logo")}
+                      />
+                    </Label>
+                    {errors.logo && <span className="text-sm text-red-500">{errors.logo.message}</span>}
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-4/5">
+                {/* Name Field */}
+                <div>
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="John Doe"
+                    {...register("name")}
+                    className={errors.name ? "border-red-500" : ""}
+                  />
+                  {errors.name && <span className="text-sm text-red-500">{errors.name.message}</span>}
+                </div>
+
+                {/* Phone Number Field */}
+                <div>
+                  <Label htmlFor="phoneNumber">Phone Number</Label>
+                  <Input
+                    id="phoneNumber"
+                    type="text"
+                    placeholder="08123456789"
+                    {...register("phoneNumber")}
+                    className={errors.phoneNumber ? "border-red-500" : ""}
+                  />
+                  {errors.phoneNumber && <span className="text-sm text-red-500">{errors.phoneNumber.message}</span>}
+                </div>
+
+                {/* Email Address Field */}
+                <div>
+                  <Label htmlFor="emailAddress">Email Address</Label>
+                  <Input
+                    id="emailAddress"
+                    type="text"
+                    placeholder="example@gmail.com"
+                    {...register("emailAddress")}
+                    className={errors.emailAddress ? "border-red-500" : ""}
+                  />
+                  {errors.emailAddress && <span className="text-sm text-red-500">{errors.emailAddress.message}</span>}
+                </div>
+              </div>
+            </div>
+
+            {/* Description Field */}
+            <div>
+              <Label htmlFor="description">Description</Label>
               <Input
-                id="logo"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => handleFileChange(e, "logo")}
+                id="description"
+                type="text"
+                placeholder="This is a description"
+                {...register("description")}
+                className={errors.description ? "border-red-500" : ""}
               />
-            </Label>
-            {errors.logo && <span className="text-sm text-red-500">{errors.logo.message}</span>}
-          </div>
-        </div>
+              {errors.description && <span className="text-sm text-red-500">{errors.description.message}</span>}
+            </div>
 
-        {/* Name Field */}
-        <div>
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            {...register("name")}
-            className={errors.name ? "border-red-500" : ""}
-          />
-          {errors.name && <span className="text-sm text-red-500">{errors.name.message}</span>}
-        </div>
-
-        {/* Phone Number Field */}
-        <div>
-          <Label htmlFor="phoneNumber">Phone Number</Label>
-          <Input
-            id="phoneNumber"
-            type="text"
-            placeholder="08123456789"
-            {...register("phoneNumber")}
-            className={errors.phoneNumber ? "border-red-500" : ""}
-          />
-          {errors.phoneNumber && <span className="text-sm text-red-500">{errors.phoneNumber.message}</span>}
-        </div>
-
-        {/* Email Address Field */}
-        <div>
-          <Label htmlFor="emailAddress">Email Address</Label>
-          <Input
-            id="emailAddress"
-            type="text"
-            placeholder="example@gmail.com"
-            {...register("emailAddress")}
-            className={errors.emailAddress ? "border-red-500" : ""}
-          />
-          {errors.emailAddress && <span className="text-sm text-red-500">{errors.emailAddress.message}</span>}
-        </div>
-
-        {/* Description Field */}
-        <div>
-          <Label htmlFor="description">Description</Label>
-          <Input
-            id="description"
-            type="text"
-            placeholder="This is a description"
-            {...register("description")}
-            className={errors.description ? "border-red-500" : ""}
-          />
-          {errors.description && <span className="text-sm text-red-500">{errors.description.message}</span>}
-        </div>
-
-        {/* Address Field */}
-        <div>
-          <Label htmlFor="address">Address</Label>
-          <Input
-            id="address"
-            type="text"
-            placeholder="Jl. Raya Bogor No. 1"
-            {...register("address")}
-            className={errors.address ? "border-red-500" : ""}
-          />
-          {errors.address && <span className="text-sm text-red-500">{errors.address.message}</span>}
-        </div>
-
-        {/* OA URL Field */}
-        <div>
-          <Label htmlFor="oaUrl">OA URL</Label>
-          <Input
-            id="oaUrl"
-            type="text"
-            placeholder="Enter OA URL"
-            {...register("oaUrl")}
-            className={errors.oaUrl ? "border-red-500" : ""}
-          />
-          {errors.oaUrl && <span className="text-sm text-red-500">{errors.oaUrl.message}</span>}
-        </div>
-
-        {/* Website Field */}
-        <div>
-          <Label htmlFor="website">Website</Label>
-          <Input
-            id="website"
-            type="text"
-            placeholder="Enter Website"
-            {...register("website")}
-            className={errors.website ? "border-red-500" : ""}
-          />
-          {errors.website && <span className="text-sm text-red-500">{errors.website.message}</span>}
-        </div>
-
-        {/* Cover Image Field */}
-        <div>
-          <Label htmlFor="coverUrl">Cover Image</Label>
-          <div>
-            <Label htmlFor="coverUrl" className="cursor-pointer">
-              <AspectRatio ratio={5} className="w-64">
-                <Image
-                  src={coverPreview || merchantUser?.coverUrl || coverImageDefault}
-                  alt="Cover Image"
-                  fill
-                  className="h-full w-full rounded-md object-cover"
-                />
-              </AspectRatio>
+            {/* Address Field */}
+            <div>
+              <Label htmlFor="address">Address</Label>
               <Input
-                id="coverUrl"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => handleFileChange(e, "coverUrl")}
+                id="address"
+                type="text"
+                placeholder="Jl. Raya Bogor No. 1"
+                {...register("address")}
+                className={errors.address ? "border-red-500" : ""}
               />
-              {errors.coverUrl && <span className="text-sm text-red-500">{errors.coverUrl.message}</span>}
-            </Label>
-          </div>
-        </div>
+              {errors.address && <span className="text-sm text-red-500">{errors.address.message}</span>}
+            </div>
 
-        {/* Submit Button */}
-        <div>
-          <Button type="submit">Save</Button>
-        </div>
-      </form>
+            {/* OA URL Field */}
+            <div>
+              <Label htmlFor="oaUrl">OA URL</Label>
+              <Input
+                id="oaUrl"
+                type="text"
+                placeholder="Enter OA URL"
+                {...register("oaUrl")}
+                className={errors.oaUrl ? "border-red-500" : ""}
+              />
+              {errors.oaUrl && <span className="text-sm text-red-500">{errors.oaUrl.message}</span>}
+            </div>
+
+            {/* Website Field */}
+            <div>
+              <Label htmlFor="website">Website</Label>
+              <Input
+                id="website"
+                type="text"
+                placeholder="Enter Website"
+                {...register("website")}
+                className={errors.website ? "border-red-500" : ""}
+              />
+              {errors.website && <span className="text-sm text-red-500">{errors.website.message}</span>}
+            </div>
+
+            {/* Cover Image Field */}
+            <div>
+              <Label htmlFor="coverUrl">Cover Image</Label>
+              <div>
+                <Label htmlFor="coverUrl" className="cursor-pointer">
+                  <AspectRatio ratio={8} className="w-64">
+                    <Image
+                      src={
+                        coverImagePreview?.url || merchantUser?.coverUrl || coverImageDefault
+                      }
+                      alt="Cover Image"
+                      fill
+                      className="h-full w-full rounded-md object-cover"
+                    />
+                  </AspectRatio>
+                  <Input
+                    id="coverUrl"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleFileChange(e, "coverUrl")}
+                  />
+                  {errors.coverUrl && <span className="text-sm text-red-500">{errors.coverUrl.message}</span>}
+                </Label>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div>
+              <Button type="submit">
+                Save
+              </Button>
+            </div>
+          </form>
+        )
+      }
     </div>
   );
+
 }

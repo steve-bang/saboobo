@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { CategoryType } from "@/types/Category";
+import { ICategoryType } from "@/types/Category";
 import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { getCategoryById, updateCategory } from "@/lib/actions/category.action";
 import { useToast } from "@/hooks/use-toast";
 import { Spinner } from "@/components/ui/spinner";
-import { useMerchantContext } from "@/lib/MerchantContext";
+import { useAppSelector } from "@/lib/store/store";
 
 // Schema validation using Zod
 const categorySchema = z.object({
@@ -29,12 +29,12 @@ export default function Page({
     params: Promise<{ id: string }>
 }) {
     const { id } = React.use(params);
-    const [category, setCategory] = useState<CategoryType>();
+    const [category, setCategory] = useState<ICategoryType>();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(true);
 
     // Get the merchant from the context
-    const { merchant } = useMerchantContext();
+    const merchantState = useAppSelector((state) => state.merchant.merchant);
 
     const {
         register,
@@ -56,7 +56,7 @@ export default function Page({
 
                 setIsLoading(true);
 
-                const category = await getCategoryById(merchant.id, id);
+                const category = await getCategoryById(merchantState.id, id);
                 setCategory(category);
 
                 // Update form values after fetching the category
@@ -88,7 +88,7 @@ export default function Page({
         try {
             console.log("Submitting form with data:", data); // Log the data that is being submitted
             // Here, you can make your API call to save the updated category data
-            await updateCategory(merchant.id, id,
+            await updateCategory(merchantState.id, id,
                 {
                     code: data.code ?? null,
                     name: data.name,

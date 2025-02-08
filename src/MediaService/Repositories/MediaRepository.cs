@@ -29,7 +29,7 @@ namespace SaBooBo.MediaService.Repositories
             return await _mediaDbContext.Medias.Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public async Task DeleteMediaAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var media = await GetMediaAsync(id);
 

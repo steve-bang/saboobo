@@ -1,7 +1,7 @@
 'use server'
 
-import { ResponseApiType } from "@/types/Common";
-import { CreateProductParams, ProductType } from "@/types/Product";
+import { IResponseApiType } from "@/types/Common";
+import { CreateProductParams, IProductType } from "@/types/Product";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
 
@@ -10,7 +10,7 @@ export const listProduct = async () => {
 
   if (!response.ok) throw new Error("Failed to fetch products");
 
-  var responseData: ResponseApiType<ProductType[]> = await response.json();
+  var responseData: IResponseApiType<IProductType[]> = await response.json();
 
   return responseData.data;
 };
@@ -27,7 +27,7 @@ export const createProduct = async (product: CreateProductParams) => {
 
   if (!response.ok) throw new Error("Failed to create product");
 
-  var responseData: ResponseApiType<string> = await response.json();
+  var responseData: IResponseApiType<string> = await response.json();
 
   return responseData.data;
 }
@@ -37,7 +37,7 @@ export const getProductById = async (id: string) => {
 
   if (!response.ok) throw new Error("Failed to fetch product");
 
-  var responseData: ResponseApiType<ProductType> = await response.json();
+  var responseData: IResponseApiType<IProductType> = await response.json();
 
   return responseData.data;
 }
@@ -53,7 +53,7 @@ export const updateProduct = async (id: string, product: CreateProductParams) =>
 
   if (!response.ok) throw new Error("Failed to update product");
 
-  var responseData: ResponseApiType<string> = await response.json();
+  var responseData: IResponseApiType<string> = await response.json();
 
   return responseData.data;
 }
@@ -65,7 +65,7 @@ export const deleteProduct = async (id: string) => {
 
   if (!response.ok) throw new Error("Failed to delete product");
 
-  var responseData: ResponseApiType<boolean> = await response.json();
+  var responseData: IResponseApiType<boolean> = await response.json();
 
   return responseData.data;
 }

@@ -5,14 +5,13 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { DataTable } from "./data-table";
 import { useEffect, useState } from "react";
-import { CategoryType } from "@/types/Category";
+import { ICategoryType } from "@/types/Category";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
-import { ProductType } from "@/types/Product";
+import { IProductType } from "@/types/Product";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { createProduct, deleteProduct, listProduct } from "@/lib/actions/product.action";
-import { useMerchantContext } from "@/lib/MerchantContext";
+import { deleteProduct, listProduct } from "@/lib/actions/product.action";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
@@ -25,12 +24,13 @@ import { MoreHorizontal } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useAppSelector } from "@/lib/store/store";
 
 
 export default function Product() {
 
-  const [categories, setCategories] = useState<CategoryType[]>([]);
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [categories, setCategories] = useState<ICategoryType[]>([]);
+  const [products, setProducts] = useState<IProductType[]>([]);
 
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
 
@@ -39,15 +39,15 @@ export default function Product() {
   const { toast } = useToast();
 
   // Get the merchant from the context
-  const { merchant } = useMerchantContext();
+  const merchantState = useAppSelector((state) => state.merchant.merchant);
 
-  const columnsProduct: ColumnDef<ProductType>[] = [
+  const columnsProduct: ColumnDef<IProductType>[] = [
     {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => {
 
-        const product = row.original as ProductType;
+        const product = row.original as IProductType;
 
         return <div className="font-medium flex items-center gap-2">
           {
@@ -89,7 +89,7 @@ export default function Product() {
     {
       id: "actions",
       cell: ({ row }) => {
-        const product = row.original as ProductType;
+        const product = row.original as IProductType;
 
         return (
           <DropdownMenu>
@@ -154,7 +154,7 @@ export default function Product() {
         title: "Product deleted successfully",
         description: "The product has been deleted",
       });
-      
+
       // Reload the products
       loadProducts();
 
@@ -171,7 +171,7 @@ export default function Product() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const data = await listCategoryByMerchantId(merchant.id);
+        const data = await listCategoryByMerchantId(merchantState.id);
         setCategories(data);
 
       } catch (error) {

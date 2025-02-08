@@ -1,7 +1,7 @@
 'use server'
 
-import { CategoryType, CreateCategoryParams, UpdateCategoryParams } from "@/types/Category";
-import { ResponseApiType } from "@/types/Common";
+import { ICategoryType, CreateCategoryParams, UpdateCategoryParams } from "@/types/Category";
+import { IResponseApiType } from "@/types/Common";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
 
@@ -11,7 +11,7 @@ export const listCategoryByMerchantId = async (merchantId : string) => {
   
     if (!response.ok) throw new Error("Failed to fetch categories");
 
-    var responseData : ResponseApiType<CategoryType[]> = await response.json();
+    var responseData : IResponseApiType<ICategoryType[]> = await response.json();
 
     return responseData.data;
 };
@@ -21,7 +21,7 @@ export const getCategoryById = async (merchantId : string, id: string) => {
 
     if (!response.ok) throw new Error("Failed to fetch category");
 
-    var data : ResponseApiType<CategoryType> = await response.json();
+    var data : IResponseApiType<ICategoryType> = await response.json();
 
     return data.data;
 
@@ -38,7 +38,7 @@ export const createCategory = async (merchantId : string,  data : CreateCategory
 
   if (!response.ok) throw new Error("Failed to create category");
 
-  var responseData : ResponseApiType<string> = await response.json();
+  var responseData : IResponseApiType<string> = await response.json();
   
   return responseData.data;
 };
@@ -56,7 +56,7 @@ export const updateCategory = async (merchantId : string, id: string, data : Upd
 
   if (!response.ok) throw new Error("Failed to update category");
 
-  var responseData : ResponseApiType<CategoryType> = await response.json();
+  var responseData : IResponseApiType<ICategoryType> = await response.json();
 
     return responseData.data;
 };
@@ -69,7 +69,7 @@ export const deleteCategory = async (merchantId : string, id: string) => {
 
   if (!response.ok) throw new Error("Failed to delete category");
 
-  var responseData : ResponseApiType<boolean> = await response.json();
+  var responseData : IResponseApiType<boolean> = await response.json();
 
     return responseData.data;
 };

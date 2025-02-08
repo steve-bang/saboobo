@@ -1,7 +1,7 @@
-import { BaseType } from "./Common";
+import { IBaseType } from "./Common";
 
 
-export interface MerchantType extends BaseType {
+export interface IMerchantType extends IBaseType {
     userId: string;
     name: string;
     description: string | null;

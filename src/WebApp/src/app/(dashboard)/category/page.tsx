@@ -6,12 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createCategory, deleteCategory, listCategoryByMerchantId, updateCategory } from "@/lib/actions/category.action";
-import { CategoryType } from "@/types/Category";
+import { ICategoryType } from "@/types/Category";
 import { useState, useEffect } from "react";
 import { DataTable } from "./data-table";
-import { Plus } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import { useMerchantContext } from "@/lib/MerchantContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,44 +23,49 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { redirect } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useAppSelector } from "@/lib/store/store";
 
 
 export default function Categories() {
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [categories, setCategories] = useState<ICategoryType[]>([]);
   const [newCategory, setNewCategory] = useState({
     name: "",
     code: "",
     description: "",
     iconUrl: "",
   });
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<ICategoryType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   // Get the merchant from the context
-  const { merchant } = useMerchantContext();
+  const merchantState = useAppSelector((state) => state.merchant.merchant);
 
   useEffect(() => {
     const loadCategories = async () => {
-      try {
-        setIsLoading(true);
+      if (merchantState.id && merchantState.id !== '') {
+        try {
+          setIsLoading(true);
 
-        const data = await listCategoryByMerchantId(merchant.id);
-        setCategories(data);
+          const data = await listCategoryByMerchantId(merchantState.id);
 
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
+          setCategories(data);
 
-        //toast.error("Error fetching categories.");
+          setIsLoading(false);
+        } catch (error) {
+          console.error(error);
+
+          //toast.error("Error fetching categories.");
+        }
       }
     };
     loadCategories();
-  }, []);
+  }, [merchantState]);
+
 
   const handleCreateCategory = async () => {
     try {
-      await createCategory(merchant.id, newCategory);
+      await createCategory(merchantState.id, newCategory);
       //toast.success("Category created!");
       setIsModalOpen(false);
       setNewCategory({
@@ -71,7 +75,7 @@ export default function Categories() {
         iconUrl: "",
       });
       // Reload categories
-      const data = await listCategoryByMerchantId(merchant.id);
+      const data = await listCategoryByMerchantId(merchantState.id);
       setCategories(data);
     } catch (error) {
       console.error(error);
@@ -81,11 +85,11 @@ export default function Categories() {
 
   const handleUpdateCategory = async (id: string) => {
     try {
-      await updateCategory(merchant.id, id, newCategory);
+      await updateCategory(merchantState.id, id, newCategory);
       //toast.success("Category updated!");
       setIsModalOpen(false);
       // Reload categories
-      const data = await listCategoryByMerchantId(merchant.id);
+      const data = await listCategoryByMerchantId(merchantState.id);
       setCategories(data);
     } catch (error) {
       //toast.error("Error updating category.");
@@ -94,10 +98,10 @@ export default function Categories() {
 
   const handleDeleteCategory = async (id: string) => {
     try {
-      await deleteCategory(merchant.id, id);
+      await deleteCategory(merchantState.id, id);
       //toast.success("Category deleted!");
       // Reload categories
-      const data = await listCategoryByMerchantId(merchant.id);
+      const data = await listCategoryByMerchantId(merchantState.id);
       setCategories(data);
     } catch (error) {
       console.error(error);
@@ -105,99 +109,99 @@ export default function Categories() {
     }
   };
 
-  const columnsCategory: ColumnDef<CategoryType>[] = [
+  const columnsCategory: ColumnDef<ICategoryType>[] = [
     {
-        accessorKey: "iconUrl",
-        header: "Icon",
-        cell: ({ row }) => {
-            const category = row.original as CategoryType;
+      accessorKey: "iconUrl",
+      header: "Icon",
+      cell: ({ row }) => {
+        const category = row.original as ICategoryType;
 
-            return (
-                <Avatar className="scale-75">
-                    <AvatarImage src={category.iconUrl} alt={category.name} />
-                    <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-            )
-        },
+        return (
+          <Avatar className="scale-75">
+            <AvatarImage src={category.iconUrl} alt={category.name} />
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+        )
+      },
     },
     {
-        accessorKey: "name",
-        header: "Name",
+      accessorKey: "name",
+      header: "Name",
     },
     {
-        accessorKey: "description",
-        header: "Description",
+      accessorKey: "description",
+      header: "Description",
     },
     {
-        accessorKey: "totalProduct",
-        header: "Product",
+      accessorKey: "totalProduct",
+      header: "Product",
     },
     {
-        accessorKey: "createdDate",
-        header: "Created At",
-        accessorFn: (data) => {
-            return new Date(data.createdDate).toLocaleDateString();
-        }
+      accessorKey: "createdDate",
+      header: "Created At",
+      accessorFn: (data) => {
+        return new Date(data.createdDate).toLocaleDateString();
+      }
     },
     {
-        id: "actions",
-        cell: ({ row }) => {
-            const categoryId = row.original as CategoryType;
+      id: "actions",
+      cell: ({ row }) => {
+        const categoryId = row.original as ICategoryType;
 
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            className="cursor-pointer"
-                            onClick={() => redirect(`/category/${categoryId.id}`)}
-                        >
-                            Edit
-                        </DropdownMenuItem>
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => redirect(`/category/${categoryId.id}`)}
+              >
+                <Edit /> Edit
+              </DropdownMenuItem>
 
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <DropdownMenuItem
-                                    className="text-rose-600 focus:text-rose-700 cursor-pointer focus:bg-rose-50"
-                                    onSelect={(e) => e.preventDefault()}
-                                >
-                                    Delete
-                                </DropdownMenuItem>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                                <DialogHeader>
-                                    <DialogTitle>
-                                        Delete Category
-                                    </DialogTitle>
-                                    <DialogDescription>
-                                        Are you sure you want to delete this category? This action cannot be undone.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <DialogFooter>
-                                    <Button
-                                        className="bg-rose-500 hover:bg-rose-700"
-                                        onClick={() => {
-                                            handleDeleteCategory(categoryId.id);
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
+              <Dialog>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem
+                    className="text-rose-600 focus:text-rose-700 cursor-pointer focus:bg-rose-50"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    <Trash /> Delete
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>
+                      Delete Category
+                    </DialogTitle>
+                    <DialogDescription>
+                      Are you sure you want to delete this category? This action cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <Button
+                      className="bg-rose-500 hover:bg-rose-700"
+                      onClick={() => {
+                        handleDeleteCategory(categoryId.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
     },
 
-];
+  ];
 
   return (
     <div>

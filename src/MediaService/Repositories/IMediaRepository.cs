@@ -16,7 +16,9 @@ public interface IMediaRepository : IRepository
 
     Task<List<Media>> ListAsync();
 
-    Task DeleteMediaAsync(Guid id);
+    Task DeleteAsync(Guid id);
 
     void DeleteMedia(Media media);
+
+
 }

@@ -1,8 +1,8 @@
 'use server'
 
-import { MerchantForm, MerchantType } from "@/types/Merchant";
+import { MerchantForm, IMerchantType } from "@/types/Merchant";
 import { GetAccessTokenFromCookie as getAccessTokenFromCookie } from "../HttpUtils";
-import { ResponseApiType } from "@/types/Common";
+import { IResponseApiType } from "@/types/Common";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
 
@@ -24,7 +24,7 @@ export const getMerchantsByUserLogged = async () => {
             throw new Error('Failed to get merchants')
         }
 
-        const result: ResponseApiType<MerchantType> = await response.json()
+        const result: IResponseApiType<IMerchantType> = await response.json()
 
         return result.data;
     } catch (error) {
@@ -51,7 +51,7 @@ export const updateMerchant = async ( id : string, merchant: MerchantForm) => {
             throw new Error('Failed to update merchant')
         }
 
-        const result: ResponseApiType<MerchantType> = await response.json()
+        const result: IResponseApiType<IMerchantType> = await response.json()
 
         return result.data;
     } catch (error) {

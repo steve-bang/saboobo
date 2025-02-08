@@ -53,6 +53,14 @@ public class MediaController : ControllerBase
         return Ok(ApiResponseSuccess<Azure.Response<bool>>.BuildSuccess(result));
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(Guid id)
+    {
+        await _mediaService.DeleteAsync(id);
+
+        return Ok(ApiResponseSuccess<bool>.BuildNoContent());
+    }
+
     [HttpGet]
     public async Task<IActionResult> ListAsync()
     {

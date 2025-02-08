@@ -1,6 +1,6 @@
-import { BaseType } from "./Common";
+import { IBaseType } from "./Common";
 
-export interface CategoryType extends BaseType  {
+export interface ICategoryType extends IBaseType  {
     merchantId: string;
     code: string;
     name: string;

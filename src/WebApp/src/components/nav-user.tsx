@@ -31,6 +31,10 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { SignOut } from "@/lib/actions/auth.action"
+import { persistor, useAppDispatch } from "@/lib/store/store"
+import { clearUser } from "@/lib/store/userSlice"
+import { redirect, useRouter } from "next/navigation"
+import { clearMerchant, setMerchant } from "@/lib/store/merchantSlice"
 
 export function NavUser({
   user,
@@ -41,7 +45,31 @@ export function NavUser({
     avatar: string
   }
 }) {
-  const { isMobile } = useSidebar()
+
+  const router = useRouter();
+
+  const dispatch = useAppDispatch();
+  const { isMobile } = useSidebar();
+
+  const handleSignOut = async () => {
+    try {
+      await SignOut(); // Sign out the user
+      dispatch(clearUser()); // Clear the user from the store
+      dispatch(clearMerchant()); // Clear the merchant from the store
+
+      // Clear persisted data (from localStorage or sessionStorage)
+      if (persistor) {
+        await persistor.flush(); // Ensure data is flushed before purge
+        await persistor.purge(); // This will remove all persisted data
+      }
+
+      // Redirect to the login page
+      router.push("/sign-in");
+
+    } catch (error) {
+      console.error("Failed to sign out", error)
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -105,10 +133,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => {
-                // eslint-disable-next-line no-alert
-                SignOut()
-              }}
+              onClick={handleSignOut}
             >
               <LogOut />
               Log out

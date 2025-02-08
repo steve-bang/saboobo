@@ -20,6 +20,8 @@ public interface IMediaService
 
     Task<Azure.Response<bool>> DeleteFileAsync(string fileUrl);
 
+    Task DeleteAsync(Guid id);
+
     Task<List<Media>> ListAsync();
 
 }
@@ -129,5 +131,12 @@ public class MediaService : IMediaService
     public async Task<List<Media>> ListAsync()
     {
         return await _mediaRepository.ListAsync();
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await _mediaRepository.DeleteAsync(id);
+
+        await _mediaRepository.UnitOfWork.SaveChangesAsync();
     }
 }

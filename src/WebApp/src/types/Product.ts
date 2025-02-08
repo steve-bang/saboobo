@@ -1,6 +1,6 @@
-import { BaseType } from "./Common";
+import { IBaseType } from "./Common";
 
-export interface ProductType extends BaseType {
+export interface IProductType extends IBaseType {
     merchantId: string;
     categoryId: string;
     name: string;
@@ -11,7 +11,7 @@ export interface ProductType extends BaseType {
     createdDate: string;
 }
 
-export interface ToppingType extends BaseType {
+export interface IToppingType extends IBaseType {
     name: string;
     price: number;
 }
@@ -24,5 +24,5 @@ export interface CreateProductParams {
     description: string;
     price: number;
     urlImage: string | null;
-    toppings: ToppingType[];
+    toppings: IToppingType[];
 }

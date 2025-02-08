@@ -9,9 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
 import { createProduct } from "@/lib/actions/product.action";
-import { useMerchantContext } from "@/lib/MerchantContext";
+import { useAppSelector } from "@/lib/store/store";
 import { formatPrice } from "@/lib/utils";
-import { CategoryType } from "@/types/Category";
+import { ICategoryType } from "@/types/Category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloudIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -41,18 +41,18 @@ export default function CreateProduct() {
 
     const [imageReview, setImageReview] = useState<string | null>(null);
 
-    const [categories, setCategories] = useState<CategoryType[]>([]);
+    const [categories, setCategories] = useState<ICategoryType[]>([]);
 
     const { toast } = useToast();
 
     // Get the merchant from the context
-    const { merchant } = useMerchantContext();
+    const merchantState = useAppSelector((state) => state.merchant.merchant);
 
     useEffect(() => {
         const loadCategories = async () => {
             try {
 
-                const data = await listCategoryByMerchantId(merchant.id);
+                const data = await listCategoryByMerchantId(merchantState.id);
                 setCategories(data);
 
             } catch (error) {
@@ -97,7 +97,7 @@ export default function CreateProduct() {
         try {
             // Create product
             var result = await createProduct({
-                merchantId: merchant.id,
+                merchantId: merchantState.id,
                 categoryId: data.categoryId,
                 name: data.name,
                 sku: data.sku,
@@ -227,7 +227,7 @@ export default function CreateProduct() {
                         {imageReview ? (
                             <img src={imageReview} alt="Image" className="w-28 object-cover rounded-lg border border-dashed" />
                         ) : (
-                            <div className="px-8 py-4 border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                            <div className="px-10 py-6 border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                                 <UploadCloudIcon size={24} />
                             </div>
                         )}

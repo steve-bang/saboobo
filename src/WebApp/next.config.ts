@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         hostname: "www.google.com",
         pathname: "**"
       },
+      {
+        protocol: "https",
+        hostname: "sabboboac.blob.core.windows.net",
+        pathname: "**"
+      },
     ],
   },
 

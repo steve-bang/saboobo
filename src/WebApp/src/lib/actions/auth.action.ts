@@ -3,6 +3,8 @@
 import { CookieKey } from "@/constants/CookieKey";
 import { cookies } from "next/headers";
 import { GetAccessTokenFromCookie } from "../HttpUtils";
+import { IUserType } from "@/types/User";
+import { IResponseApiType } from "@/types/Common";
 
 export interface SignInParams {
     phoneNumber: string;
@@ -92,9 +94,9 @@ export const GetUserById = async (id: string) => {
             throw new Error('Failed to get current user');
         }
 
-        const user = await response.json();
+        var responseData : IResponseApiType<IUserType> = await response.json();
 
-        return user.data;
+        return responseData.data;
     }
     catch (error) {
         console.error(error);

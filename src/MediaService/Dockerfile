@@ -27,5 +27,5 @@ ENTRYPOINT ["dotnet", "MediaService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-media-api:1.0.0 -f src/MediaService/Dockerfile .
-#   docker push mrstevebang/saboobo-media-api:1.0.0
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-media-api:1.0.2 -f src/MediaService/Dockerfile .
+#   docker push mrstevebang/saboobo-media-api:1.0.2

@@ -1,14 +1,14 @@
 "use client"
 
 
-import { MerchantType } from "@/types/Merchant";
+import { IMerchantType } from "@/types/Merchant";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 interface MerchantProviderProps {
     children: React.ReactNode;
 }
 
-const merchantDefault: MerchantType = {
+const merchantDefault: IMerchantType = {
     id: "",
     userId: "",
     name: "",
@@ -25,14 +25,14 @@ const merchantDefault: MerchantType = {
 
 // Create the context
 const MerchantContext = createContext<{
-    merchant: MerchantType;
-    setMerchant: (data: MerchantType) => void;
+    merchant: IMerchantType;
+    setMerchant: (data: IMerchantType) => void;
 } | undefined>(undefined);
 
 // Custom hook to use the MerchantContext
 export const useMerchantContext = (): {
-    merchant: MerchantType;
-    setMerchant: (data: MerchantType) => void;
+    merchant: IMerchantType;
+    setMerchant: (data: IMerchantType) => void;
 } => {
     const context = useContext(MerchantContext);
     if (!context) {
@@ -42,7 +42,7 @@ export const useMerchantContext = (): {
 };
 
 export const MerchantContextProvider = ({ children }: MerchantProviderProps) => {
-    const [merchant, setMerchant] = useState<MerchantType>(() => {
+    const [merchant, setMerchant] = useState<IMerchantType>(() => {
         const storedMerchant = localStorage.getItem("merchant");
         return storedMerchant ? JSON.parse(storedMerchant) : merchantDefault;
     });

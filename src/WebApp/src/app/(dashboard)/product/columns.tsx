@@ -10,16 +10,16 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react";
-import { ProductType } from "@/types/Product";
+import { IProductType } from "@/types/Product";
 import { redirect } from "next/navigation";
 
-export const columnsProduct: ColumnDef<ProductType>[] = [
+export const columnsProduct: ColumnDef<IProductType>[] = [
     {
         accessorKey: "name",
         header: "Name",
         cell: ({ row }) => {
 
-            const product = row.original as ProductType;
+            const product = row.original as IProductType;
 
             return <div className="font-medium flex items-center gap-2">
                 {
@@ -61,7 +61,7 @@ export const columnsProduct: ColumnDef<ProductType>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
-            const payment = row.original as ProductType;
+            const payment = row.original as IProductType;
 
             return (
                 <DropdownMenu>

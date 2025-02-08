@@ -9,15 +9,16 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
-import { createProduct, getProductById, updateProduct } from "@/lib/actions/product.action";
-import { useMerchantContext } from "@/lib/MerchantContext";
+import { getProductById, updateProduct } from "@/lib/actions/product.action";
+import { useAppSelector } from "@/lib/store/store";
 import { formatPrice } from "@/lib/utils";
-import { CategoryType } from "@/types/Category";
-import { ProductType } from "@/types/Product";
+import { ICategoryType } from "@/types/Category";
+import { IProductType } from "@/types/Product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloudIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import * as z from "zod";
 
 // Schema validation using Zod
@@ -48,14 +49,14 @@ export default function EditProductById({
 
     const [imageReview, setImageReview] = useState<string | null>(null);
 
-    const [categories, setCategories] = useState<CategoryType[]>([]);
-    const [product, setProduct] = useState<ProductType>();
+    const [categories, setCategories] = useState<ICategoryType[]>([]);
+    const [product, setProduct] = useState<IProductType>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { toast } = useToast();
 
     // Get the merchant from the context
-    const { merchant } = useMerchantContext();
+    const merchantState = useAppSelector((state) => state.merchant.merchant);
 
     const {
         register,
@@ -104,7 +105,7 @@ export default function EditProductById({
         const loadCategories = async () => {
             try {
 
-                const data = await listCategoryByMerchantId(merchant.id);
+                const data = await listCategoryByMerchantId(merchantState.id);
                 setCategories(data);
 
             } catch (error) {
@@ -131,7 +132,7 @@ export default function EditProductById({
         try {
             // Create product
             var result = await updateProduct(id, {
-                merchantId: merchant.id,
+                merchantId: merchantState.id,
                 categoryId: data.categoryId,
                 name: data.name,
                 sku: data.sku,
