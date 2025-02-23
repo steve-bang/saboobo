@@ -6,10 +6,9 @@ import { userReducer } from "./userSlice";
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from "redux-persist";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { createSelector } from 'reselect';
 
 // Check if we are in the browser
-const isBrowser = typeof window !== "undefined";
+//const isBrowser = typeof window !== "undefined";
 
 // Combine all reducers
 const rootReducer = combineReducers({ 

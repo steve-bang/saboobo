@@ -4,7 +4,7 @@ import { MerchantForm, IMerchantType } from "@/types/Merchant";
 import { GetAccessTokenFromCookie as getAccessTokenFromCookie } from "../HttpUtils";
 import { IResponseApiType } from "@/types/Common";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
 export const getMerchantsByUserLogged = async () => {
     try {
@@ -18,6 +18,8 @@ export const getMerchantsByUserLogged = async () => {
                 'Authorization': `Bearer ${accessTokenFromCookie}`
             }
         })
+        
+
 
         if (!response.ok) {
             console.error(response)

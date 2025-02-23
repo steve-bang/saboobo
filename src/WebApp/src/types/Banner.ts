@@ -1,4 +1,4 @@
-import { IBaseType, IFileType } from "./Common";
+import { IBaseType } from "./Common";
 
 export interface IBannerType extends IBaseType {
     name: string;

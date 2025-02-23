@@ -29,7 +29,7 @@ export default function Page({
     params: Promise<{ id: string }>
 }) {
     const { id } = React.use(params);
-    const [category, setCategory] = useState<ICategoryType>();
+    const [, setCategory] = useState<ICategoryType>();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -53,20 +53,20 @@ export default function Page({
     useEffect(() => {
         async function fetchCategory() {
             try {
-
+    
                 setIsLoading(true);
-
+    
                 const category = await getCategoryById(merchantState.id, id);
                 setCategory(category);
-
+    
                 // Update form values after fetching the category
                 if (category) {
                     setValue("code", category.code ?? "");
                     setValue("name", category.name);
                     setValue("description", category.description ?? "");
-
+    
                     console.log("Fetched category:", category); // Log the fetched category data
-
+    
                     setIsLoading(false);
                 }
             } catch (error) {
@@ -76,8 +76,10 @@ export default function Page({
                 })
             }
         }
+
         fetchCategory();
-    }, [id, setValue, toast]); // Add id to dependencies to refetch when it's updated
+    }, [id, setValue, merchantState.id, toast]); // Add id to dependencies to refetch when it's updated
+
 
     const onClickSubmit = async (data: CategoryForm) => {
         if (Object.keys(errors).length > 0) {

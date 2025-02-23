@@ -23,40 +23,23 @@ import { Input } from "@/components/ui/input";
 import { IFileType } from "@/types/Common";
 import { uploadFile } from "@/lib/actions/media.action";
 import { useToast } from "@/hooks/use-toast";
+import { DialogType } from "@/constants/Common";
 
-export enum ItemType {
-  BANNER = "BANNER",
-}
-
-export enum DialogType {
-  CREATE = "CREATE",
-  EDIT = "EDIT",
-}
-
-const BannerManagementPage = () => {
-
+export default function BannerManagementPage() {
   const { toast } = useToast();
-
   const merchantState = useAppSelector(state => state.merchant.merchant); // Example of getting merchantId from user store
 
   const [banners, setBanners] = useState<IBannerType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [newBanner, setNewBanner] = useState<BannerCreateParams>({
-    name: "",
-    imageUrl: "",
-    link: "",
-  });
+  const [, setError] = useState<string | null>(null);
+  const [newBanner, setNewBanner] = useState<BannerCreateParams>({ name: "", imageUrl: "", link: "" });
   const [imageReview, setImagePreview] = useState<IFileType | null>(null);
   const [dialogType, setDialogType] = useState<DialogType>(DialogType.CREATE);
-
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [isImageModalOpen, setIsImageModalOpen] = useState<boolean>(false);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string>("");
+  const [, setIsImageModalOpen] = useState<boolean>(false);
+  const [, setSelectedImageUrl] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [bannerSelected, setBannerSelected] = useState<IBannerType | null>(null);
-
-
 
   // Fetch banners when the component mounts
   useEffect(() => {
@@ -67,7 +50,7 @@ const BannerManagementPage = () => {
         setLoading(true);
         const fetchedBanners = await listBannersByMerchantId(merchantState.id);
         setBanners(fetchedBanners);
-      } catch (err) {
+      } catch {
         setError("Failed to load banners");
         toast({
           title: "Failed to load banners",
@@ -79,7 +62,7 @@ const BannerManagementPage = () => {
     };
 
     fetchBanners();
-  }, [merchantState]);
+  }, [merchantState, toast]);
 
   const columnsCategory: ColumnDef<IBannerType>[] = [
     {
@@ -94,6 +77,7 @@ const BannerManagementPage = () => {
             className="object-cover cursor-move"
             width={100}
             height={100}
+            style={{objectFit: "contain"}}
             onClick={() => handleImageClick(banner.imageUrl)} // Open modal on image click
           />
         );
@@ -128,7 +112,6 @@ const BannerManagementPage = () => {
               >
                 <Edit /> Edit
               </DropdownMenuItem>
-
               <DropdownMenuItem
                 className="cursor-pointer"
                 disabled={banner.id === banners[0].id}
@@ -136,7 +119,6 @@ const BannerManagementPage = () => {
               >
                 <ChevronUp /> Move to Top
               </DropdownMenuItem>
-
               <DropdownMenuItem
                 className="cursor-pointer"
                 disabled={banner.id === banners[banners.length - 1].id}
@@ -186,45 +168,43 @@ const BannerManagementPage = () => {
 
       await createBanner(merchantState.id, newBanner);
       setNewBanner({ name: "", imageUrl: "", link: "" }); // Reset form
+      setImagePreview(null); // Reset image preview
       const fetchedBanners = await listBannersByMerchantId(merchantState.id);
       setBanners(fetchedBanners);
       setIsDialogOpen(false); // Close the dialog after creating the banner
-
-    } catch (err) {
+    } catch {
       setError("Failed to create banner");
       toast({
         title: "Failed to create banner",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   };
 
   const handleSaveOnDialog = async () => {
-    // update banner into list banners
-    const updatedBanners = banners.map(banner => {
-      if (banner.id === bannerSelected?.id) {
-        return bannerSelected;
-      }
-      return banner;
-    });
+    if (bannerSelected) {
+      const updatedBanners = banners.map(banner => {
+        if (banner.id === bannerSelected.id) {
+          return bannerSelected;
+        }
+        return banner;
+      });
 
-    setBanners(updatedBanners);
-
-    setIsDialogOpen(false);
-  }
+      setBanners(updatedBanners);
+      setIsDialogOpen(false);
+    }
+  };
 
   const handleDeleteBanner = async (id: string) => {
     try {
       await deleteBanner(merchantState.id, id);
       setBanners(banners.filter(banner => banner.id !== id)); // Update local state
-    } catch (err) {
+    } catch {
       setError("Failed to delete banner");
     }
   };
 
   const onClickSaveChanges = () => {
-
-    // Convert IBannerType to array of BannerUpdateParams
     const updatedBanners = banners.map(banner => ({
       id: banner.id,
       name: banner.name,
@@ -241,23 +221,20 @@ const BannerManagementPage = () => {
       await updateBanner(merchantState.id, updatedData);
       const fetchedBanners = await listBannersByMerchantId(merchantState.id);
       setBanners(fetchedBanners);
-    } catch (err) {
+    } catch {
       setError("Failed to update banner");
       toast({
         title: "Failed to update banner",
         variant: "destructive",
       });
-    }
-    finally {
+    } finally {
       setIsSaving(false);
     }
   };
 
   const uploadImageFile = async (file: File) => {
-
     try {
       const data = await uploadFile(file);
-
       return data.url;
     } catch (error) {
       console.error("Error uploading logo:", error);
@@ -266,9 +243,7 @@ const BannerManagementPage = () => {
         variant: "destructive",
       });
     }
-
   };
-
 
   const handleImageClick = (imageUrl: string) => {
     setSelectedImageUrl(imageUrl);
@@ -281,7 +256,7 @@ const BannerManagementPage = () => {
 
     const updatedBanners = banners.filter(banner => banner.id !== id);
     setBanners([banner, ...updatedBanners]);
-  }
+  };
 
   const onClickMoveToBottom = (id: string) => {
     const banner = banners.find(banner => banner.id === id);
@@ -289,59 +264,50 @@ const BannerManagementPage = () => {
 
     const updatedBanners = banners.filter(banner => banner.id !== id);
     setBanners([...updatedBanners, banner]);
-  }
+  };
 
-  // Handle file input change for logo and cover image
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-
       const imageUrlUpload = await uploadImageFile(file);
 
-      if (dialogType === DialogType.CREATE) {
-        setNewBanner({ ...newBanner, imageUrl: imageUrlUpload });
+      if (imageUrlUpload) {
+        if (dialogType === DialogType.CREATE) {
+          setNewBanner({ ...newBanner, imageUrl: imageUrlUpload });
+        } else {
+          setBannerSelected({ ...bannerSelected!, imageUrl: imageUrlUpload });
+        }
       }
-      else {
-        setBannerSelected({ ...bannerSelected, imageUrl: imageUrlUpload });
-      }
-
-      console.log("imageUrlUpload", imageUrlUpload);
 
       const objectUrl = URL.createObjectURL(file);
-      setImagePreview({
-        file: file,
-        url: objectUrl,
-      });
+      setImagePreview({ file, url: objectUrl });
     }
   };
 
   const onClickCreateBanner = () => {
     setDialogType(DialogType.CREATE);
     setIsDialogOpen(true);
-  }
+  };
 
   const onClickEditBanner = (banner: IBannerType) => {
     setDialogType(DialogType.EDIT);
     setBannerSelected(banner);
     setIsDialogOpen(true);
-  }
+  };
 
   const onClickButton = async () => {
-
     if (dialogType === DialogType.CREATE) {
       await handleCreateBanner();
-    }
-    else {
+    } else {
       await handleSaveOnDialog();
     }
-  }
-
+  };
 
   return (
     <div className="container mx-auto">
       <div className="flex justify-between items-center mb-2">
         <h1 className="title-page">Banner</h1>
-        <Button onClick={onClickCreateBanner}> <Plus /> Create Banner</Button>
+        <Button onClick={onClickCreateBanner}><Plus /> Create Banner</Button>
       </div>
 
       {loading ? (
@@ -350,31 +316,27 @@ const BannerManagementPage = () => {
         <DataTable columns={columnsCategory} data={banners} />
       )}
 
-      <Button className="mt-4" onClick={onClickSaveChanges} disabled={!banners || banners.length === 0 || isSaving}>
+      <Button className="mt-4" onClick={onClickSaveChanges} disabled={banners.length === 0 || isSaving}>
         {isSaving ? <Spinner /> : "Save Changes"}
       </Button>
 
       {/* Image Modal */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-        </DialogTrigger>
+        <DialogTrigger asChild />
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>
-              {
-                dialogType === DialogType.CREATE ? "Create Banner" : "Edit Banner"
-              }
-            </DialogTitle>
+            <DialogTitle>{dialogType === DialogType.CREATE ? "Create Banner" : "Edit Banner"}</DialogTitle>
             <DialogDescription>
-
               <div>
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
                   type="text"
-                  value={dialogType === DialogType.CREATE ? newBanner.name : bannerSelected?.name}
+                  value={dialogType === DialogType.CREATE ? newBanner.name : bannerSelected?.name ?? ""}
                   onChange={(e) =>
-                    dialogType === DialogType.CREATE ? setNewBanner({ ...newBanner, name: e.target.value }) : setBannerSelected({ ...bannerSelected, name: e.target.value })
+                    dialogType === DialogType.CREATE
+                      ? setNewBanner({ ...newBanner, name: e.target.value })
+                      : setBannerSelected({ ...bannerSelected!, name: e.target.value })
                   }
                 />
               </div>
@@ -384,56 +346,55 @@ const BannerManagementPage = () => {
                 <Input
                   id="link"
                   type="text"
-                  value={dialogType === DialogType.CREATE ? newBanner.link : bannerSelected?.link}
+                  value={dialogType === DialogType.CREATE ? newBanner.link : bannerSelected?.link ?? ""}
                   onChange={(e) =>
-                    dialogType === DialogType.CREATE ? setNewBanner({ ...newBanner, link: e.target.value }) : setBannerSelected({ ...bannerSelected, link: e.target.value })
+                    dialogType === DialogType.CREATE
+                      ? setNewBanner({ ...newBanner, link: e.target.value })
+                      : setBannerSelected({ ...bannerSelected!, link: e.target.value })
                   }
                 />
               </div>
+
               <div>
                 <Label htmlFor="imageUrl">Image</Label>
                 <Label htmlFor="imageUrl" className="flex items-center justify-center cursor-pointer h-48 w-96 border border-dashed border-gray-300 rounded-lg">
-                  {
-                    !imageReview ? (
-                      dialogType === DialogType.EDIT && bannerSelected?.imageUrl ? (
-                        <img
-                          src={bannerSelected.imageUrl}
-                          alt="Preview"
-                          className="object-cover max-w-full max-h-44 rounded-lg"
-                        />
-                      ) : (
-                        <span className="text-gray-400">Click to upload image</span>
-                      )
-                    ) : (
-                      <img
-                        src={imageReview.url}
+                  {!imageReview ? (
+                    dialogType === DialogType.EDIT && bannerSelected?.imageUrl ? (
+                      <Image
+                        src={bannerSelected.imageUrl}
                         alt="Preview"
                         className="object-cover max-w-full max-h-44 rounded-lg"
+                        width={425}
+                        height={176}
+                        style={{objectFit: "contain"}}
                       />
+                    ) : (
+                      <span className="text-gray-400">Click to upload image</span>
                     )
-                  }
-
-
+                  ) : (
+                    <Image
+                      src={imageReview.url}
+                      alt="Preview"
+                      className="object-cover max-w-full max-h-44 rounded-lg"
+                      width={425}
+                      height={176}
+                      style={{objectFit: "contain"}}
+                    />
+                  )}
                   <Input
                     id="imageUrl"
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) => handleFileChange(e)}
+                    onChange={handleFileChange}
                   />
                 </Label>
-
               </div>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-
-              onClick={onClickButton}
-            >
-              {
-                dialogType === DialogType.CREATE ? "Create" : "Save"
-              }
+            <Button onClick={onClickButton}>
+              {dialogType === DialogType.CREATE ? "Create" : "Save"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -441,5 +402,3 @@ const BannerManagementPage = () => {
     </div>
   );
 };
-
-export default BannerManagementPage;

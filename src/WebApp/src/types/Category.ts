@@ -16,7 +16,3 @@ export interface CreateCategoryParams {
     description: string;
     iconUrl: string | null;
 }
-
-export interface UpdateCategoryParams extends CreateCategoryParams {
-
-}

@@ -5,8 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GetCurrentUser } from "@/lib/actions/auth.action";
 import { useAppDispatch, useAppSelector } from "@/lib/store/store";
 import { setUser } from "@/lib/store/userSlice";
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 
 export default function Profile() {
@@ -28,7 +27,7 @@ export default function Profile() {
     };
 
     fetchUser();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

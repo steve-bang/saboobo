@@ -1,33 +1,36 @@
 'use server'
 
-import { ICategoryType, CreateCategoryParams, UpdateCategoryParams } from "@/types/Category";
+import { ICategoryType, CreateCategoryParams } from "@/types/Category";
 import { IResponseApiType } from "@/types/Common";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
-export const listCategoryByMerchantId = async (merchantId : string) => {
+export const listCategoryByMerchantId = async (merchantId: string) => {
+
+  console.log("Fetching categories...");
+  console.log("Merchant ID", merchantId);
 
   const response = await fetch(`${apiUrl}/api/v1/merchants/${merchantId}/categories`);
-  
-    if (!response.ok) throw new Error("Failed to fetch categories");
 
-    var responseData : IResponseApiType<ICategoryType[]> = await response.json();
+  if (!response.ok) throw new Error("Failed to fetch categories");
 
-    return responseData.data;
+  const responseData: IResponseApiType<ICategoryType[]> = await response.json();
+
+  return responseData.data;
 };
 
-export const getCategoryById = async (merchantId : string, id: string) => {
+export const getCategoryById = async (merchantId: string, id: string) => {
   const response = await fetch(`${apiUrl}/api/v1/merchants/${merchantId}/categories/${id}`);
 
-    if (!response.ok) throw new Error("Failed to fetch category");
+  if (!response.ok) throw new Error("Failed to fetch category");
 
-    var data : IResponseApiType<ICategoryType> = await response.json();
+  const data: IResponseApiType<ICategoryType> = await response.json();
 
-    return data.data;
+  return data.data;
 
 };
 
-export const createCategory = async (merchantId : string,  data : CreateCategoryParams) => {
+export const createCategory = async (merchantId: string, data: CreateCategoryParams) => {
   const response = await fetch(`${apiUrl}/api/v1/merchants/${merchantId}/categories`, {
     method: "POST",
     headers: {
@@ -38,12 +41,12 @@ export const createCategory = async (merchantId : string,  data : CreateCategory
 
   if (!response.ok) throw new Error("Failed to create category");
 
-  var responseData : IResponseApiType<string> = await response.json();
-  
+  const responseData: IResponseApiType<string> = await response.json();
+
   return responseData.data;
 };
 
-export const updateCategory = async (merchantId : string, id: string, data : UpdateCategoryParams) => {
+export const updateCategory = async (merchantId: string, id: string, data: CreateCategoryParams) => {
   const response = await fetch(`${apiUrl}/api/v1/merchants/${merchantId}/categories/${id}`, {
     method: "PUT",
     headers: {
@@ -52,16 +55,14 @@ export const updateCategory = async (merchantId : string, id: string, data : Upd
     body: JSON.stringify(data),
   });
 
-  console.log(response);
-
   if (!response.ok) throw new Error("Failed to update category");
 
-  var responseData : IResponseApiType<ICategoryType> = await response.json();
+  const responseData: IResponseApiType<ICategoryType> = await response.json();
 
-    return responseData.data;
+  return responseData.data;
 };
 
-export const deleteCategory = async (merchantId : string, id: string) => {
+export const deleteCategory = async (merchantId: string, id: string) => {
 
   const response = await fetch(`${apiUrl}/api/v1/merchants/${merchantId}/categories/${id}`, {
     method: "DELETE",
@@ -69,7 +70,7 @@ export const deleteCategory = async (merchantId : string, id: string) => {
 
   if (!response.ok) throw new Error("Failed to delete category");
 
-  var responseData : IResponseApiType<boolean> = await response.json();
+  const responseData: IResponseApiType<boolean> = await response.json();
 
-    return responseData.data;
+  return responseData.data;
 };

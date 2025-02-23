@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Sidebar from "@/components/SidebarMenu";
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME as string;
 
 export const metadata: Metadata = {
-    title: "Sign In | SaBooBo",
+    title: appName ? `Sign In | ${appName}` : "Sign In",
     description: "The SaBooBo dashboard",
 };
 

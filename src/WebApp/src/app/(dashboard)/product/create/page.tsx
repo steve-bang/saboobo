@@ -8,12 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
+import { uploadFile } from "@/lib/actions/media.action";
 import { createProduct } from "@/lib/actions/product.action";
 import { useAppSelector } from "@/lib/store/store";
 import { formatPrice } from "@/lib/utils";
 import { ICategoryType } from "@/types/Category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloudIcon } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -25,7 +27,7 @@ const productSchema = z.object({
     sku: z.string(),
     price: z.number().min(1, { message: "Price is required" }),
     description: z.string(),
-    //urlImage: z.string(),
+    urlImage: z.string(),
     // toppings: z.array(
     //     z.object({
     //         name: z.string().min(1, { message: "Name is required" }),
@@ -62,7 +64,7 @@ export default function CreateProduct() {
             }
         };
         loadCategories();
-    }, []);
+    }, [merchantState.id]);
 
     const {
         register,
@@ -77,7 +79,7 @@ export default function CreateProduct() {
             sku: "",
             price: 0,
             description: "",
-            //urlImage: "",
+            urlImage: "",
             categoryId: "",
             //toppings: [],
         },
@@ -91,19 +93,33 @@ export default function CreateProduct() {
         setValue("price", isNaN(parsedValue) ? 0 : parsedValue);
     };
 
-    const onSubmit = async (data: ProductForm) => {
-        console.log("Data", data);
+    const uploadImageFile = async (file: File) => {
 
         try {
+            const data = await uploadFile(file);
+
+            return data.url;
+        } catch (error) {
+            console.error("Error uploading image:", error);
+            toast({
+                title: "Failed to upload image",
+                variant: "destructive",
+            });
+        }
+
+    };
+
+    const onSubmit = async (data: ProductForm) => {
+        try {
             // Create product
-            var result = await createProduct({
+            const result = await createProduct({
                 merchantId: merchantState.id,
                 categoryId: data.categoryId,
                 name: data.name,
                 sku: data.sku,
                 price: data.price,
                 description: data.description,
-                urlImage: null,
+                urlImage: data.urlImage,
                 toppings: [],
             });
 
@@ -111,6 +127,15 @@ export default function CreateProduct() {
                 toast({
                     title: "Product created successfully!",
                 });
+
+                // Reset the form
+                setValue("name", "");
+                setValue("sku", "");
+                setValue("price", 0);
+                setValue("description", "");
+                setValue("urlImage", "");
+                setValue("categoryId", "");
+                setImageReview(null);
 
             }
 
@@ -129,8 +154,15 @@ export default function CreateProduct() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            
+            // Upload the image file
+            uploadImageFile(file).then((url) => {
+                if(url) setValue("urlImage", url);
+            });
+
             const objectUrl = URL.createObjectURL(file);
             setImageReview(objectUrl);
+
         }
     };
 
@@ -225,7 +257,7 @@ export default function CreateProduct() {
                             onChange={(e) => handleFileChange(e)}
                         />
                         {imageReview ? (
-                            <img src={imageReview} alt="Image" className="w-28 object-cover rounded-lg border border-dashed" />
+                            <Image src={imageReview} alt="Image" width={120} height={112} className="object-cover rounded-lg border border-dashed" style={{objectFit: "contain"}} />
                         ) : (
                             <div className="px-10 py-6 border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                                 <UploadCloudIcon size={24} />

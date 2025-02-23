@@ -19,11 +19,13 @@ import { setMerchant } from "@/lib/store/merchantSlice";
 import { Spinner } from "@/components/ui/spinner";
 import { IFileType } from "@/types/Common";
 import { uploadFile } from "@/lib/actions/media.action";
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 
 // Schema validation using Zod
 const merchantSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  phoneNumber: z.string().min(10, { message: "Phone number should be at least 10 digits" }),
+  phoneNumber: z.string().regex(/^\+?[0-9]+$/, { message: "Invalid phone number" }),
   emailAddress: z
     .string()
     .refine((val) => val === "" || /\S+@\S+\.\S+/.test(val), { message: "Invalid email address" }),
@@ -57,6 +59,7 @@ export default function Merchant() {
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<MerchantForm>({
     resolver: zodResolver(merchantSchema),
     defaultValues: {
@@ -98,8 +101,11 @@ export default function Merchant() {
         setIsLoading(false);
       }
     }
+
+
     fetchMerchants();
-  }, [setValue, dispatch]);
+  }, [dispatch, setValue, toast]);
+
 
   // Handle file input change for logo and cover image
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof MerchantForm) => {
@@ -257,12 +263,13 @@ export default function Merchant() {
                 {/* Phone Number Field */}
                 <div>
                   <Label htmlFor="phoneNumber">Phone Number</Label>
-                  <Input
-                    id="phoneNumber"
-                    type="text"
-                    placeholder="08123456789"
-                    {...register("phoneNumber")}
-                    className={errors.phoneNumber ? "border-red-500" : ""}
+                  <PhoneInput
+                    international
+                    defaultCountry="VN"  // You can change the default country as needed
+                    value={getValues("phoneNumber")}
+                    onChange={(value) => setValue("phoneNumber", value || "")}
+                    className={`flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ${errors.phoneNumber ? "border-red-500" : ""}`}
+                    placeholder="Enter your phone number"
                   />
                   {errors.phoneNumber && <span className="text-sm text-red-500">{errors.phoneNumber.message}</span>}
                 </div>
@@ -347,6 +354,7 @@ export default function Merchant() {
                       alt="Cover Image"
                       fill
                       className="h-full w-full rounded-md object-cover"
+                      style={{ objectFit: "contain" }}
                     />
                   </AspectRatio>
                   <Input

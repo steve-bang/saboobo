@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { DataTable } from "./data-table";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ICategoryType } from "@/types/Category";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
 import { IProductType } from "@/types/Product";
@@ -25,9 +25,14 @@ import { redirect } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAppSelector } from "@/lib/store/store";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 
 export default function Product() {
+
+  const [, setSelectedImage] = useState<string>("");
+  const [, setIsImageModalOpen] = useState<boolean>(false);
 
   const [categories, setCategories] = useState<ICategoryType[]>([]);
   const [products, setProducts] = useState<IProductType[]>([]);
@@ -52,7 +57,15 @@ export default function Product() {
         return <div className="font-medium flex items-center gap-2">
           {
             product.urlImage &&
-            <img src={product.urlImage} alt={product.name} className="w-12 h-12 rounded-md" />
+            <Image 
+              src={product.urlImage} 
+              alt={product.name} 
+              className="rounded-md cursor-pointer" 
+              width={60} 
+              height={60} 
+              style={{ objectFit: "contain" }} 
+              onClick={() => handleImageClick(product.urlImage)}
+              />
           }
           {product.name}
         </div>
@@ -168,6 +181,25 @@ export default function Product() {
     }
   }
 
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setIsImageModalOpen(true); // Open the modal with the clicked image
+  };
+
+  const loadProducts = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const data = await listProduct({
+        merchantId: merchantState.id,
+        categoryId: categorySelected ?? undefined,
+      });
+      setProducts(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [merchantState.id, categorySelected]);
+
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -182,21 +214,8 @@ export default function Product() {
     loadCategories();
     loadProducts();
 
-  }, []);
+  }, [merchantState.id, categorySelected, loadProducts]);
 
-  const loadProducts = async () => {
-    try {
-
-      setIsLoading(true);
-      const data = await listProduct();
-      setProducts(data);
-
-      setIsLoading(false);
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   return (
     <div>
@@ -212,15 +231,27 @@ export default function Product() {
         <div className="filter">
           <Label>Category</Label>
           <Select
-            onValueChange={(value) => setCategorySelected(value)}
+            onValueChange={(value) => {
+
+              if (value === "all")
+                setCategorySelected(null);
+              else
+                setCategorySelected(value);
+
+              loadProducts();
+
+            }}
           >
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select Category" />
+              <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem key='all' value={"all"}>
+                All Categories
+              </SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
-                  {category.name}
+                  {category.name} <Badge variant={'secondary'}>{category.totalProduct ?? 0}</Badge>
                 </SelectItem>
               ))}
             </SelectContent>

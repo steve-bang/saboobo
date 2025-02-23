@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { GetCurrentUser, signIn } from "@/lib/actions/auth.action";
+import { checkPhoneNumberExist, GetCurrentUser, signIn } from "@/lib/actions/auth.action";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
 import { getMerchantsByUserLogged } from "@/lib/actions/merchant.action";
@@ -11,7 +11,6 @@ import { setMerchant } from "@/lib/store/merchantSlice";
 import { setUser } from "@/lib/store/userSlice";
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
-import { set } from "zod";
 
 interface FormData {
   phoneNumber: string;
@@ -42,9 +41,6 @@ export default function SignIn() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Convert phone number to international format +84xxxxxxxxx => 0xxxxxxxxx
-    const phoneNumber = formData.phoneNumber.replace("+84", "0");
-
     // Form validation
     if (!formData.phoneNumber || !formData.password) {
       setError("Phone number and password are required.");
@@ -55,7 +51,7 @@ export default function SignIn() {
 
     try {
       await signIn({
-        phoneNumber: phoneNumber,
+        phoneNumber: formData.phoneNumber,
         password: formData.password
       });
 
@@ -63,7 +59,7 @@ export default function SignIn() {
       await handleDispatchDataAfterSignInSuccess();
 
       router.push("/merchant");
-    } catch (error) {
+    } catch {
       setError("Your phone number or password is incorrect.");
     }
     setLoading(false);
@@ -88,9 +84,35 @@ export default function SignIn() {
       setError("Phone number is invalid.");
       return;
     }
+    const isPhoneNumberExists = await checkPhoneNumberExistSystem();
 
-    setAuthStep(AuthSteps.InputPassword);
+    if (isPhoneNumberExists){
+      setAuthStep(AuthSteps.InputPassword);
+      setError(null);
+    }
 
+  }
+
+  const checkPhoneNumberExistSystem = async () => {
+
+    try {
+      setLoading(true);
+      // Check phone number exist in system
+      const phoneNumber = await checkPhoneNumberExist(formData.phoneNumber);
+
+      if (!phoneNumber) {
+        setError("Phone number is not exist.");
+        return false;
+      }
+    }
+    catch {
+      setError("Phone number is not exist.");
+    }
+    finally {
+      setLoading(false);
+    }
+
+    return true;
   }
 
   return (
@@ -112,6 +134,7 @@ export default function SignIn() {
               onChange={(value) => setFormData({ ...formData, phoneNumber: value || "" })}
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your phone number"
+              disabled={authStep === AuthSteps.InputPassword}
             />
           </div>
 
@@ -139,6 +162,7 @@ export default function SignIn() {
                   type="button"
                   onClick={onClickNext}
                   className="w-full mt-4"
+                  disabled={loading || formData.phoneNumber.length == 0}
                 >
                   {loading ? <Spinner /> : "Continue"}
                 </Button>

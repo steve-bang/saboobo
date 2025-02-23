@@ -9,6 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { listCategoryByMerchantId } from "@/lib/actions/category.action";
+import { uploadFile } from "@/lib/actions/media.action";
 import { getProductById, updateProduct } from "@/lib/actions/product.action";
 import { useAppSelector } from "@/lib/store/store";
 import { formatPrice } from "@/lib/utils";
@@ -16,9 +17,9 @@ import { ICategoryType } from "@/types/Category";
 import { IProductType } from "@/types/Product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloudIcon } from "lucide-react";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
 import * as z from "zod";
 
 // Schema validation using Zod
@@ -28,7 +29,7 @@ const productSchema = z.object({
     sku: z.string(),
     price: z.number().min(1, { message: "Price is required" }),
     description: z.string(),
-    //urlImage: z.string(),
+    urlImage: z.string(),
     // toppings: z.array(
     //     z.object({
     //         name: z.string().min(1, { message: "Name is required" }),
@@ -71,35 +72,11 @@ export default function EditProductById({
             sku: "",
             price: 0,
             description: "",
-            //urlImage: "",
+            urlImage: "",
             categoryId: "",
             //toppings: [],
         },
     });
-
-    const loadProductById = async () => {
-        try {
-            setIsLoading(true);
-            const data = await getProductById(id);
-            setProduct(data);
-            setValue("name", data.name);
-            setValue("sku", data.sku ?? "");
-            setValue("price", data.price);
-            setValue("description", data.description);
-            setValue("categoryId", data.categoryId);
-            //setValue("urlImage", data.urlImage);
-            //setValue("toppings", data.toppings);
-
-
-        } catch (error) {
-            console.error(error);
-            toast({
-                title: "Error fetching product",
-                variant: 'destructive'
-            })
-        }
-        setIsLoading(false);
-    }
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -112,10 +89,36 @@ export default function EditProductById({
                 console.error(error);
             }
         };
+
+        const loadProductById = async () => {
+            try {
+                setIsLoading(true);
+                const data = await getProductById(id);
+                setProduct(data);
+                setValue("name", data.name);
+                setValue("sku", data.sku ?? "");
+                setValue("price", data.price);
+                setValue("description", data.description);
+                setValue("categoryId", data.categoryId);
+                setValue("urlImage", data.urlImage);
+                //setValue("toppings", data.toppings);
+
+
+            } catch (error) {
+                console.error(error);
+                toast({
+                    title: "Error fetching product",
+                    variant: 'destructive'
+                })
+            }
+            setIsLoading(false);
+        }
+
         loadCategories();
 
         loadProductById();
-    }, []);
+
+    }, [id, setValue,  toast, merchantState.id]);
 
 
     const price = watch("price");
@@ -131,14 +134,14 @@ export default function EditProductById({
 
         try {
             // Create product
-            var result = await updateProduct(id, {
+            const result = await updateProduct(id, {
                 merchantId: merchantState.id,
                 categoryId: data.categoryId,
                 name: data.name,
                 sku: data.sku,
                 price: data.price,
                 description: data.description,
-                urlImage: null, // default to null
+                urlImage: data.urlImage, // default to null
                 toppings: [], // default to empty array
             });
 
@@ -164,9 +167,32 @@ export default function EditProductById({
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+
+            uploadImageFile(file)
+                .then((url) => {
+                    if (url) setValue("urlImage", url);
+                });
+
             const objectUrl = URL.createObjectURL(file);
             setImageReview(objectUrl);
+
         }
+    };
+
+    const uploadImageFile = async (file: File) => {
+
+        try {
+            const data = await uploadFile(file);
+
+            return data.url;
+        } catch (error) {
+            console.error("Error uploading image:", error);
+            toast({
+                title: "Failed to upload image",
+                variant: "destructive",
+            });
+        }
+
     };
 
     return (
@@ -265,13 +291,22 @@ export default function EditProductById({
                                     className="hidden"
                                     onChange={(e) => handleFileChange(e)}
                                 />
+
+                                {/* Check image review has value or product.urlImage has value will show image review */}
+
+
+
                                 {imageReview ? (
-                                    <img src={imageReview} alt="Image" className="w-28 object-cover rounded-lg border border-dashed" />
-                                ) : (
-                                    <div className="px-8 py-4 border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                                        <UploadCloudIcon size={24} />
-                                    </div>
-                                )}
+                                    <Image src={imageReview} alt="Image" className="object-cover rounded-lg border border-dashed" width={120} height={112} style={{objectFit: "contain"}} />
+                                ) :
+                                    product?.urlImage ? (
+                                        <Image src={product.urlImage} alt="Image" className="object-cover rounded-lg border border-dashed" width={120} height={112} style={{objectFit: "contain"}} />
+                                    ) :
+                                        (
+                                            <div className="px-8 py-4 border border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                                                <UploadCloudIcon size={24} />
+                                            </div>
+                                        )}
                             </Label>
 
 

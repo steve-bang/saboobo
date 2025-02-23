@@ -1,14 +1,18 @@
 import { IResponseApiType } from "@/types/Common";
 import { IMediaType } from "@/types/Media";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL as String;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
 export interface DeleteMediaParams {
     fileUrl: string;
 }
 
 export const uploadFile = async (file: File) => {
+
+    console.log("Uploading file...")
+    
     try {
+
         const formData = new FormData();
         formData.append("file", file);
 
@@ -17,14 +21,16 @@ export const uploadFile = async (file: File) => {
             body: formData,
         });
 
+        console.log("Response", response);
+
         //if (!response.ok) throw new Error("Failed to upload file");
 
-        var responseData: IResponseApiType<IMediaType> = await response.json();
+        const responseData: IResponseApiType<IMediaType> = await response.json();
 
         return responseData.data;
     }
     catch (error) {
-        console.error(error);
+        console.error("Error when upload file",error);
         throw new Error("Failed to upload file");
     }
 }
@@ -39,7 +45,7 @@ export const deleteFile = async (
 
     if (!response.ok) throw new Error("Failed to delete file");
 
-    var responseData: IResponseApiType<string> = await response.json();
+    const responseData: IResponseApiType<string> = await response.json();
 
     return responseData.data;
 }

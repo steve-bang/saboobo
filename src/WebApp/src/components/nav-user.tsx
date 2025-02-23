@@ -33,8 +33,8 @@ import Link from "next/link"
 import { SignOut } from "@/lib/actions/auth.action"
 import { persistor, useAppDispatch } from "@/lib/store/store"
 import { clearUser } from "@/lib/store/userSlice"
-import { redirect, useRouter } from "next/navigation"
-import { clearMerchant, setMerchant } from "@/lib/store/merchantSlice"
+import { useRouter } from "next/navigation"
+import { clearMerchant } from "@/lib/store/merchantSlice"
 
 export function NavUser({
   user,

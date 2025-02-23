@@ -24,9 +24,13 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { redirect } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAppSelector } from "@/lib/store/store";
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function Categories() {
+
+  const { toast } = useToast();
+
   const [categories, setCategories] = useState<ICategoryType[]>([]);
   const [newCategory, setNewCategory] = useState({
     name: "",
@@ -34,7 +38,7 @@ export default function Categories() {
     description: "",
     iconUrl: "",
   });
-  const [selectedCategory, setSelectedCategory] = useState<ICategoryType | null>(null);
+  const [selectedCategory, ] = useState<ICategoryType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,12 +54,16 @@ export default function Categories() {
           const data = await listCategoryByMerchantId(merchantState.id);
 
           setCategories(data);
-
-          setIsLoading(false);
         } catch (error) {
           console.error(error);
-
-          //toast.error("Error fetching categories.");
+          
+          toast({
+            title: "Failed to fetch categories!",
+            variant: "destructive"
+          })
+        }
+        finally {
+          setIsLoading(false);
         }
       }
     };
@@ -93,6 +101,7 @@ export default function Categories() {
       setCategories(data);
     } catch (error) {
       //toast.error("Error updating category.");
+      console.error(error);
     }
   };
 

@@ -3,7 +3,6 @@
 import * as React from "react"
 import {
   AudioWaveform,
-  BadgeIndianRupee,
   BookOpen,
   Command,
   GalleryVerticalEnd,
