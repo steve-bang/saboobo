@@ -1,10 +1,10 @@
 
-using SaBooBo.Domain.Shared;
 
 namespace SaBooBo.UserService.Domain.AggregatesModel
 {
     public class User : AggregateRoot
     {
+        public Guid? MerchantId { get; private set; }
         public string Name { get; private set; } = null!;
         public string? AvatarUrl { get; private set; }
         public string PhoneNumber { get; private set; } = null!;
@@ -15,10 +15,11 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
         public DateTime? LastLoginAt { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
-        public User(string name, string phoneNumber, string passwordHash, string passwordSalt, string? avatarUrl)
+        public User(Guid? merchantId, string name, string phoneNumber, string passwordHash, string passwordSalt, string? avatarUrl)
         {
             Id = CreateNewId();
 
+            MerchantId = merchantId;
             Name = name;
             PhoneNumber = phoneNumber;
             PasswordHash = passwordHash;
@@ -28,14 +29,14 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
             CreatedAt = DateTime.UtcNow;
         }
 
-        public static User Create(string name, string phoneNumber, string passwordHash, string passwordSalt, string avatarUrl)
+        public static User Create(Guid? merchantId, string name, string phoneNumber, string passwordHash, string passwordSalt, string avatarUrl)
         {
-            return new User(name, phoneNumber, passwordHash, passwordSalt, avatarUrl);
+            return new User(merchantId, name, phoneNumber, passwordHash, passwordSalt, avatarUrl);
         }
 
-        public static User Create(string phoneNumber, string passwordHash, string passwordSalt)
+        public static User Create(Guid? merchantId, string phoneNumber, string passwordHash, string passwordSalt)
         {
-            return new User(string.Empty, phoneNumber, passwordHash, passwordSalt, null);
+            return new User(merchantId, string.Empty, phoneNumber, passwordHash, passwordSalt, null);
         }
 
         public void Update(string name, string phoneNumber, string? emailAddress, string? avatarUrl)

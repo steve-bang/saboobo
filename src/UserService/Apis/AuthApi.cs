@@ -24,6 +24,7 @@ public static class AuthApi
     )
     {
         var command = new RegisterUserCommand(
+            registerRequest.MerchantId,
             registerRequest.PhoneNumber,
             registerRequest.Password,
             registerRequest.ConfirmPassword
@@ -53,6 +54,7 @@ public static class AuthApi
 public record LoginRequest(string PhoneNumber, string Password);
 
 public record RegisterRequest(
+    Guid? MerchantId,
     string PhoneNumber,
     string Password,
     string ConfirmPassword

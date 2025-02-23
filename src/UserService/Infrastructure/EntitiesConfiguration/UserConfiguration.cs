@@ -21,6 +21,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(e => e.Id)
             .ValueGeneratedOnAdd();
 
+        builder.Property(e => e.MerchantId)
+            .IsRequired(false);
+
         builder.Property(e => e.Name)
             .HasMaxLength(100)
             .IsRequired();

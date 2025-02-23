@@ -2,10 +2,12 @@
 using SaBooBo.Domain.Shared.Behaviour;
 using SaBooBo.MigrationService;
 using SaBooBo.UserService.Application.Auth;
+using SaBooBo.UserService.Application.Clients;
 using SaBooBo.UserService.Application.Identity;
 using SaBooBo.UserService.Domain.Repositories;
 using SaBooBo.UserService.Infrastructure;
 using SaBooBo.UserService.Infrastructure.Auth;
+using SaBooBo.UserService.Infrastructure.Clients;
 using SaBooBo.UserService.Infrastructure.Repositories;
 
 namespace SaBooBo.UserService.Extensions;
@@ -84,6 +86,8 @@ public static class DependencyInjection
         builder.Services.AddScoped<IJwtHandler, JwtHandler>();
 
         builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+        builder.Services.AddScoped<IMerchantClient, MerchantClient>();
 
         builder.AddDefaultAuthentication();
      }

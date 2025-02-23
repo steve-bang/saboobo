@@ -1,6 +1,8 @@
 
 using System.Security.Cryptography;
 using PasswordTheBest;
+using SaBooBo.Domain.Shared.ExceptionHandler;
+using SaBooBo.UserService.Application.Clients;
 using SaBooBo.UserService.Domain.AggregatesModel;
 using SaBooBo.UserService.Domain.Exceptions;
 using SaBooBo.UserService.Domain.Repositories;
@@ -8,12 +10,27 @@ using SaBooBo.UserService.Domain.Repositories;
 namespace SaBooBo.UserService.Application.Features.Commands;
 
 public class RegisterUserCommandHandler(
-    IUserRepository _userRepository
+    IUserRepository _userRepository,
+    IMerchantClient _merchantClient
 ) : IRequestHandler<RegisterUserCommand, Guid>
 {
 
     public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
+        if (request.MerchantId.HasValue){
+            
+            var merchant = await _merchantClient.GetMerchantByIdAsync(request.MerchantId.Value);
+
+            if (merchant is null)
+            {
+                throw new NotFoundException(
+                    "Merchant_Not_Found",
+                    $"Merchant with id {request.MerchantId} not found",
+                    "The merchant you are trying to register with does not exist, please check the merchant id and try again."
+                );
+            }
+        }
+
         // Pre check if user already exists
         var userExists = await _userRepository.GetByPhoneAsync(request.PhoneNumber);
         if (userExists is not null)
@@ -27,6 +44,7 @@ public class RegisterUserCommandHandler(
         );
 
         var user = User.Create(
+            merchantId: request.MerchantId,
             phoneNumber: request.PhoneNumber,
             passwordHash: passwordHash,
             passwordSalt: passwordSalt

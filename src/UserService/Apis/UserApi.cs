@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Mvc;
 using SaBooBo.Domain.Shared.ApiResponse;
 using SaBooBo.UserService.Application.Features.Commands;
 using SaBooBo.UserService.Application.Models;
@@ -17,6 +18,8 @@ public static class UserApi
         // Get user by id or get current user
         apiAuth.MapGet("{id}", GetById);
 
+        apiAuth.MapPost("check-phone-number", CheckPhoneNumber);
+
         return apiAuth;
     }
 
@@ -26,7 +29,7 @@ public static class UserApi
     )
     {
         // If id is "me", get the current user
-        if(id == "me")
+        if (id == "me")
         {
             id = service.IdentityService.GetCurrentUser().ToString();
         }
@@ -40,4 +43,15 @@ public static class UserApi
         return ApiResponseSuccess<UserResponse>.BuildSuccess(result);
     }
 
+    public static async Task<ApiResponseSuccess<bool>> CheckPhoneNumber(
+        [FromBody] CheckPhoneNumberUserQuery command,
+        [AsParameters] UserServices service
+    )
+    {
+        var result = await service.Mediator.Send(command);
+
+        return ApiResponseSuccess<bool>.BuildSuccess(result);
+    }
+
 }
+
