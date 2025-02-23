@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SaBooBo.Domain.Shared.ApiResponse;
 using SaBooBo.Product.Application.Features.Commands;
 using SaBooBo.Product.Application.Features.Queries;
+using SaBooBo.Product.Domain.Filters;
 
 namespace SaBooBo.Product.Api;
 
@@ -91,10 +92,11 @@ public static class ProductApi
     }
 
     public static async Task<ApiResponseSuccess<List<Domain.AggregatesModel.Product>>> GetAllProducts(
-    [AsParameters] ProviderServices productServices
+        [AsParameters] ProductFilter filter,
+        [AsParameters] ProviderServices productServices
     )
     {
-        ListProductQuery listProductQuery = new();
+        ListProductQuery listProductQuery = new(filter);
 
         var result = await productServices.Mediator.Send(listProductQuery);
 

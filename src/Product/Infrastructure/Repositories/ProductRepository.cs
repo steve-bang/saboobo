@@ -1,5 +1,6 @@
 
 using SaBooBo.Domain.Shared;
+using SaBooBo.Product.Domain.Filters;
 using SaBooBo.Product.Domain.Repository;
 
 namespace SaBooBo.Product.Infrastructure.Repository;
@@ -60,4 +61,33 @@ public class ProductRepository(ProductAppContext _dbContext) : IProductRepositor
                 .Update(product)
                 .Entity;
     }
+
+    public async Task<List<Domain.AggregatesModel.Product>> ListAllAsync(ProductFilter filter)
+    {
+        var query = _dbContext.Products.Where(p => p.MerchantId == filter.MerchantId);
+
+        if (filter.PriceFrom.HasValue)
+        {
+            query = query.Where(p => p.Price >= filter.PriceFrom);
+        }
+
+        if (filter.PriceTo.HasValue)
+        {
+            query = query.Where(p => p.Price <= filter.PriceTo);
+        }
+
+
+        if (filter.CategoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == filter.CategoryId);
+        }
+
+        if (!string.IsNullOrWhiteSpace(filter.Keyword))
+        {
+            query = query.Where(p => p.Name.Contains(filter.Keyword) || (!string.IsNullOrEmpty(p.Description) && p.Description.Contains(filter.Keyword)));
+        }
+
+        return await query.ToListAsync();
+    }
+
 }

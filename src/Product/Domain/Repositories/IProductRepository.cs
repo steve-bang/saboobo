@@ -1,4 +1,6 @@
 
+using SaBooBo.Product.Domain.Filters;
+
 namespace SaBooBo.Product.Domain.Repository;
 
 public interface IProductRepository : IRepository
@@ -11,9 +13,11 @@ public interface IProductRepository : IRepository
 
     Task<bool> DeleteByIdAsync(Guid id);
 
-    bool Delete(Domain.AggregatesModel.Product product);
+    bool Delete(AggregatesModel.Product product);
 
     Task<List<AggregatesModel.Product>> ListAllAsync(Guid merchantId);
 
     Task<List<AggregatesModel.Product>> ListAllAsync();
+
+    Task<List<AggregatesModel.Product>> ListAllAsync(ProductFilter filter);
 }

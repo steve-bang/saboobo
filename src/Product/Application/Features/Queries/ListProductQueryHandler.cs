@@ -8,7 +8,7 @@ public class ListProductQueryHandler(
 {
     public async Task<List<Domain.AggregatesModel.Product>> Handle(ListProductQuery request, CancellationToken cancellationToken)
     {
-        var products = await ProductRepository.ListAllAsync();
+        var products = await ProductRepository.ListAllAsync(request.Filter);
 
         return products;
     }
