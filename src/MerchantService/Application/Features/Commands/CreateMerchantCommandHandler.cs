@@ -1,5 +1,4 @@
 
-using SaBooBo.MerchantService.Domain.Repositories;
 
 namespace MerchantService.Application.Features.Commands;
 
@@ -12,6 +11,7 @@ public class CreateMerchantCommandHandler(
         var merchant = Merchant.Create(
             request.UserId,
             request.Name,
+            request.Code,
             request.Description,
             request.EmailAddress,
             request.PhoneNumber,

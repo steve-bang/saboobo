@@ -3,6 +3,7 @@ using MerchantService.Application.Features.Commands;
 using MerchantService.Application.Features.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SaBooBo.Domain.Shared.ApiResponse;
+using SaBooBo.MerchantService.Apis.Requests;
 
 namespace SaBooBo.MerchantService.Apis;
 
@@ -10,21 +11,25 @@ public static class MerchantApi
 {
     public static RouteGroupBuilder MapMerchantApi(this IEndpointRouteBuilder builder)
     {
-        var apiAuth = builder.MapGroup("api/v1/merchants");
+        var apiMerchant = builder.MapGroup("api/v1/merchants");
 
         // PUT /api/v1/merchants/{id}
         // Update merchant by id
-        apiAuth.MapPut("{id}", UpdateMerchant);
+        apiMerchant.MapPut("{id}", UpdateMerchant);
 
         // POST /api/v1/merchants
         // Create merchant
-        apiAuth.MapPost("", CreateMerchant);
+        apiMerchant.MapPost("", CreateMerchant);
 
         // GET /api/v1/merchants/me
         // Get merchant by user id
-        apiAuth.MapGet("", GetMerchantByUserId);
+        apiMerchant.MapGet("", GetMerchantByUserId);
 
-        return apiAuth;
+        // GET /api/v1/merchants/{id}
+        // Get merchant by id
+        apiMerchant.MapGet("{id}", GetMerchantById);
+
+        return apiMerchant;
     }
 
     public static async Task<ApiResponseSuccess<Merchant>> UpdateMerchant(
@@ -61,6 +66,7 @@ public static class MerchantApi
         var command = new CreateMerchantCommand(
             userId,
             createMerchantRequest.Name,
+            createMerchantRequest.Code,
             createMerchantRequest.Description,
             createMerchantRequest.EmailAddress,
             createMerchantRequest.PhoneNumber,
@@ -89,16 +95,17 @@ public static class MerchantApi
         return ApiResponseSuccess<Merchant>.BuildSuccess(result);
 
     }
+
+    public static async Task<ApiResponseSuccess<Merchant>> GetMerchantById(
+        Guid id,
+        [AsParameters] MerchantServices service
+    )
+    {
+        var query = new GetMerchantByIdQuery(id);
+
+        var result = await service.Mediator.Send(query);
+
+        return ApiResponseSuccess<Merchant>.BuildSuccess(result);
+    }
 }
 
-public record MerchantCommandRequest(
-    string Name,
-    string Description,
-    string EmailAddress,
-    string PhoneNumber,
-    string Address,
-    string? LogoUrl,
-    string? CoverUrl,
-    string? Website,
-    string? OaUrl
-);

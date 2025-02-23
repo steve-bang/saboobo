@@ -1,8 +1,7 @@
 
-namespace MerchantService.Application.Features.Commands;
+namespace SaBooBo.MerchantService.Apis.Requests;
 
-public record CreateMerchantCommand(
-    Guid UserId,
+public record MerchantCommandRequest(
     string Name,
     string Code,
     string Description,
@@ -12,5 +11,5 @@ public record CreateMerchantCommand(
     string? LogoUrl,
     string? CoverUrl,
     string? Website,
-    string? OAUrl
-) : IRequest<Merchant>;
+    string? OaUrl
+);

@@ -17,6 +17,8 @@ public class MerchantAppContext(
 
     public DbSet<Banner> Banners { get; set; } = null!;
 
+    public DbSet<MerchantProviderSetting> MerchantProviderSettings { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Set the default schema

@@ -54,4 +54,5 @@ public class BannerRepository : IBannerRepository
 
         return result.Entity;
     }
+    
 }

@@ -2,6 +2,7 @@
 using MerchantService.Application.Features.Commands;
 using MerchantService.Application.Features.Queries;
 using SaBooBo.Domain.Shared.ApiResponse;
+using SaBooBo.MerchantService.Apis.Requests;
 
 namespace SaBooBo.MerchantService.Apis;
 
@@ -77,16 +78,3 @@ public static class BannerApi
         return ApiResponseSuccess<bool>.BuildSuccess(result);
     }
 }
-
-public record BannerCommandRequest(
-    string Name,
-    string ImageUrl,
-    string Link
-);
-
-public record BannersUpdateRequest(
-    Guid Id,
-    string Name,
-    string ImageUrl,
-    string Link
-);

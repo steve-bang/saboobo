@@ -1,6 +1,4 @@
 
-using SaBooBo.MerchantService.Domain.Repositories;
-
 namespace MerchantService.Application.Features.Commands;
 
 public class CreateBannerCommandHandler(

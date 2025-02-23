@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SaBooBo.MerchantService.Infrastructure;
@@ -11,9 +12,11 @@ using SaBooBo.MerchantService.Infrastructure;
 namespace MerchantService.Migrations
 {
     [DbContext(typeof(MerchantAppContext))]
-    partial class MerchantAppContextModelSnapshot : ModelSnapshot
+    [Migration("20250223025855_AddMerchantProviderSetting")]
+    partial class AddMerchantProviderSetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

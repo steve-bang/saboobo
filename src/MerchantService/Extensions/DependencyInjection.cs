@@ -1,7 +1,6 @@
 
 using SaBooBo.Domain.Shared.Behaviour;
 using SaBooBo.Domain.Shared.Extensions;
-using SaBooBo.MerchantService.Domain.Repositories;
 using SaBooBo.MerchantService.Infrastructure;
 using SaBooBo.MerchantService.Infrastructure.Repositories;
 using SaBooBo.MigrationService;
@@ -40,7 +39,7 @@ public static class DependencyInjection
 
         builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
         builder.Services.AddScoped<IBannerRepository, BannerRepository>();
-
+        builder.Services.AddScoped<IMerchantProviderSettingRepository, MerchantProviderSettingRepository>();
         builder.Services.AddScoped<IIdentityService, IdentityService>();
 
         builder.AddDefaultAuthentication();

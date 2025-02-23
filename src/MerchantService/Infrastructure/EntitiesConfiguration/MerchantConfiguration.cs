@@ -18,6 +18,9 @@ namespace MerchantService.Infrastructure.EntitiesConfiguration
             builder.Property(x => x.UserId)
                 .IsRequired();
 
+            builder.Property(x => x.Code)
+                .IsRequired();
+
             builder.Property(x => x.Name)
                 .HasMaxLength(500)
                 .IsRequired();

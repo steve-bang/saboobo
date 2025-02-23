@@ -31,7 +31,7 @@ public class UpdateBannersCommandHandler(
             if (bannerEntity == null)
             {
                 throw new NotFoundException(
-                    BannerErrors.Banner_Not_Found,
+                    BannerErrors.NotFound,
                     $"Banner with Id: {banner.Id} not found.",
                     "The banner with the specified Id was not found. Please check the Id and try again."
                 );
@@ -40,7 +40,7 @@ public class UpdateBannersCommandHandler(
             if (bannerEntity.MerchantId != merchant.Id)
             {
                 throw new BadRequestException(
-                    BannerErrors.Merchant_Banner_Not_Match,
+                    BannerErrors.MerchantBannerNotMatch,
                     "The merchant and the banner do not match.",
                     "The merchant and the banner do not match. Please check the merchant and the banner and try again."
                 );

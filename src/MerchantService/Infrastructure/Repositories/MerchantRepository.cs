@@ -33,6 +33,11 @@ public class MerchantRepository(
         return _dbContext.Merchants.ToListAsync();
     }
 
+    public async Task<Merchant?> GetByCodeAsync(string code)
+    {
+        return await _dbContext.Merchants.FirstOrDefaultAsync(x => x.Code == code);
+    }
+
     public async Task<Merchant?> GetByIdAsync(Guid id)
     {
         return await _dbContext.Merchants.FirstOrDefaultAsync(x => x.Id == id);

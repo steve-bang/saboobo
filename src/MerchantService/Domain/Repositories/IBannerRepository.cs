@@ -1,7 +1,4 @@
 
-using SaBooBo.Domain.Shared;
-using SaBooBo.MerchantService.Domain.AggregatesModel;
-
 namespace SaBooBo.MerchantService.Domain.Repositories;
 
 public interface IBannerRepository : IRepository

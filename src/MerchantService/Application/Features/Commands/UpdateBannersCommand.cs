@@ -1,5 +1,6 @@
 
-using SaBooBo.MerchantService.Apis;
+
+using SaBooBo.MerchantService.Apis.Requests;
 
 namespace MerchantService.Application.Features.Commands;
 

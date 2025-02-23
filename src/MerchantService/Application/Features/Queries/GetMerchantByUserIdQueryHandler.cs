@@ -1,6 +1,5 @@
 
 using SaBooBo.Domain.Shared.ExceptionHandler;
-using SaBooBo.MerchantService.Domain.Repositories;
 
 namespace MerchantService.Application.Features.Queries;
 

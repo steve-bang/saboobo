@@ -1,6 +1,5 @@
 
 using SaBooBo.Domain.Shared.ExceptionHandler;
-using SaBooBo.MerchantService.Domain.Repositories;
 
 namespace MerchantService.Application.Features.Commands;
 
@@ -15,11 +14,7 @@ public class UpdateMerchantCommandHandler(
 
         if (merchant is null)
         {
-            throw new NotFoundException(
-                "Merchant_Not_Found",
-                $"Merchant with Id: {request.Id} not found.",
-                "The merchant with the specified Id was not found. Please check the Id and try again."
-            );
+            throw new MerchantNotFoundException(request.Id);
         }
 
         merchant.Update(

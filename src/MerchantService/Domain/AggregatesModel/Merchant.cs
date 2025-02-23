@@ -7,6 +7,8 @@ public class Merchant : AggregateRoot
     public Guid UserId { get; private set; }
 
     public string Name { get; private set; } = null!;
+    
+    public string Code { get; private set; } = null!;
 
     public string Description { get; private set; } = null!;
 
@@ -26,12 +28,13 @@ public class Merchant : AggregateRoot
 
     public DateTime CreatedAt { get; private set; } = DateTime.Now.ToUniversalTime();
 
-    public Merchant(Guid userId, string name, string description, string emailAddress, string phoneNumber, string address, string? logoUrl, string? coverUrl, string? website, string? oAUrl)
+    public Merchant(Guid userId, string name, string code, string description, string emailAddress, string phoneNumber, string address, string? logoUrl, string? coverUrl, string? website, string? oAUrl)
     {
         Id = CreateNewId();
 
         UserId = userId;
         Name = name;
+        Code = code.Trim().ToUpper();
         Description = description;
         EmailAddress = emailAddress;
         PhoneNumber = phoneNumber;
@@ -55,9 +58,9 @@ public class Merchant : AggregateRoot
         OAUrl = oAUrl;
     }
     
-    public static Merchant Create(Guid userId, string name, string description, string emailAddress, string phoneNumber, string address, string? logoUrl, string? coverUrl, string? website, string? oAUrl)
+    public static Merchant Create(Guid userId, string name, string code, string description, string emailAddress, string phoneNumber, string address, string? logoUrl, string? coverUrl, string? website, string? oAUrl)
     {
-        return new(userId, name, description, emailAddress, phoneNumber, address, logoUrl, coverUrl, website, oAUrl);
+        return new(userId, name, code, description, emailAddress, phoneNumber, address, logoUrl, coverUrl, website, oAUrl);
     }
     
 }
