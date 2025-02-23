@@ -1,0 +1,9 @@
+
+export const PAYMENT_METHODS = {
+    COD : "COD",
+    COD_SANDBOX : "COD_SANDBOX",
+    BANK : "BANK",
+    BANK_SANDBOX : "BANK_SANDBOX",
+    VNPAY : "VNPAY",
+    VNPAY_SANDBOX : "VNPAY_SANDBOX",
+}
