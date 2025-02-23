@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: merchant-service-deployment
+  name: merchant-service
   labels:
-    app: merchant-service-deployment
+    app: merchant-service
 spec:
   replicas: 1
   selector: 
     matchLabels:
-      app: merchant-service-deployment
+      app: merchant-service
   template:
     metadata:
       labels:
-        app: merchant-service-deployment
+        app: merchant-service
     spec:
       containers:
       - name: merchant-service-api
-        image: mrstevebang/saboobo-merchant-api:1.0.1
+        image: mrstevebang/saboobo-merchant-api:1.2.0
         ports:
         - containerPort: 8080
         env:
@@ -30,7 +30,7 @@ metadata:
   name: merchant-api-service
 spec:
   selector:
-    app: merchant-service-deployment
+    app: merchant-service
   ports:
     - protocol: TCP
       port: 8080

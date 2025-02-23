@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: pg-product-secret
+  name: pg-order-secret
 type: Opaque
 data:
-  connectionstring: SG9zdD1wZy1wcm9kdWN0LXNlY3JldDtEYXRhYmFzZT1Qcm9kdWN0O1VzZXJuYW1lPVVzZXI7UGFzc3dvcmQ9UGFzc3dvcmQ=
-  # Generate: echo -n "Host=pg-product-secret;Database=Product;Username=User;Password=Password" | base64
+  connectionstring: SG9zdD1wZy1vcmRlci1zZXJ2aWNlO0RhdGFiYXNlPW9yZGVyO1VzZXJuYW1lPVVzZXI7UGFzc3dvcmQ9UGFzc3dvcmQ=
+  # Generate: echo -n "Host=pg-order-service;Database=order;Username=User;Password=Password" | base64
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pg-product-configmap
+  name: pg-order-configmap
   labels:
     app: postgres
 data:
-  POSTGRES_DB: Product
+  POSTGRES_DB: Order
   POSTGRES_USER: User
   POSTGRES_PASSWORD: Password
 
@@ -25,17 +25,17 @@ data:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: pg-product
+  name: pg-order
 spec:
-  serviceName: "pg-product-service"
+  serviceName: "pg-order"
   replicas: 1
   selector:
     matchLabels:
-      app: pg-product
+      app: pg-order
   template:
     metadata:
       labels:
-        app: pg-product
+        app: pg-order
     spec:
       initContainers:
         - name: fix-permissions
@@ -51,11 +51,11 @@ spec:
             - containerPort: 5432
           envFrom:
             - configMapRef:
-                name: pg-product-configmap
+                name: pg-order-configmap
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
-              subPath: product
+              subPath: order
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage
@@ -64,20 +64,19 @@ spec:
         resources:
           requests:
             storage: 2Gi
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: pg-product-service
+  name: pg-order-service
   labels:
     app: postgres
 spec:
-  type: LoadBalancer
+  #type: LoadBalancer
   ports:
     - protocol: TCP
       port: 5432
       targetPort: 5432
   selector:
-    app: pg-product
+    app: pg-order
+

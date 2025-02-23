@@ -29,6 +29,7 @@ kind: Service
 metadata:
   name: media-api-service
 spec:
+  type: LoadBalancer
   selector:
     app: media-service-deployment
   ports:

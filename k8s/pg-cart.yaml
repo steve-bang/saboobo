@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pg-cart-secret
+type: Opaque
+data:
+  connectionstring: SG9zdD1wZy1jYXJ0LXNlcnZpY2U7RGF0YWJhc2U9Q2FydDtVc2VybmFtZT1Vc2VyO1Bhc3N3b3JkPVBhc3N3b3Jk
+  # Generate: echo -n "Host=pg-cart-service;Database=Cart;Username=User;Password=Password" | base64
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pg-cart-configmap
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: Cart
+  POSTGRES_USER: User
+  POSTGRES_PASSWORD: Password
+
+---
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: pg-cart-deploy
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: pg-cart-deploy
+#   template:
+#     metadata:
+#       labels:
+#         app: pg-cart-deploy
+#     spec:
+#       initContainers:
+#         - name: fix-permissions
+#           image: busybox
+#           command: ["sh", "-c", "chmod 0700 /var/lib/postgresql/data && chown -R 999:999 /var/lib/postgresql/data"]
+#           volumeMounts:
+#             - mountPath: /var/lib/postgresql/data
+#               name: azure
+#       containers:
+#         - name: postgres
+#           image: 'postgres:17'
+#           ports:
+#             - containerPort: 5432
+#           envFrom:
+#             - configMapRef:
+#                 name: pg-cart-configmap
+#           volumeMounts:
+#             - mountPath: /var/lib/postgresql/data
+#               name: azure
+#               subPath: cart
+#       volumes:
+#         - name: azure
+#           csi:
+#             driver: file.csi.azure.com
+#             volumeAttributes:
+#               secretName: azure-secret
+#               shareName: saboobo-azfile
+#               mountOptions: 'dir_mode=0700,file_mode=0700,uid=999,gid=999,cache=strict,actimeo=30,nosharesock,nobrl'
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pg-cart
+spec:
+  serviceName: "pg-cart"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pg-cart
+  template:
+    metadata:
+      labels:
+        app: pg-cart
+    spec:
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "chmod 0700 /var/lib/postgresql/data && chown -R 999:999 /var/lib/postgresql/data"]
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      containers:
+        - name: postgres
+          image: 'postgres:17'
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: pg-cart-configmap
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+              subPath: cart
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-cart-service
+  labels:
+    app: postgres
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: pg-cart
+

@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp-label
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp-label
+  template:
+    metadata:
+      labels:
+        app: webapp-label
+    spec:
+      containers:
+      - name: saboobo-webapp-container
+        image: mrstevebang/saboobo-webapp:1.1.1
+        ports:
+        - containerPort: 3000
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  selector:
+    app: webapp-label
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

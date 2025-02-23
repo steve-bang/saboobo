@@ -12,18 +12,19 @@ data:
 ---
 
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: pg-media-deploy
+  name: pg-media
 spec:
+  serviceName: "pg-media-service"
   replicas: 1
   selector:
     matchLabels:
-      app: pg-media-deploy
+      app: pg-media
   template:
     metadata:
       labels:
-        app: pg-media-deploy
+        app: pg-media
     spec:
       initContainers:
         - name: fix-permissions
@@ -31,11 +32,10 @@ spec:
           command: ["sh", "-c", "chmod 0700 /var/lib/postgresql/data && chown -R 999:999 /var/lib/postgresql/data"]
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: azure
+              name: postgres-storage
       containers:
         - name: postgres
           image: 'postgres:17'
-          imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
           envFrom:
@@ -43,16 +43,16 @@ spec:
                 name: pg-media-configmap
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: azure
+              name: postgres-storage
               subPath: media
-      volumes:
-        - name: azure
-          csi:
-            driver: file.csi.azure.com
-            volumeAttributes:
-              secretName: azure-secret
-              shareName: saboobo-azfile
-              mountOptions: 'dir_mode=0700,file_mode=0700,uid=999,gid=999,cache=strict,actimeo=30,nosharesock,nobrl'
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
 ---
 apiVersion: v1
 kind: Service
@@ -61,10 +61,9 @@ metadata:
   labels:
     app: postgres
 spec:
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 5432
       targetPort: 5432
   selector:
-    app: pg-media-deploy
+    app: pg-media

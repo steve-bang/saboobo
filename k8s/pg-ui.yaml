@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pgadmin-product-deployment
+  name: pgadmin-ui-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pgadmin-product-deployment
+      app: pgadmin-ui-deployment
   template:
     metadata:
       labels:
-        app: pgadmin-product-deployment
+        app: pgadmin-ui-deployment
     spec:
       containers:
         - name: pgadmin
@@ -30,7 +30,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: pgadmin-product-deployment
+    app: pgadmin-ui-deployment
   ports:
     - protocol: TCP
       port: 80
