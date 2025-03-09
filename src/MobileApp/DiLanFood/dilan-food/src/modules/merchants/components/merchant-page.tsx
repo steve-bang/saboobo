@@ -12,6 +12,8 @@ import { MerchantAvatar } from './merchant-avatar'
 import { MerchantCover } from './merchant-cover'
 import { MerchantPageLoading } from './merchant-page-loading'
 import { IconLocationSolid } from '@/components/icons'
+import { followOA, unfollowOA } from 'zmp-sdk/apis'
+import { ZALO_OA_ID } from '@/constants/common'
 
 const threshold: number[] = []
 for (let i = 0; i <= 1.0; i += 0.01) {
@@ -22,7 +24,7 @@ export function MerchantPage() {
   const snackbar = useSnackbar()
 
   const { data: merchant, isLoading: merchantLoading } = useMerchant()
-  const { data: merchantOA } = useOA()
+  const { data: merchantOA, refetch } = useOA()
   const oaActions = useOaState((state) => state.actions)
   const showCount = useOaState((state) => state.showCount)
 
@@ -30,16 +32,57 @@ export function MerchantPage() {
 
   const isLoading = merchantLoading
 
-  const followOA = useFollowOA()
-
-  console.log('merchantOA', merchant)
+  const followOAState = useFollowOA();
 
   useEffect(() => {
     if (!merchantOA) return
     if (merchantOA.followed) return
     if (showCount > 0) return
-    oaActions.openRequestFollowDialog()
+    // oaActions.openRequestFollowDialog()
   }, [merchantOA, oaActions, showCount])
+
+  async function handleFollow() {
+    if (!merchantOA) return
+    await followOA({
+      id: ZALO_OA_ID,
+      success: () => {
+        snackbar.openSnackbar({
+          type: 'success',
+          text: 'Đã quan tâm OA'
+        })
+      },
+      fail: (err) => {
+        snackbar.openSnackbar({
+          type: 'error',
+          text: err.message
+        })
+      },
+    })
+
+    refetch();
+  }
+
+  async function handleUnFollow() {
+    if (!merchantOA) return
+    await unfollowOA({
+      id: ZALO_OA_ID,
+      success: () => {
+        snackbar.openSnackbar({
+          type: 'success',
+          text: 'Đã bỏ quan tâm OA'
+        })
+      },
+      fail: (err) => {
+        snackbar.openSnackbar({
+          type: 'error',
+          text: err.message
+        })
+      },
+    })
+
+    refetch();
+  }
+
 
   if (isLoading) return <MerchantPageLoading />
   if (!merchant) throw new MerchantNotFoundError()
@@ -65,10 +108,10 @@ export function MerchantPage() {
               size="small"
               variant="secondary"
               type={merchantOA.followed ? 'neutral' : undefined}
-              loading={followOA.isPending}
+              loading={followOAState.isPending}
               onClick={() => {
                 if (merchantOA.followed) return
-                followOA.mutate(merchantOA.oa.id, {
+                followOAState.mutate(merchantOA.oa.id, {
                   onSuccess: () => {
                     snackbar.openSnackbar({
                       type: 'success',
@@ -79,7 +122,7 @@ export function MerchantPage() {
               }}
             >
               <span className="flex">
-                {merchantOA.followed ? <span>Đã quan tâm</span> : <span>Quan tâm OA </span>}
+                {!merchantOA.followed ? <span onClick={handleUnFollow}>Đã quan tâm</span> : <span onClick={handleFollow}>Quan tâm OA </span>}
                 {merchantOA.followed && <Icon className="ml-2" icon="zi-check" size={18} />}
               </span>
             </Button>

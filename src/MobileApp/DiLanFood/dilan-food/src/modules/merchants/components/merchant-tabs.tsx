@@ -43,10 +43,11 @@ export function MerchantTabs({ activeTab }: { activeTab: MenuType }) {
   return (
     <BottomNavigation fixed activeKey={tab} onChange={handleTabChange}>
       <BottomNavigation.Item key="menu" label="Menu" icon={<IconNoteSolid />} />
+      <BottomNavigation.Item key="news" label="Tin tức" icon={<Icon icon='zi-notif'  />} />
       {enableOrder && (
         <BottomNavigation.Item
           className="z-10"
-          label="Món đang chọn"
+          label="Giỏ hàng"
           key="orders"
           icon={
             total > 0 ? (
@@ -59,7 +60,7 @@ export function MerchantTabs({ activeTab }: { activeTab: MenuType }) {
           }
         />
       )}
-      <BottomNavigation.Item key="info" label="Nhà hàng" icon={<IconRestaurant />} />
+      <BottomNavigation.Item key="info" label="Cửa hàng" icon={<IconRestaurant />} />
       <BottomNavigation.Item key="profile" label="Tài khoản" icon={<Icon icon="zi-user-circle-solid" />} />
     </BottomNavigation>
   )

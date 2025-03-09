@@ -61,4 +61,11 @@ public class OrderContext(
 
         return true;
     }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        await _mediator.DispatchDomainEventsAsync(this);
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
 }

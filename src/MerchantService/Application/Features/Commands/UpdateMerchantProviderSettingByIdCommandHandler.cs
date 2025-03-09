@@ -28,7 +28,7 @@ public class UpdateMerchantProviderSettingByIdCommandHandler(
         // Update the merchant provider setting
         merchantProviderSetting.Update(
             providerType: request.ProviderType,
-            metaData: request.Metadata
+            metadata: request.Metadata
         );
 
         // Save changes

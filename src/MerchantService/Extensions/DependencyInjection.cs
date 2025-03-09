@@ -12,6 +12,7 @@ public static class DependencyInjection
 {
     public static IHostApplicationBuilder AddMerchantService(this IHostApplicationBuilder builder)
     {
+        builder.Services.AddGrpc();
 
         builder.Services.AddHttpContextAccessor();
 

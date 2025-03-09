@@ -10,7 +10,7 @@ namespace SaBooBo.UserService.Application.Features.Commands
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty()
                 // Matches 10 digits and contains country code
-                .Matches(@"^\+?[1-9]\d{1,14}$")
+                .Matches(@"^\+?\d+$")
                 .WithMessage("Phone number must be 10 digits")
                 .WithErrorCode("PhoneNumber_Invalid");
 

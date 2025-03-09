@@ -6,16 +6,17 @@ import { Button, Icon, Modal, Text } from 'zmp-ui'
 
 import { Portal } from '@/components'
 import { IconMinus, IconPostNotif } from '@/components/icons'
-import plateImage from '@/static/images/plate.svg'
 import { clsx } from '@/utils/clsx'
 import { formatMoney } from '@/utils/format'
 
-import { CartItem, useCart } from '../use-cart'
-import { useOrdersTab } from '../use-orders-tab'
+import { useCart } from '../use-cart'
 import { EditNoteSheet } from './edit-note-sheet'
+import { ICartItem } from '@/types/cart'
+import {  useUserStore } from '@/state/user-state'
 
 export function CartList() {
   const { items, actions } = useCart()
+  const { accessToken } = useUserStore((state) => state);
 
   const [editNoteId, setEditNoteId] = useState('')
   const [openEdit, setOpenEdit] = useState(false)
@@ -27,7 +28,7 @@ export function CartList() {
     <>
       {itemsCount === 0 && <Empty />}
       {itemsCount > 0 && (
-        <div className="px-3 py-4">
+        <div className="py-2">
           <Text size="xSmall" className="mb-4 text-text-secondary flex space-x-1 items-center">
             <span>Nhấn vào </span>
             <IconPostNotif size={17} className="text-primary" />
@@ -35,16 +36,15 @@ export function CartList() {
           </Text>
           <div className="flex flex-col space-y-2">
             {Object.values(items)
-              .sort((a, b) => b.createdAt - a.createdAt)
               .map((item) => (
                 <Item
                   key={item.id}
                   item={item}
                   onIncrease={() => {
-                    actions.increase(item.id)
+                    if (accessToken) actions.increase(accessToken, item.id)
                   }}
                   onDecrease={() => {
-                    actions.decrease(item.id)
+                    if (accessToken) actions.decrease(accessToken, item.id)
                   }}
                   onRemove={() => {
                     setDeleteId(item.id)
@@ -78,8 +78,10 @@ export function CartList() {
               text: 'Xóa',
               danger: true,
               onClick: () => {
-                actions.remove(deleteId)
-                setDeleteId('')
+                if (accessToken) {
+                  actions.remove(accessToken, deleteId)
+                  setDeleteId('')
+                }
               },
             },
           ]}
@@ -90,7 +92,7 @@ export function CartList() {
 }
 
 type ItemProps = {
-  item: CartItem
+  item: ICartItem
   onIncrease: () => void
   onDecrease: () => void
   onRemove: () => void
@@ -141,17 +143,17 @@ function Item({ item, onIncrease, onDecrease, onRemove, onUpdateNote }: ItemProp
       >
         <div className="flex">
           <div className="shrink">
-            <img src={item.product.urlImage} alt={item.product.name} className="w-16 h-16 object-cover rounded-lg" />
+            <img src={item.productImage} alt={item.productName} className="w-16 h-16 object-cover rounded-lg" />
           </div>
           <div className="grow flex flex-col gap-2 ml-3">
             <div className="line-clamp-1 font-medium">
-              <Text size="large">{item.product.name}</Text>
+              <Text size="large">{item.productName}</Text>
             </div>
-            {item.toppings && item.toppings.length > 0 && (
+            {/* {item.toppings && item.toppings.length > 0 && (
               <div className="text-text-secondary">
-                <Text>{item.toppings?.map((_) => _.name).join(', ')}</Text>
+                <Text>{item.toppings?.map((_ : any) => _.name).join(', ')}</Text>
               </div>
-            )}
+            )} */}
             <div
               className="flex text-text-secondary space-x-1"
               onClick={(e) => {
@@ -162,14 +164,14 @@ function Item({ item, onIncrease, onDecrease, onRemove, onUpdateNote }: ItemProp
               <span className="shrink-0 pt-[2px]">
                 <IconPostNotif size={18} className="text-primary" />
               </span>
-              <Text>{item.note ? item.note : 'Thêm ghi chú'}</Text>
+              <Text>{item.notes ? item.notes : 'Thêm ghi chú'}</Text>
             </div>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <div>
             <Text className="text-text-secondary inline">Tổng tiền: </Text>
-            <span className="text-primary">{formatMoney(item.total)}</span>
+            <span className="text-primary">{formatMoney(item.totalPrice)}</span>
           </div>
           <div className="flex items-center gap-3">
             <Button

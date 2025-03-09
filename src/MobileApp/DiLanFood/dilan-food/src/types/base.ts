@@ -5,5 +5,13 @@ export interface IBaseType {
 export interface IResponseApiType<T> {
     success: boolean;
     httpStatus: number;
-    data: T;
+    data?: T;
+    error?: IErrorType;
+
+}
+
+export interface IErrorType {
+    code: string;
+    message: string;
+    description: string;
 }

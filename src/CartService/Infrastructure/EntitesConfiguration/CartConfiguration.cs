@@ -58,6 +58,9 @@ namespace SaBooBo.CartService.Infrastructure.EntitesConfiguration
 
                 sb.Property(x => x.ProductName)
                     .IsRequired();
+                
+                sb.Property(x => x.ProductImage)
+                    .IsRequired(false);
 
                 sb.Property(x => x.Quantity)
                     .IsRequired();

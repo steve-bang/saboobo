@@ -4,6 +4,7 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
 {
     public class User : AggregateRoot
     {
+
         public Guid? MerchantId { get; private set; }
         public string Name { get; private set; } = null!;
         public string? AvatarUrl { get; private set; }
@@ -11,7 +12,9 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
         public string? EmailAddress { get; private set; }
         public string PasswordHash { get; private set; } = null!;
         public string PasswordSalt { get; private set; } = null!;
+        public bool IsFollowedMerchant { get; private set; } = false;
         public bool IsActive { get; private set; }
+        public bool IsDeleted { get; private set; } = false;
         public DateTime? LastLoginAt { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
@@ -29,7 +32,7 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
             CreatedAt = DateTime.UtcNow;
         }
 
-        public static User Create(Guid? merchantId, string name, string phoneNumber, string passwordHash, string passwordSalt, string avatarUrl)
+        public static User Create(Guid? merchantId, string name, string phoneNumber, string passwordHash, string passwordSalt, string? avatarUrl = null)
         {
             return new User(merchantId, name, phoneNumber, passwordHash, passwordSalt, avatarUrl);
         }
@@ -72,5 +75,21 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
         {
             AvatarUrl = avatarUrl;
         }
+
+        public void FollowMerchant()
+        {
+            IsFollowedMerchant = true;
+        }
+
+        public void UnfollowMerchant()
+        {
+            IsFollowedMerchant = false;
+        }
+
+        public void Delete()
+        {
+            IsDeleted = true;
+        }
+
     }
 }

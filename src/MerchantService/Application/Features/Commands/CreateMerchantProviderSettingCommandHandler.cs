@@ -28,7 +28,7 @@ public class CreateMerchantProviderSettingCommandHandler(
         var merchantProviderSetting = MerchantProviderSetting.Create(
             merchantId: request.MerchantId,
             providerType: request.Provider,
-            metaData: request.Metadata
+            metadata: request.Metadata
         );
 
         // Save the merchant provider setting

@@ -23,7 +23,6 @@ namespace MerchantService.Infrastructure.EntitiesConfiguration
                 .IsRequired();
             
             builder.Property(x => x.Metadata)
-                .HasMaxLength(1000)
                 .IsRequired(false);
 
             builder.Property(x => x.CreatedAt)

@@ -4,6 +4,7 @@ import { Button, Input, Sheet, Text } from 'zmp-ui'
 import { Portal } from '@/components/portal'
 
 import { useCart } from '../use-cart'
+import { useUserStore } from '@/state/user-state'
 
 type Props = {
   open: boolean
@@ -23,13 +24,21 @@ export function EditNoteSheet(props: Props) {
 }
 
 function EditNoteForm({ itemId, onClose }: Props) {
+
+  const { accessToken } = useUserStore((state) => state);
+
   const { items, actions } = useCart()
-  const item = items[itemId]
-  const [note, setNote] = useState(item?.note || '')
+  const item = items.find((i) => i.id === itemId)
+
+  const [note, setNote] = useState(item?.notes || '')
 
   function handleUpdateNote() {
-    actions.updateNote(itemId, note)
-    onClose()
+    if (accessToken) {
+      console.log('Update note', note);
+
+      actions.updateNote(accessToken, itemId, note);
+      onClose();
+    }
   }
 
   if (!item) return null
@@ -38,7 +47,7 @@ function EditNoteForm({ itemId, onClose }: Props) {
     <div>
       <div className="px-4 pt-4 flex flex-col gap-4">
         <Text size="xLarge" className="font-medium">
-          {item.product.name}
+          {item.productName}
         </Text>
         <Input.TextArea
           label="Ghi chú"

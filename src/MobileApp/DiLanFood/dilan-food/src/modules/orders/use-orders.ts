@@ -43,6 +43,10 @@ type OrderDto = {
   }[]
 }
 
+/**
+ * Handle submit order to server
+ * @returns 
+ */
 export function useSubmitOrder() {
   const orderSessionId = useOrderSessionId()
   const queryClient = useQueryClient()

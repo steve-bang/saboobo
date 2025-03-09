@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-service
+  labels:
+    app: webhook-service
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: webhook-service
+  template:
+    metadata:
+      labels:
+        app: webhook-service
+    spec:
+      containers:
+      - name: webhook-service-api
+        image: mrstevebang/saboobo-webhook-api:2.0.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"  # Set the environment to Development
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-api-service
+spec:
+  selector:
+    app: webhook-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

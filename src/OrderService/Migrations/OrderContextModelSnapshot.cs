@@ -42,7 +42,19 @@ namespace OrderService.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("EstimatedTimeDeliveryFrom")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EstimatedTimeDeliveryTo")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Notes")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("OrderStatusLastChangedOn")
@@ -67,6 +79,9 @@ namespace OrderService.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ZaloOrderId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -127,15 +142,7 @@ namespace OrderService.Migrations
                             b1.Property<Guid>("OrderId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("Address")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Country")
+                            b1.Property<string>("AddressDetail")
                                 .IsRequired()
                                 .HasColumnType("text");
 
@@ -153,16 +160,8 @@ namespace OrderService.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<string>("State")
-                                .IsRequired()
-                                .HasColumnType("text");
-
                             b1.Property<DateTime>("UpdatedAt")
                                 .HasColumnType("timestamp with time zone");
-
-                            b1.Property<string>("ZipCode")
-                                .IsRequired()
-                                .HasColumnType("text");
 
                             b1.HasKey("Id", "OrderId");
 

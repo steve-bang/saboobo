@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "SaBooBo.Clients.Shared.Merchant";
+
+package merchant;
+
+service MerchantGrpc {
+  rpc GetMerchantById (GetMerchantRequest) returns (MerchantResponse);
+}
+
+message GetMerchantRequest {
+  string id = 1;
+}
+
+
+message MerchantResponse {
+  string id = 1;
+  string userId = 2;
+  string name = 3;
+  string code = 4;
+  string emailAddress = 5;
+  string phoneNumber = 6;
+  string address = 7;
+  string oaUrl = 8;
+  string description = 9;
+  string createdAt = 10;
+}

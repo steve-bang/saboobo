@@ -1,48 +1,82 @@
 import { ListItem } from "@/components/list-item";
-import { SECRET_KEY } from "@/constants/common";
-import { getCurrentLocation } from "@/libs/zalo.action";
-import React, { FC } from "react";
-import { getAccessToken, getLocation } from "zmp-sdk/apis";
+import React, { FC, useState } from "react";
+import { useNavigate, useSnackbar } from "zmp-ui";
+import { useCart } from "../use-cart";
+import ModalSpinner from "@/components/modal-spinner";
+import { Routes } from "@/constants/routes";
 
 export const LocationPicker: FC = () => {
 
-    const onClick = () => {
-        getLocation({
-            success: async (data) => {
-                let { token } = data;
+    const { openSnackbar } = useSnackbar();
 
-                console.log('token location', token);
+    const navigation = useNavigate();
 
-                if (token) {
-                    getAccessToken({
-                        success: async (accessToken) => {
-                            console.log('access Token', accessToken);
+    const { shippingAddress } = useCart();
+    const [modalVisible, setModalVisible] = useState(false);
 
-                            const locationActual = await getCurrentLocation(accessToken, token);
+    const onClick = async () => {
 
-                            console.log('locationActual', locationActual);
+        navigation(Routes.address.pickAddress());
 
-                        },
-                        fail: (error) => {
-                            console.log('error get access token', error);
-                        },
-                    });
-                }
+        // setModalVisible(true);
+
+        // await getLocation({
+        //     success: async (data) => {
+        //         let { token } = data;
+
+        //         if (token) {
+        //             getAccessToken({
+        //                 success: async (accessToken) => {
+        //                     const locationActual = await getZaloDataByAccessTokenAndCode(accessToken, token);
+
+        //                     console.log('locationActual', locationActual);
+
+        //                     const addressDetails = await getAddressFromLatLong(locationActual.data.latitude, locationActual.data.longitude);
+
+        //                     console.log('Address detail: ', addressDetails);
+
+        //                     if (addressDetails) {
+        //                         actions.updateAddressDetail(addressDetails.display_name);
+
+        //                         setModalVisible(false);
+        //                     }
+        //                     else {
+        //                         openSnackbar({
+        //                             type: "error",
+        //                             text: "Không thể lấy địa chỉ của bạn, vui lòng kiểm tra lại kết nối mạng!"
+        //                         })
+        //                     }
+
+        //                 },
+        //                 fail: (error) => {
+        //                     console.log('error get access token', error);
+        //                 },
+        //             });
+        //         }
 
 
-            },
-            fail: (error) => {
-                // xử lý khi gọi api thất bại
-                console.log('error get location', error);
-            },
-        });
+        //     },
+        //     fail: (error) => {
+        //         openSnackbar({
+        //             type: "error",
+        //             text: "Không thể lấy vị trí của bạn, vui lòng kiểm tra lại kết nối mạng!"
+        //         })
+        //     },
+        // });
+
+        // setModalVisible(false);
     }
 
+
     return (
-        <ListItem
-            title="Chọn địa chỉ"
-            subtitle="Chọn địa chỉ nhận hàng"
-            onClick={onClick}
-        />
+        <>
+            <ListItem
+                title="Địa chỉ"
+                subtitle={shippingAddress?.addressDetail || "Chọn địa chỉ nhận hàng"}
+                onClick={onClick}
+            />
+
+            <ModalSpinner visible={modalVisible} onClose={() => setModalVisible(false)} />
+        </>
     );
 };

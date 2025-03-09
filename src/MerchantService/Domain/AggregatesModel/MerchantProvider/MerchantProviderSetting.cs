@@ -16,27 +16,27 @@ public class MerchantProviderSetting : AggregateRoot
 
     public DateTime CreatedAt { get; private set; } = DateTime.Now.ToUniversalTime();
 
-    public MerchantProviderSetting(Guid merchantId, MerchantProviderType providerType, string metaData)
+    public MerchantProviderSetting(Guid merchantId, MerchantProviderType providerType, string metadata)
     {
 
         Id = CreateNewId();
 
         MerchantId = merchantId;
         ProviderType = providerType;
-        Metadata = metaData;
+        Metadata = metadata;
 
         ValidateMetadata();
     }
 
-    public static MerchantProviderSetting Create(Guid merchantId, MerchantProviderType providerType, string metaData)
+    public static MerchantProviderSetting Create(Guid merchantId, MerchantProviderType providerType, string metadata)
     {
-        return new MerchantProviderSetting(merchantId, providerType, metaData);
+        return new MerchantProviderSetting(merchantId, providerType, metadata);
     }
 
-    public void Update(MerchantProviderType providerType, string metaData)
+    public void Update(MerchantProviderType providerType, string metadata)
     {
         ProviderType = providerType;
-        Metadata = metaData;
+        Metadata = metadata;
 
         ValidateMetadata();
     }

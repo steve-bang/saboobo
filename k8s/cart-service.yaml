@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cart-service-api
-        image: mrstevebang/saboobo-cart-api:1.0.1
+        image: mrstevebang/saboobo-cart-api:2.0.0
         ports:
         - containerPort: 8080
         env:

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using SaBooBo.Domain.Shared.Clients;
 using SaBooBo.Domain.Shared.Extentions;
 using SaBooBo.UserService.Apis;
@@ -31,6 +32,14 @@ builder.AddServices();
 
 builder.Services.AddServiceDefault();
 
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 

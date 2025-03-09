@@ -64,6 +64,9 @@ namespace CartService.Migrations
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<string>("ProductImage")
+                                .HasColumnType("text");
+
                             b1.Property<string>("ProductName")
                                 .IsRequired()
                                 .HasColumnType("text");

@@ -8,6 +8,7 @@ public record CartPlaceOrderCommand(
 ) : IRequest<bool>;
 
 public record CartPlaceOrder(
+    Guid MerchantId,
     Cart Cart,
     PlaceOrder PlaceOrder
 );

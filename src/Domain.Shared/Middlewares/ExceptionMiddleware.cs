@@ -28,6 +28,10 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
+            Console.WriteLine("[x] Exception: ");
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.StackTrace);
+            Console.WriteLine(ex.InnerException?.Message);
             await exceptionHandler.TryHandleAsync(context, ex);
         }
     }

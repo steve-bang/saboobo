@@ -36,7 +36,7 @@ export const getProducts = async (
 
         const apiResult: IResponseApiType<IProductType[]> = await response.json();
 
-        return apiResult.data;
+        return apiResult.data ?? null;
 
     } catch (error) {
         console.error("Error fetching products:", error);
@@ -56,7 +56,7 @@ export const getProductById = async (
 
         const apiResult: IResponseApiType<IProductType> = await response.json();
 
-        return apiResult.data;
+        return apiResult.data ?? null;
 
     } catch (error) {
         console.error("Error fetching product:", error);

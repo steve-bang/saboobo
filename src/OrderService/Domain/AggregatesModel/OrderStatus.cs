@@ -34,10 +34,10 @@ namespace SaBooBo.OrderService.Domain.AggregatesModel
         PaymentCompleted,
 
         /// <summary>
-        /// The order is processing.
+        /// The order is shipping.
         /// When the order is being processed, it is in this status.
         /// </summary>
-        Processing,
+        Shipping,
 
         /// <summary>
         /// The order is completed.

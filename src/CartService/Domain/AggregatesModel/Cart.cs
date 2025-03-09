@@ -20,7 +20,7 @@ namespace SaBooBo.CartService.Domain.AggregatesModel
             UpdatedAt = DateTime.UtcNow.ToUniversalTime();
         }
 
-        public void AddItem(Guid productId, string productName, decimal price, int quantity, string? notes)
+        public void AddItem(Guid productId, string productName, string productImage, decimal price, int quantity, string? notes)
         {
             var existingItem = Items.FirstOrDefault(x => x.ProductId == productId);
             if (existingItem != null)
@@ -29,7 +29,7 @@ namespace SaBooBo.CartService.Domain.AggregatesModel
             }
             else
             {
-                _items.Add(new CartItem(productId, productName, price, quantity, notes));
+                _items.Add(new CartItem(productId, productName, productImage, quantity, price, notes));
             }
 
             TotalPrice += price * quantity;

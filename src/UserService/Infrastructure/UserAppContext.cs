@@ -5,12 +5,20 @@ using SaBooBo.UserService.Domain.AggregatesModel;
 
 namespace SaBooBo.UserService.Infrastructure;
 
+/// <summary>
+/// 
+/// Exec add migration: dotnet ef migrations add <Message> --context UserAppContext
+/// </summary>
+/// <param name="options"></param>
 public class UserAppContext(
     DbContextOptions<UserAppContext> options
 ) : DbContext(options), IUnitOfWork
 {
 
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<UserExtenalProvider> UserExternalProviders { get; set; } = null!;
+
+    public DbSet<UserAddress> UserAddresses { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

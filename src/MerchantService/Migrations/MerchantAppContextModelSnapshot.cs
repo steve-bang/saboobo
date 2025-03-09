@@ -127,9 +127,8 @@ namespace MerchantService.Migrations
                     b.Property<Guid>("MerchantId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("MetaData")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                    b.Property<string>("Metadata")
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderType")
                         .IsRequired()

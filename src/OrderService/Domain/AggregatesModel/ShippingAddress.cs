@@ -11,44 +11,58 @@ public class ShippingAddress : AggregateRoot
 
     public string? Email { get; private set; }
 
-    public string? Address { get; private set; }
-
-    public string? City { get; private set; }
-
-    public string? State { get; private set; }
-
-    public string? Country { get; private set; }
-
-    public string? ZipCode { get; private set; }
+    /// <summary>
+    /// The address of the shipping address.
+    /// </summary>
+    public string AddressDetail { get; private set; } = null!;
 
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
-    public ShippingAddress(string name, string address, string city, string state, string country, string zipCode, string phoneNumber, string email)
+
+    /// <summary>
+    /// Create a new shipping address.
+    /// </summary>
+    /// <param name="name">The name of the shipping address.</param>
+    /// <param name="phoneNumber">The phone number of the shipping address.</param>
+    /// <param name="addressDetail">The address of the shipping address. The address can be a street address, apartment number, or P.O. Box.</param>
+    public ShippingAddress(string name, string phoneNumber, string addressDetail)
     {
         Id = Guid.NewGuid();
 
         Name = name;
-        Address = address;
-        City = city;
-        State = state;
-        Country = country;
-        ZipCode = zipCode;
         PhoneNumber = phoneNumber;
-        Email = email;
+        AddressDetail = addressDetail;
     }
 
-    public void Update(string name, string address, string city, string state, string country, string zipCode, string phoneNumber, string email)
+    public ShippingAddress(string name, string phoneNumber, string? email, string addressDetail)
     {
+        Id = Guid.NewGuid();
+
         Name = name;
-        Address = address;
-        City = city;
-        State = state;
-        Country = country;
-        ZipCode = zipCode;
         PhoneNumber = phoneNumber;
         Email = email;
+        AddressDetail = addressDetail;
+    }
+
+
+
+    public static ShippingAddress Create(string name, string phoneNumber, string? email, string addressDetail)
+    {
+        return new ShippingAddress(name, phoneNumber, email, addressDetail);
+    }
+
+
+
+    public void Update(string name, string phoneNumber, string email, string addressDetail)
+    {
+        Name = name;
+        PhoneNumber = phoneNumber;
+        Email = email;
+        AddressDetail = addressDetail;
+
+        UpdatedAt = DateTime.UtcNow.ToUniversalTime();
     }
 
 }

@@ -61,6 +61,7 @@ public static class CartApi
                 {
                     ProductId = x.ProductId,
                     ProductName = x.ProductName,
+                    ProductImage = x.ProductImage,
                     Quantity = x.Quantity,
                     Price = x.Price,
                     Notes = x.Notes
@@ -111,6 +112,7 @@ public static class CartApi
     }
 
     public static async Task<ApiResponseSuccess<bool>> PlaceOrderCart(
+        [FromHeader(Name = Constants.Headers.MerchantId)] Guid merchantId,
         Guid cartId,
         [AsParameters] ProviderService service,
         [FromBody] PlaceOrderCartRequest payloadRequest
@@ -118,6 +120,7 @@ public static class CartApi
     {
         var result = await service.Mediator.Send(
             new PlaceOrderCartCommand(
+                merchantId,
                 cartId,
                 payloadRequest.ShippingAddress,
                 payloadRequest.PaymentMethod,

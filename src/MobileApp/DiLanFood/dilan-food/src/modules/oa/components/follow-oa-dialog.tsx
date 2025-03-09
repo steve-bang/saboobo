@@ -8,6 +8,7 @@ import { Portal } from '@/components/portal'
 
 import { useOaState } from '../oa.state'
 import { useOA } from '../use-oa'
+import { ZALO_OA_ID } from '@/constants/common'
 
 export function FollowOaDialog() {
   const snackbar = useSnackbar()
@@ -21,7 +22,7 @@ export function FollowOaDialog() {
     try {
 
       await followOA({
-        id: merchantOA?.oa.id,
+        id: ZALO_OA_ID,
       })
       snackbar.openSnackbar({
         type: 'success',

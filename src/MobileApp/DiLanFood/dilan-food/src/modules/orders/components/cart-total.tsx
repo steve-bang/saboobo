@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useResizeObserver } from 'usehooks-ts'
 import { Button, Text, useNavigate, useSnackbar } from 'zmp-ui'
 import { events, EventName } from "zmp-sdk/apis";
@@ -8,20 +8,29 @@ import { formatMoney } from '@/utils/format'
 import { useCart } from '../use-cart'
 import { useOrderSessionActions } from '../use-order-session'
 import { useSubmitOrder } from '../use-orders'
-import { createOrder } from '@/libs/zalo.action'
+import { createOrder } from '@/libs/zalo.order.action'
 import { PAYMENT_METHODS } from '@/constants/paymentMethod'
-import { Payment } from 'zmp-sdk'
-import { CheckoutSDK } from 'zmp-sdk/apis'
+import { Payment, showFunctionButtonWidget } from 'zmp-sdk'
 
 export function CartTotal() {
   const snackbar = useSnackbar()
-  const { items, total, actions } = useCart()
+  const { items, totalPrice: total, actions, id } = useCart()
   const ref = useRef<HTMLDivElement>(null)
-  const { height } = useResizeObserver({ ref, box: 'border-box' })
   const navigate = useNavigate()
 
   const orderMutation = useSubmitOrder()
-  const orderSessionActions = useOrderSessionActions()
+
+  // useEffect(() => {
+  //   showFunctionButtonWidget({
+  //     id: "orderButton",
+  //     type: "ORDER",
+  //     text: "Đặt hàng",
+  //     color: "bg-primary",
+  //     onDataReceived: (messageToken) => {
+  //       console.log("Received message token: ", messageToken);
+  //     },
+  //   });
+  // }, []);
 
   async function handleCheckoutCart() {
 
@@ -36,14 +45,14 @@ export function CartTotal() {
 
         const orderId = await createOrder(
           {
-            desc: "Test order",
+            desc: `Thanh toán đơn hàng với mã ${id} vào lúc ${new Date().toLocaleString()}`,
             amount: total,
             item: Object.values(items).map((item) => ({
-              id: item.product.id,
-              amount: (item.product.price * item.quantity).toString(),
+              id: item.productId,
+              amount: (item.unitPrice * item.quantity).toString(),
             })),
             extradata: JSON.stringify({
-              notes: "This is a test order"
+              notes: "Thanh toán đơn hàng với mã " + id,
             }),
             method: JSON.stringify({
               id: method,
@@ -64,6 +73,7 @@ export function CartTotal() {
         console.log(err);
       },
     });
+
 
 
 
@@ -183,6 +193,7 @@ export function CartTotal() {
           <Button fullWidth size="large" onClick={handleCheckoutCart} loading={orderMutation.isPending}>
             Gọi món
           </Button>
+          {/* <Button id="orderButton" fullWidth size="large" className='' onClick={handleCheckoutCart} loading={orderMutation.isPending}/> */}
         </div>
       </div>
     </>

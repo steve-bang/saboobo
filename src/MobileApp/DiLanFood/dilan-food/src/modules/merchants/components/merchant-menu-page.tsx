@@ -11,12 +11,15 @@ import { useMerchant } from '../use-merchant'
 import { MenuEmpty } from './menu-empty'
 import { MerchantMenuPageLoading } from './merchant-menu-page-loading'
 import { Banner } from './banner'
+import ModalSpinner from '@/components/modal-spinner'
+import { useUserStore } from '@/state/user-state'
+import ModalSignInZalo from './modal-sign-in-zalo'
 
 const ChipList = React.lazy(() => import('@/components/chip-list'))
 
 export function MerchantMenuPage() {
-  const { data: merchant, isLoading: merchantLoading } = useMerchant()
-  const { data: menu, isLoading: menuLoading } = useMenu()
+  const { data: merchant, isLoading: merchantLoading } = useMerchant();
+  const { data: menu, isLoading: menuLoading } = useMenu();
 
   const id = useId()
 
@@ -25,6 +28,10 @@ export function MerchantMenuPage() {
   const chipListRef = React.useRef<ChipListRef<React.Key>>(null)
   const scrollingRef = React.useRef<boolean>(false)
   const scrollingTimeout = React.useRef<ReturnType<typeof setTimeout>>()
+
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated)
+
+  const [modalVisible, setModalVisible] = React.useState(false)
 
   useEffect(() => {
     function onScroll() {
@@ -127,7 +134,7 @@ export function MerchantMenuPage() {
                   {menuItem.category.name}
                 </Text>
                 <div className="mt-3 grid grid-cols-2 gap-3">
-                  {menuItem.products?.map((product) => <ProductItem key={product.id} item={product} />)}
+                  {menuItem.products?.map((product) => <ProductItem key={product.id} item={product} setShowModalVisible={setModalVisible} />)}
                 </div>
               </div>
             ))}
@@ -136,6 +143,9 @@ export function MerchantMenuPage() {
       )}
       <CartFloatingCounter />
       <div className="bg-white" style={{ height: 48 }} />
+      <ModalSpinner visible={modalVisible} onClose={() => setModalVisible(false)} />
+
+      <ModalSignInZalo modalVisible={!isAuthenticated} setModalVisible={setModalVisible} />
     </Page>
   )
 }

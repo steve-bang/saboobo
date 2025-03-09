@@ -1,7 +1,7 @@
+import { SERVER_URL } from "@/constants/common";
 import { IResponseApiType } from "@/types/base";
+import { IUserAuthType, IUserZaloType } from "@/types/user";
 
-
-const API_URL = import.meta.env.VITE_API_URL; 
 
 export interface IRegisterParams {
     merchantId: string;
@@ -17,53 +17,65 @@ export interface ILoginParams {
 }
 
 export const register = async (
-    registerParams: IRegisterParams
-): Promise<object | null> => {
-    try {
-        const response = await fetch(`${API_URL}/api/v1/auth/register`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(registerParams),
-        });
+    registerParams: IRegisterParams,
+): Promise<any> => {
 
-        if (!response.ok) {
-            throw new Error(`Failed to register: ${response.statusText}`);
-        }
+    const response = await fetch(`${SERVER_URL}/api/v1/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(registerParams),
+    });
 
-        const apiResult: IResponseApiType<object> = await response.json();
 
-        return apiResult.data;
 
-    } catch (error) {
-        console.error("Error registering:", error);
-        return null;
-    }
+    const apiResult: IResponseApiType<IUserAuthType> = await response.json();
+
+    return apiResult;
 }
 
 export const login = async (
     loginParams: ILoginParams
-): Promise<object | null> => {
-    try {
-        const response = await fetch(`${API_URL}/api/v1/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginParams),
-        });
+): Promise<IResponseApiType<IUserAuthType>> => {
 
-        if (!response.ok) {
-            throw new Error(`Failed to login: ${response.statusText}`);
-        }
+    const response = await fetch(`${SERVER_URL}/api/v1/auth/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginParams),
+    });
 
-        const apiResult: IResponseApiType<object> = await response.json();
 
-        return apiResult.data;
+    const apiResult: IResponseApiType<IUserAuthType> = await response.json();
 
-    } catch (error) {
-        console.error("Error logging in:", error);
-        return null;
+    return apiResult;
+}
+
+export const loginWithZalo = async (
+    merchantId: string,
+    userInfo: IUserZaloType
+): Promise<IResponseApiType<IUserAuthType>> => {
+
+    // Init payload
+    const payload = {
+        merchantId: merchantId,
+        metadata: JSON.stringify(userInfo),
+        provider: "Zalo"
     }
+
+    // Call API
+    const response = await fetch(`${SERVER_URL}/api/v1/auth/login/external-provider`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+    });
+
+    const apiResult: IResponseApiType<IUserAuthType> = await response.json();
+
+    // Return result
+    return apiResult;
 }

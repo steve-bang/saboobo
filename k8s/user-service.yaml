@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user-service-api
-        image: mrstevebang/saboobo-user-api:1.1.0
+        image: mrstevebang/saboobo-user-api:1.3.0
         ports:
         - containerPort: 8080
         env:

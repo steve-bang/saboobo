@@ -11,7 +11,7 @@ import { formatMoney } from '@/utils/format'
 import { useCart, useTotalCartItems } from '../use-cart'
 
 export function CartFloatingCounter() {
-  const { total } = useCart()
+  const { totalPrice: total } = useCart()
   const totalItems = useTotalCartItems()
 
   const navigate = useNavigate()

@@ -1,50 +1,51 @@
 
 import { ListItem } from "@/components/list-item";
-import { getCurrentLocation } from "@/libs/zalo.action";
-import React, { FC } from "react";
-import { getAccessToken, getPhoneNumber } from "zmp-sdk/apis";
+import React, { FC, useState } from "react";
+import { useCart } from "../use-cart";
+import { useSnackbar } from "zmp-ui";
+import ModalSpinner from "@/components/modal-spinner";
+import { getPhoneNumberUser } from "@/libs/zalo.user.action";
 
 
 export const RequestPersonPickerPhone: FC = () => {
 
+  const { openSnackbar } = useSnackbar();
+
+  const { shippingAddress, actions } = useCart();
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+
+
+  const onClickRequestPersonPickerPhone = async () => {
+
+    setModalVisible(true);
+    
+    const phoneNumber = await getPhoneNumberUser();
+
+    if (phoneNumber) {
+      actions.updatePhoneNumber(phoneNumber);
+    }
+    else {
+      openSnackbar({
+        type: "error",
+        text: "Không thể lấy số điện thoại người dùng, vui lòng kiểm tra lại kết nối mạng!"
+      })
+    }
+
+    setModalVisible(false);
+  };
 
   return (
-    <ListItem
-      onClick={() =>
+    <>
+      <ListItem
+        onClick={onClickRequestPersonPickerPhone}
+        title={"Số điện thoại"}
+        subtitle={shippingAddress?.phoneNumber || "Yêu cầu truy cập số điện thoại"}
+      />
 
-        getPhoneNumber({
-          success: async (data) => {
-            let { token } = data;
-            // Xử lý khi gọi api thành công
-            console.log('token phone', token);
-
-            if (token) {
-              getAccessToken({
-                success: async (accessToken) => {
-                  console.log('access Token', accessToken);
-
-                  const phone = await getCurrentLocation(accessToken, token);
-
-                  console.log('phone', phone.data.number);
-
-                },
-                fail: (error) => {
-                  console.log('error get access token', error);
-                },
-              });
-            }
-
-
-          },
-          fail: (error) => {
-            // Xử lý khi gọi api thất bại
-            console.log(error);
-          },
-        })
-      }
-      title="Chọn người nhận"
-      subtitle="Yêu cầu truy cập số điện thoại"
-    />
+      <ModalSpinner visible={modalVisible} onClose={() => setModalVisible(false)} />
+    </>
   );
 };
 

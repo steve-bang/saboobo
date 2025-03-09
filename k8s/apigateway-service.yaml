@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: apigateway-container
-        image: mrstevebang/saboobo-apigateway-api:1.0.8
+        image: mrstevebang/saboobo-apigateway-api:1.0.11
         ports:
         - containerPort: 8080
         env:

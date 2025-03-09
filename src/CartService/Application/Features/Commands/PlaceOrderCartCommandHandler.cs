@@ -20,7 +20,7 @@ public class PlaceOrderCartCommandHandler(
         }
 
         // Update cart status
-        _ = ProducerMessage(cart, request);
+        _ = ProducerMessage(request.MerchantId, cart, request);
 
 
         await _cartRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
@@ -28,7 +28,7 @@ public class PlaceOrderCartCommandHandler(
         return true;
     }
 
-    public async Task ProducerMessage(Cart cart, PlaceOrderCartCommand request)
+    public async Task ProducerMessage(Guid merchantId, Cart cart, PlaceOrderCartCommand request)
     {
         try
         {
@@ -37,9 +37,10 @@ public class PlaceOrderCartCommandHandler(
             // Send message to RabbitMQ
             await _rabbitMqProducer.PublishAsync(
                 exchange: string.Empty,
-                routingKey: RouteKey.CartPlaceOrder,    
+                routingKey: RouteKeys.CartPlaceOrder,    
                 JsonSerializer.Serialize(new
                 {
+                    merchantId,
                     cart,
                     placeOrder = request
                 })

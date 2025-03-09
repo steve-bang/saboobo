@@ -1,6 +1,7 @@
 
 using System.Security.Cryptography;
 using PasswordTheBest;
+using PhoneNumbers;
 using SaBooBo.Domain.Shared.ExceptionHandler;
 using SaBooBo.UserService.Application.Clients;
 using SaBooBo.UserService.Domain.AggregatesModel;
@@ -31,8 +32,11 @@ public class RegisterUserCommandHandler(
             }
         }
 
+        // Convert phone number to E.164 format
+        var phoneNumberNational = PhoneNumberUtil.GetInstance().Parse(request.PhoneNumber, defaultRegion: "VN").NationalNumber.ToString();
+
         // Pre check if user already exists
-        var userExists = await _userRepository.GetByPhoneAsync(request.PhoneNumber);
+        var userExists = await _userRepository.GetByPhoneAsync(phoneNumberNational);
         if (userExists is not null)
         {
             throw new UserAlreadyExistsException();
@@ -47,7 +51,8 @@ public class RegisterUserCommandHandler(
             merchantId: request.MerchantId,
             phoneNumber: request.PhoneNumber,
             passwordHash: passwordHash,
-            passwordSalt: passwordSalt
+            passwordSalt: passwordSalt,
+            name: request.Name
         );
 
         await _userRepository.CreateAsync(user);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Checkbox, Icon, List, Sheet, Text } from 'zmp-ui'
+import { Button, Checkbox, Icon, List, Page, Sheet, Text } from 'zmp-ui'
 
 import { Portal } from '@/components/portal'
 import { useToggle } from '@/hooks/use-toggle'
@@ -9,16 +9,22 @@ import { clsx } from '@/utils/clsx'
 import { formatMoney } from '@/utils/format'
 
 import { IProductType, IToppingType } from '@/types/product'
+import { useUserStore } from '@/state/user-state'
 
 type Props = {
   item: IProductType
-  onAddSuccess?: () => void
+  onAddSuccess?: () => void,
+  setShowModalVisible: (value: boolean) => void
 }
 
-export function ProductItem({ item, onAddSuccess }: Props) {
+export function ProductItem({ item, onAddSuccess, setShowModalVisible }: Props) {
+
+  const { accessToken } = useUserStore((state) => state);
+
   const actions = useCart((state) => state.actions)
 
   const enableOrder = useMerchantEnableOrder()
+
 
   const [openOptions, togglerOption] = useToggle(false)
   const [openDetail, togglerDetail] = useToggle(false)
@@ -28,9 +34,13 @@ export function ProductItem({ item, onAddSuccess }: Props) {
       .reduce((acc, item) => acc + item.quantity, 0),
   )
 
-  function addToCart(toppings?: IToppingType[]) {
-    actions.add({ product: item, toppings })
-    onAddSuccess?.()
+  async function addToCart(toppings?: IToppingType[]) {
+    if (accessToken) {
+      setShowModalVisible?.(true)
+      await actions.add(accessToken, { product: item, toppings })
+      onAddSuccess?.()
+      setShowModalVisible?.(false)
+    }
   }
 
   function handleClickDetail() {
@@ -80,6 +90,7 @@ export function ProductItem({ item, onAddSuccess }: Props) {
           </div>
         )}
       </div>
+
       <Portal>
         <Sheet autoHeight visible={openDetail} onClose={togglerDetail.off} unmountOnClose>
           <DetailSheetContent
@@ -152,7 +163,7 @@ function DetailSheetContent({
                   Tùy chọn
                 </Text>
               </List.Item>
-              {item.toppings?.map((topping : IToppingType) => (
+              {item.toppings?.map((topping: IToppingType) => (
                 <List.Item key={topping.id}>
                   <Text size="large">
                     <span>{topping.name}</span>
@@ -214,7 +225,7 @@ function OptionsSheetContent({
         <div className="h-[1px] bg-divider mx-4" />
         <div>
           <List divider noSpacing>
-            {item.toppings?.map((topping : IToppingType) => (
+            {item.toppings?.map((topping: IToppingType) => (
               <List.Item
                 key={topping.id}
                 onClick={() => {

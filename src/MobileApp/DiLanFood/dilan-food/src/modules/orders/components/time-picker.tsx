@@ -10,41 +10,23 @@ const CLOSING_HOUR = 21;
 interface TimePickerProps {
   date: number;
   time: number;
-  setDate: (date: number) => void;
   setTime: (time: number) => void;
 }
 
 export const TimePicker: FC<TimePickerProps> = ({
   date = 0,
   time = 0,
-  setDate,
   setTime,
 }) => {
-
-  const availableDates = useMemo(() => {
-    const days: Date[] = [];
-    const today = new Date();
-    for (let i = today.getHours() >= CLOSING_HOUR ? 1 : 0; i < 5; i++) {
-      const nextDay = new Date(today);
-      nextDay.setDate(today.getDate() + i);
-      days.push(nextDay);
-    }
-    return days;
-  }, []);
 
   const availableTimes = useMemo(() => {
     const times: Date[] = [];
     const now = new Date();
     let time = new Date();
-    if (now.getDate() === new Date(date).getDate()) {
-      // Starting time is the current time rounded up to the nearest 30 minutes
-      const minutes = Math.ceil(now.getMinutes() / 30) * 30;
-      time.setHours(now.getHours());
-      time.setMinutes(minutes);
-    } else {
-      time.setHours(OPENING_HOUR);
-      time.setMinutes(0);
-    }
+
+    const minutes = Math.ceil(now.getMinutes() / 10) * 10;
+    time.setHours(now.getHours());
+    time.setMinutes(minutes);
     time.setSeconds(0);
     time.setMilliseconds(0);
     const endTime = new Date();
@@ -54,7 +36,7 @@ export const TimePicker: FC<TimePickerProps> = ({
     endTime.setMilliseconds(0);
     while (time <= endTime) {
       times.push(new Date(time));
-      time.setMinutes(time.getMinutes() + 30);
+      time.setMinutes(time.getMinutes() + 15);
     }
     return times;
   }, [date]);
@@ -64,26 +46,20 @@ export const TimePicker: FC<TimePickerProps> = ({
       mask
       maskClosable
       onVisibilityChange={(visbile) => matchStatusBarColor(visbile)}
-      inputClass="border-none bg-transparent text-sm text-primary font-medium text-md m-0 p-0 h-auto"
+      inputClass="border-none bg-transparent text-sm m-0 p-0 h-auto"
       placeholder="Chọn thời gian nhận hàng"
       title="Thời gian nhận hàng"
       value={{
-        date,
         time: availableTimes.find((t) => +t === time)
           ? time
           : +availableTimes[0],
       }}
-      formatPickedValueDisplay={({ date, time }) =>
-        date && time
-          ? `${displayHalfAnHourTimeRange(new Date(time.value))}, ${displayDate(
-              new Date(date.value)
-            )}`
+      formatPickedValueDisplay={({ time }) =>
+        time
+          ? `${displayHalfAnHourTimeRange(new Date(time.value))}`
           : `Chọn thời gian`
       }
-      onChange={({ date, time }) => {
-        if (date) {
-          setDate(+date.value);
-        }
+      onChange={({ time }) => {
         if (time) {
           setTime(+time.value);
         }
@@ -95,14 +71,7 @@ export const TimePicker: FC<TimePickerProps> = ({
             value: +time,
           })),
           name: "time",
-        },
-        {
-          options: availableDates.map((date, i) => ({
-            displayName: displayDate(date, true),
-            value: +date,
-          })),
-          name: "date",
-        },
+        }
       ]}
     />
   );

@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using SaBooBo.Domain.Shared.Middlewares;
@@ -15,6 +16,11 @@ public static class DomainSharedExtensions
         services.AddScoped<IGlobalExceptionHandler, GlobalExceptionHandler>();
 
         services.AddScoped<IIdentityService, IdentityService>();
+
+        services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
         return services;
     }
 

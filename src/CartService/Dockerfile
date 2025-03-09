@@ -6,6 +6,7 @@ WORKDIR /src
 COPY ["src/CartService","CartService/"]
 COPY ["src/Domain.Shared/", "Domain.Shared/"]
 COPY ["src/MigrationService/", "MigrationService/"]
+COPY ["src/RabbitMqService/", "RabbitMqService/"]
 
 
 # Restore dependencies
@@ -27,5 +28,5 @@ ENTRYPOINT ["dotnet", "CartService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-cart-api:1.0.1 -f src/CartService/Dockerfile .
-#   docker push mrstevebang/saboobo-cart-api:1.0.1
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-cart-api:2.0.0 -f src/CartService/Dockerfile .
+#   docker push mrstevebang/saboobo-cart-api:2.0.0

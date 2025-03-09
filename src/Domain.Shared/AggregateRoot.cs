@@ -27,6 +27,8 @@ public abstract class AggregateRoot : Entity
     /// <param name="domainEvent"></param>
     public void AddEvent(IDomainEvent domainEvent)
     {
+        Console.WriteLine($"[x] [{DateTime.UtcNow}] Adding domain event: {domainEvent.GetType().Name} at file {nameof(AggregateRoot)}");
+
         _events.Add(domainEvent);
     }
 }

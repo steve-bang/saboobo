@@ -1,6 +1,5 @@
 
-using System.Threading.Tasks;
-using Confluent.Kafka;
+
 using Microsoft.EntityFrameworkCore;
 using Saboobo.RabbitMqService.Extensions;
 using SaBooBo.Domain.Shared.Behaviour;
@@ -40,10 +39,9 @@ public static class DependencyInjection
         });
 
         //builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        builder.Services.AddHostedService<CartPlaceOrderService>();
 
         builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
-        builder.Services.AddHostedService<CartPlaceOrderService>();
 
         builder.AddDefaultAuthentication();
 

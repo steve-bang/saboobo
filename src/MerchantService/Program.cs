@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using SaBooBo.Domain.Shared.Extentions;
 using SaBooBo.MerchantService.Apis;
 using SaBooBo.MerchantService.Extensions;
+using SaBooBo.MerchantService.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,5 +35,8 @@ app.MapBannerApi();
 app.MapMerchantProviderSettingApi();
 
 app.UseServiceDefault();
+
+// Map gRPC service
+app.MapGrpcService<MerchantGrpcService>();
 
 app.Run();

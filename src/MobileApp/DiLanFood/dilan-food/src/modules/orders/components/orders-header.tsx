@@ -14,7 +14,6 @@ export function OrdersHeader({ highlightOwner }: Props) {
 
   return (
     <Header
-      className="app-header no-border pl-4 flex-none pb-[6px]"
       showBackIcon={false}
       title={
         (

@@ -205,6 +205,10 @@ html, body {
   }
 }
 
+.text-primary {
+  color: var(--color-primary);
+}
+
 .zaui-list .zaui-list-item:not(:last-child) .zaui-list-item-right::after, .zaui-tabs-tabbar::after {
   background-color: var(--color-divider);
   height: 1px;

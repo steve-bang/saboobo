@@ -1,6 +1,4 @@
 
-using SaBooBo.CartService.Domain.AggregatesModel;
-using SaBooBo.Domain.Shared;
 
 namespace SaBooBo.CartService.Domain.Repositories;
 

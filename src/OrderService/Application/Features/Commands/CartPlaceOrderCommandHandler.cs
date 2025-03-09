@@ -12,7 +12,9 @@ public class CartPlaceOrderCommandHandler(
     public async Task<bool> Handle(CartPlaceOrderCommand request, CancellationToken cancellationToken)
     {
 
+        // Create a new order
         var order = Order.Create(
+            merchantId: request.Request.MerchantId,
             customerId: request.Request.Cart.CustomerId,
             code: Guid.NewGuid().ToString(),
             paymentMethod: request.Request.PlaceOrder.PaymentMethod ?? string.Empty,
@@ -22,6 +24,7 @@ public class CartPlaceOrderCommandHandler(
             estimatedTimeDeliveryTo: request.Request.PlaceOrder.EstimatedDeliveryDateTo
         );
 
+        // Add items to the order
         foreach (var item in request.Request.Cart.Items)
         {
             order.AddItem(
@@ -34,9 +37,17 @@ public class CartPlaceOrderCommandHandler(
             );
         }
 
+        // Add shipping address to the order
+        order.AddShippingAddress(
+            name: request.Request.PlaceOrder.ShippingAddress.Name,
+            phoneNumber: request.Request.PlaceOrder.ShippingAddress.PhoneNumber,
+            addressDetail: request.Request.PlaceOrder.ShippingAddress.AddressDetail
+        );
+
         await _orderRepository.CreateAsync(order);
 
-        await _orderRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+        // Save the changes to the database
+        await _orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return true;
     }

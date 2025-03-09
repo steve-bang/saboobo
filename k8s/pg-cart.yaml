@@ -114,6 +114,7 @@ metadata:
   labels:
     app: postgres
 spec:
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 5432

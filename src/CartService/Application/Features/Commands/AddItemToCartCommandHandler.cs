@@ -16,14 +16,15 @@ public class AddItemToCartCommandHandler(
         }
 
 
-        for (int i = 0; i < request.Items.Length; i++)
+        foreach (var item in request.Items)
         {
             cart.AddItem(
-                productId: request.Items[i].ProductId,
-                productName: request.Items[i].ProductName,
-                price: request.Items[i].Price,
-                quantity: request.Items[i].Quantity,
-                notes: request.Items[i].Notes
+                productId: item.ProductId,
+                productName: item.ProductName,
+                productImage: item.ProductImage,
+                price: item.Price,
+                quantity: item.Quantity,
+                notes: item.Notes
             );
         }
 

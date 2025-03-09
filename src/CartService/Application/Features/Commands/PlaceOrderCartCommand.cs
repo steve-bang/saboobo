@@ -2,6 +2,7 @@
 namespace SaBooBo.CartService.Application.Features.Commands;
 
 public record PlaceOrderCartCommand(
+    Guid MerchantId,
     Guid CartId,
     ShippingAddress ShippingAddress,
     string? PaymentMethod,

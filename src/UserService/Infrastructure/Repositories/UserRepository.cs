@@ -50,4 +50,9 @@ public class UserRepository(
 
         return entity.Entity;
     }
+
+    public Task<User?> GetByPhoneAsync(Guid merchantId, string phoneNumber)
+    {
+        return _context.Users.FirstOrDefaultAsync(x => x.MerchantId == merchantId && x.PhoneNumber == phoneNumber);
+    }
 }

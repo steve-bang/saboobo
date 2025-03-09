@@ -31,7 +31,7 @@ namespace SaBooBo.OrderService.Infrastructure.EntityConfigurations
                 .IsRequired();
             
             builder.Property(o => o.ZaloOrderId)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.Property(o => o.Code)
                 .IsRequired();
@@ -60,6 +60,12 @@ namespace SaBooBo.OrderService.Infrastructure.EntityConfigurations
 
             builder.Property(o => o.OrderStatusLastChangedOn)
                 .IsRequired(false);
+
+            builder.Property(o => o.EstimatedTimeDeliveryFrom)
+                .IsRequired();
+
+            builder.Property(o => o.EstimatedTimeDeliveryTo)
+                .IsRequired();
 
             builder.Property(o => o.UpdatedAt)
                 .IsRequired();
@@ -93,19 +99,7 @@ namespace SaBooBo.OrderService.Infrastructure.EntityConfigurations
                 sa.Property(sa => sa.Email)
                     .IsRequired(false);
 
-                sa.Property(sa => sa.Address)
-                    .IsRequired();
-
-                sa.Property(sa => sa.City)
-                    .IsRequired();
-
-                sa.Property(sa => sa.State)
-                    .IsRequired();
-
-                sa.Property(sa => sa.ZipCode)
-                    .IsRequired();
-
-                sa.Property(sa => sa.Country)
+                sa.Property(sa => sa.AddressDetail)
                     .IsRequired();
 
                 sa.Property(sa => sa.UpdatedAt)

@@ -6,20 +6,21 @@ namespace SaBooBo.CartService.Domain.AggregatesModel
     {
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; }
+        public string ProductImage { get; private set; }
         public int Quantity { get; private set; }
         public decimal UnitPrice { get; private set; }
-        public decimal TotalPrice  => UnitPrice * Quantity;
+        public decimal TotalPrice => UnitPrice * Quantity;
         public string? Notes { get; private set; }
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow.ToUniversalTime();
         public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
 
-        public CartItem(Guid productId, string productName, decimal unitPrice, int quantity, string? notes)
+        public CartItem(Guid productId, string productName, string productImage, int quantity, decimal unitPrice, string? notes)
         {
             Id = Guid.NewGuid();
-
             ProductId = productId;
             ProductName = productName;
+            ProductImage = productImage;
             UnitPrice = unitPrice;
             Quantity = quantity;
             Notes = notes;

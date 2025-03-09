@@ -8,6 +8,7 @@ public interface IUserRepository : IRepository
     Task<User?> GetByIdAsync(Guid id);
     Task<User?> GetByEmailAsync(string email);
     Task<User?> GetByPhoneAsync(string phone);
+    Task<User?> GetByPhoneAsync(Guid merchantId, string phoneNumber);
     Task<IEnumerable<User>> GetAllAsync();
     Task<User> CreateAsync(User user);
     User UpdateAsync(User user);

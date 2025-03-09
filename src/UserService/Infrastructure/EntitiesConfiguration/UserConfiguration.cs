@@ -25,8 +25,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired(false);
 
         builder.Property(e => e.Name)
-            .HasMaxLength(100)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(e => e.EmailAddress)
             .HasMaxLength(100)
@@ -38,8 +37,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(20)
             .IsRequired();
 
-        builder.HasIndex(e => e.PhoneNumber)
-            .IsUnique();
 
         builder.Property(e => e.PasswordHash)
             .HasMaxLength(5000)
@@ -49,7 +46,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(5000)
             .IsRequired();
 
+        builder.Property(e => e.AvatarUrl)
+            .HasMaxLength(5000)
+            .IsRequired(false);
+
+        builder.Property(e => e.IsFollowedMerchant)
+            .IsRequired();
+
         builder.Property(e => e.IsActive)
+            .IsRequired();
+
+        builder.Property(e => e.IsDeleted)
             .IsRequired();
 
         builder.Property(e => e.LastLoginAt);

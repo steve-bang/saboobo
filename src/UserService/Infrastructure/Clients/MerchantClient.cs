@@ -1,5 +1,4 @@
 
-using SaBooBo.Domain.Shared.ApiResponse;
 using SaBooBo.Domain.Shared.Clients;
 using SaBooBo.UserService.Application.Clients;
 

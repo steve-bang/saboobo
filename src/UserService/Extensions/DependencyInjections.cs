@@ -38,6 +38,8 @@ public static class DependencyInjection
 
         // Add the user repository
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IUserExternalProviderRepository, UserExternalProviderRepository>();
+        builder.Services.AddScoped<IUserAddressRepository, UserAddressRepository>();
 
         return builder;
     }
