@@ -4,7 +4,6 @@ namespace SaBooBo.UserService.Domain.AggregatesModel
 {
     public class User : AggregateRoot
     {
-
         public Guid? MerchantId { get; private set; }
         public string Name { get; private set; } = null!;
         public string? AvatarUrl { get; private set; }

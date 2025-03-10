@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "SaBooBo.UserService.Grpc";
+
+package user;
+
+service UserGrpc {
+  rpc GetExternalDataByUserId (GetExternalDataByUserIdRequest) returns (UserExternalProviderResponse);
+}
+
+message GetExternalDataByUserIdRequest {
+  string userId = 1;
+}
+
+
+message UserExternalProviderResponse {
+  string id = 1;
+  string userId = 2;
+  string userExternalId = 3;
+  string provider = 4;
+  string createdAt = 5;
+}

@@ -3,9 +3,9 @@ namespace SaBooBo.UserService.Domain.AggregatesModel;
 
 public class UserExtenalProvider : AggregateRoot
 {
+    public Guid UserId { get; private set; }
     public string UserExternalId { get; private set; } = null!;
     public ExternalProviderAccount Provider { get; private set; }
-    public Guid UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
 

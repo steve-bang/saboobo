@@ -3,12 +3,15 @@ using SaBooBo.Domain.Shared.Clients;
 using SaBooBo.Domain.Shared.Extentions;
 using SaBooBo.UserService.Apis;
 using SaBooBo.UserService.Extensions;
+using SaBooBo.UserService.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddGrpc();
 
 // Register the clients
 builder.Services.AddHttpClient(ClientNames.Saboobo, (serviceProvider, client) =>
@@ -59,6 +62,9 @@ app.MapUserApi();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Map gRPC services
+app.MapGrpcService<UserGrpcService>();
 
 app.Run();
 
