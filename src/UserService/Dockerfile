@@ -27,5 +27,5 @@ ENTRYPOINT ["dotnet", "UserService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-user-api:1.3.0 -f src/UserService/Dockerfile .
-#   docker push mrstevebang/saboobo-user-api:1.3.0
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-user-api:1.3.1 -f src/UserService/Dockerfile .
+#   docker push mrstevebang/saboobo-user-api:1.3.1

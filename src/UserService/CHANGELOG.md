@@ -1,5 +1,8 @@
 # Change log
 
+## v1.3.1
+- Add gRPC for User Service in function GetExternalDataByUserId.
+
 ## v1.3.0
 
 ### Added
