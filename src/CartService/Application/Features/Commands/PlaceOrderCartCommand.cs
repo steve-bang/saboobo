@@ -4,6 +4,7 @@ namespace SaBooBo.CartService.Application.Features.Commands;
 public record PlaceOrderCartCommand(
     Guid MerchantId,
     Guid CartId,
+    string ZaloOrderId,
     ShippingAddress ShippingAddress,
     string? PaymentMethod,
     string? Note,

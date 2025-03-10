@@ -1,4 +1,6 @@
 
+using SaBooBo.NotificationService.Clients;
+
 namespace SaBooBo.Domain.Common;
 
 public abstract class ZaloMessageTemplate
@@ -26,17 +28,17 @@ public abstract class ZaloMessageTemplate
     {
         switch (status)
         {
-            case "Pending":
+            case OrderStatus.Pending:
                 return new ZaloMessageWaitConfirmTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner);
-            case "Confirmed":
+            case OrderStatus.Confirmed:
                 return new ZaloMessageConfirmedTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner, shippingTotal ?? 0);
-            case "Shipping":
+            case OrderStatus.Shipping:
                 return new ZaloMessageDeliveryTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner, shippingTotal ?? 0);
-            case "Completed":
+            case OrderStatus.Completed:
                 return new ZaloMessageCompleteTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner, shippingTotal ?? 0);
             default:
                 throw new InvalidOperationException($"Invalid order status: {status}");
-            
+
         }
     }
 }

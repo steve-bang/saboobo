@@ -14,7 +14,8 @@ await builder.AddNotificationServices();
 builder.Services.AddServiceDefault();
 
 builder.Services.AddHostedService<ZaloOAuthCallbackWorkerService>();
-builder.Services.AddHostedService<OrderStatusWorkerService>();
+builder.Services.AddHostedService<OrderChangeStatusWorkerService>();
+builder.Services.AddHostedService<OrderCompletedWorkerService>();
 
 var app = builder.Build();
 

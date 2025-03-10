@@ -80,11 +80,12 @@ public class Order : AggregateRoot
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow.ToUniversalTime();
 
 
-    public Order(Guid merchantId, Guid customerId, string code, string paymentMethod, string ipAddress, string? notes, DateTime estimatedTimeDeliveryFrom, DateTime estimatedTimeDeliveryTo)
+    public Order(Guid merchantId, Guid customerId, string code, string paymentMethod, string ipAddress, string? notes, DateTime estimatedTimeDeliveryFrom, DateTime estimatedTimeDeliveryTo, string? zaloOrderId = null)
     {
         Id = Guid.NewGuid();
         MerchantId = merchantId;
         CustomerId = customerId;
+        ZaloOrderId = zaloOrderId ?? string.Empty;
         Code = code;
         PaymentMethod = paymentMethod;
         IpAddress = ipAddress;
@@ -94,9 +95,9 @@ public class Order : AggregateRoot
     }
 
 
-    public static Order Create(Guid merchantId, Guid customerId, string code, string paymentMethod, string ipAddress, string? notes, DateTime estimatedTimeDeliveryFrom, DateTime estimatedTimeDeliveryTo)
+    public static Order Create(Guid merchantId, Guid customerId, string code, string paymentMethod, string ipAddress, string? notes, DateTime estimatedTimeDeliveryFrom, DateTime estimatedTimeDeliveryTo, string? zaloOrderId = null)
     {
-        var order = new Order(merchantId, customerId, code, paymentMethod, ipAddress, notes, estimatedTimeDeliveryFrom, estimatedTimeDeliveryTo);
+        var order = new Order(merchantId, customerId, code, paymentMethod, ipAddress, notes, estimatedTimeDeliveryFrom, estimatedTimeDeliveryTo, zaloOrderId);
 
         order.UpdateStatus(OrderStatus.Pending);
 

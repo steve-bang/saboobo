@@ -31,6 +31,12 @@ public class ZaloKeysConfig
     public const string SecretKey = "secret_key";
 
     /// <summary>
+    /// The secret key key.
+    /// You can visit https://mini.zalo.me/miniapp/{appId}/payment/settings to get the private key.
+    /// </summary>
+    public const string PrivateKey = "private_key";
+
+    /// <summary>
     /// The grant type key. The grant type is always authorization_code.
     /// </summary>
     public const string GrantType = "grant_type";
@@ -52,7 +58,7 @@ public class ZaloKeysConfig
     /// The expiration time is in seconds.
     /// </summary>
     public const string ExpiresIn = "expires_in";
-    
+
     /// <summary>
     /// This is the key to get the expiration time of the refresh token.
     /// The expiration time is in seconds.

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -178,5 +179,76 @@ namespace SaBooBo.OrderService.Clients
             Console.WriteLine("cURL Request:");
             Console.WriteLine(curl.ToString());
         }
+
+        /// <inheritdoc/>
+        public async Task UpdateOrderStatusCODAsync(string miniAppId, string orderId, string privateKey, ResultCodes resultCode)
+        {
+            string endpoint = $"https://payment-mini.zalo.me/api/transaction/{miniAppId}/cod-callback-payment";
+
+            string data = $"appId={miniAppId}&orderId={orderId}&resultCode={(short)resultCode}&privateKey={privateKey}";
+
+            string hmac = HashHMACSha256(data, privateKey);
+
+            LoggingUtil.WriteLog($"Updating order status with endpoint: {endpoint}", nameof(ZaloClient));
+            LoggingUtil.WriteLog($"Updating order status with data: {data}", nameof(ZaloClient));
+            LoggingUtil.WriteLog($"Updating order status with hmac: {hmac}", nameof(ZaloClient));
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(endpoint);
+
+                client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+
+                var payloadData = new
+                {
+                    appId = miniAppId,
+                    orderId = orderId,
+                    resultCode = (short)resultCode,
+                    hmac = hmac
+                };
+
+                var json = JsonSerializer.Serialize(payloadData);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(endpoint, content);
+
+                response.EnsureSuccessStatusCode();
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                LoggingUtil.WriteLog($"Response from Api UpdateOrderStatusAsync: {responseContent}", nameof(ZaloClient));
+
+            }
+        }
+
+
+        /// <summary>
+        /// Hash HMAC SHA256
+        /// </summary>
+        /// <param name="data">The data to hash</param>
+        /// <param name="privateKey">The private key to hash</param>
+        /// <returns></returns>
+        private string HashHMACSha256(string data, string privateKey)
+        {
+            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(privateKey)))
+            {
+                byte[] hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
+                string mac = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+
+                return mac;
+            }
+        }
     }
+
+    /// <summary>
+    /// This enum represents the status of an order.
+    /// See <see href="https://mini.zalo.me/documents/checkout-sdk/updateOrderStatus/#parameters">updateOrderStatus</see> for more information.
+    /// </summary>
+    public enum ResultCodes
+    {
+        Failed = -1,
+        Refunded = 0,
+        Success = 1,
+    } 
 }

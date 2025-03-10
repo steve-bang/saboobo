@@ -30,6 +30,17 @@ namespace SaBooBo.OrderService.Clients
         /// <param name="request">The request model to send to Zalo.</param>
         /// <returns></returns>
         Task<string?> SendMessageAsync(string accessToken, object request);
+
+        /// <summary>
+        /// The method to update the order status in Zalo.
+        /// See link <a href="https://mini.zalo.me/documents/checkout-sdk/updateOrderStatus/#api-specification">updateOrderStatus</a>.
+        /// </summary>
+        /// <param name="miniAppId">The mini app ID of the Zalo app.</param>
+        /// <param name="orderId">The order ID in Zalo.</param>
+        /// <param name="privateKey">The private key of the Zalo app.</param>
+        /// <param name="resultCode">The result code of the order status.</param>
+        /// <returns></returns>
+        Task UpdateOrderStatusCODAsync(string miniAppId, string orderId, string privateKey, ResultCodes resultCode);
         
     }
 }

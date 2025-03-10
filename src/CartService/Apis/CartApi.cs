@@ -122,6 +122,7 @@ public static class CartApi
             new PlaceOrderCartCommand(
                 merchantId,
                 cartId,
+                payloadRequest.ZaloOrderId,
                 payloadRequest.ShippingAddress,
                 payloadRequest.PaymentMethod,
                 payloadRequest.Note,

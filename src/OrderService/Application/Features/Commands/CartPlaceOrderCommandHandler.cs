@@ -16,6 +16,7 @@ public class CartPlaceOrderCommandHandler(
         var order = Order.Create(
             merchantId: request.Request.MerchantId,
             customerId: request.Request.Cart.CustomerId,
+            zaloOrderId: request.Request.ZaloOrderId,
             code: Guid.NewGuid().ToString(),
             paymentMethod: request.Request.PlaceOrder.PaymentMethod ?? string.Empty,
             ipAddress: string.Empty,

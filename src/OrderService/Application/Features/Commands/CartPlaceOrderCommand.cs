@@ -9,6 +9,7 @@ public record CartPlaceOrderCommand(
 
 public record CartPlaceOrder(
     Guid MerchantId,
+    string ZaloOrderId,
     Cart Cart,
     PlaceOrder PlaceOrder
 );
