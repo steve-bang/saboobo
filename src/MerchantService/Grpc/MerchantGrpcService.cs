@@ -15,7 +15,7 @@ public class MerchantGrpcService : MerchantGrpc.MerchantGrpcBase
         _logger = logger;
     }
 
-    public async Task<MerchantResponse> GetMerchant(GetMerchantRequest request, ServerCallContext context)
+    public override async Task<MerchantResponse> GetMerchantById(GetMerchantRequest request, ServerCallContext context)
     {
         try
         {

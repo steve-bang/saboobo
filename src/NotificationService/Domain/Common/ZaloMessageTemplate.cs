@@ -30,9 +30,9 @@ public abstract class ZaloMessageTemplate
                 return new ZaloMessageWaitConfirmTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner);
             case "Confirmed":
                 return new ZaloMessageConfirmedTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner, shippingTotal ?? 0);
-            case "Shippipng":
+            case "Shipping":
                 return new ZaloMessageDeliveryTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner, shippingTotal ?? 0);
-            case "Complete":
+            case "Completed":
                 return new ZaloMessageCompleteTemplate(userId, orderId, totalPrice, miniZaloAppLink, phoneNumberOwner, shippingTotal ?? 0);
             default:
                 throw new InvalidOperationException($"Invalid order status: {status}");

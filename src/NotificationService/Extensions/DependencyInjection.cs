@@ -22,7 +22,7 @@ public static class DependencyInjection
 
         // Add ServiceConfiguration
         var serviceConfig = new ServiceConfiguration();
-        builder.Configuration.GetSection("ServiceConfiguration").Bind(serviceConfig);
+        //builder.Configuration.GetSection("ServiceConfiguration").Bind(serviceConfig);
         builder.Services.AddSingleton(serviceConfig);
 
         builder.Services.AddDbContext<NotificationAppContext>(options =>
@@ -54,6 +54,7 @@ public static class DependencyInjection
 
         builder.Services.AddScoped<ISmsService, SmsService>();
 
+        // Add the client using gRPC protocol
         builder.Services.AddAllClients();
 
         // Add the clients

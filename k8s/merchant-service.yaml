@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: merchant-service-api
-        image: mrstevebang/saboobo-merchant-api:1.2.1
+        image: mrstevebang/saboobo-merchant-api:1.2.6
         ports:
         - containerPort: 8080
         env:
@@ -35,3 +35,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+      name: http
+    - port: 50051
+      targetPort: 50051
+      name: grpc

@@ -21,6 +21,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddAllClients(this IServiceCollection services)
     {
         services
+            .AddUserClient()
             .AddMerchantClient();
             
         return services;

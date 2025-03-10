@@ -10,7 +10,6 @@ using SaBooBo.OrderService.Domain.Events;
 namespace SaBooBo.OrderService.Application.EventHandlers
 {
     public class OrderCreatedEventHandler(
-        ILogger<OrderCreatedEventHandler> _logger,
         IRabbitMqProducer _rabbitMqProducer
     ) : INotificationHandler<OrderCreatedEvent>
     {

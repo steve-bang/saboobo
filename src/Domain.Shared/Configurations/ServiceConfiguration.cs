@@ -7,7 +7,10 @@ public class ServiceConfiguration
 
 public class ServiceEndpoints
 {
-    public string NotificationGrpc { get; set; } = "https://localhost:5001";
-    public string UserGrpc { get; set; } = "https://user-api-service:8080";
-    public string MerchantGrpc { get; set; } = "http://merchant-api-service:8080";
+    public string UserGrpc { get; set; } = "http://user-api-service:50051";
+    public string MerchantGrpc { get; set; } = "http://merchant-api-service:50051";
+
+    public ServiceEndpoints()
+    {
+    }
 } 

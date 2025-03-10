@@ -30,10 +30,6 @@ app.MapChannelApi();
 
 app.UseServiceDefault();
 
-// app.UseEndpoints(endpoints =>
-// {
-//     endpoints.MapGrpcService<NotificationServiceGrpc>();
-// });
 
 app.Run();
 

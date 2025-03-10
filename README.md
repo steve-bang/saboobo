@@ -190,3 +190,8 @@ Deploy api gateway deployment and service in k8s
 ``` bash
 kubectl apply -f ./k8s/apigateway-service.yaml
 ```
+
+## Services and Ports
+
+- Merchant-Service: Http: 8080 - Grpc: 50051
+- User-Service: Http: 8080 - Grpc: 50051

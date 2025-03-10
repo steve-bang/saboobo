@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using SaBooBo.Domain.Shared.Clients;
 using SaBooBo.Domain.Shared.Extentions;
 using SaBooBo.UserService.Apis;
@@ -42,6 +43,20 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+// Settup the Kestrel server 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1; // Support HTTP/1 only
+    });
+
+    options.ListenAnyIP(50051, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2; // Support HTTP/2 only
+    });
 });
 
 var app = builder.Build();

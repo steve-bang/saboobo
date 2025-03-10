@@ -27,5 +27,5 @@ ENTRYPOINT ["dotnet", "MerchantService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-merchant-api:1.2.1 -f src/MerchantService/Dockerfile .
-#   docker push mrstevebang/saboobo-merchant-api:1.2.1
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-merchant-api:1.2.6 -f src/MerchantService/Dockerfile .
+#   docker push mrstevebang/saboobo-merchant-api:1.2.6

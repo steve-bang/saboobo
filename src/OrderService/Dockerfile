@@ -28,5 +28,5 @@ ENTRYPOINT ["dotnet", "OrderService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-order-api:1.0.0 -f src/OrderService/Dockerfile .
-#   docker push mrstevebang/saboobo-order-api:1.0.0
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-order-api:1.1.0 -f src/OrderService/Dockerfile .
+#   docker push mrstevebang/saboobo-order-api:1.1.0

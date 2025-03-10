@@ -1,4 +1,5 @@
 
+using Grpc.Core;
 using SaBooBo.Domain.Shared.Utils;
 using SaBooBo.UserService.Domain.Exceptions;
 using SaBooBo.UserService.Domain.Repositories;
@@ -16,14 +17,13 @@ public class UserGrpcService : UserGrpc.UserGrpcBase
         _userExternalProviderRepository = merchantRepository;
     }
 
-
-    public async Task<UserExternalProviderResponse> GetExternalDataByUserId(string userId)
+    public override async Task<UserExternalProviderResponse> GetExternalDataByUserId(GetExternalDataByUserIdRequest request, ServerCallContext context)
     {
-        var userExternalProvider = await _userExternalProviderRepository.GetByUserIdAsync(Guid.Parse(userId));
+        var userExternalProvider = await _userExternalProviderRepository.GetByUserIdAsync(Guid.Parse(request.UserId));
 
         if (userExternalProvider == null)
         {
-            LoggingUtil.WriteLog($"User External Provider with ID {userId} not found");
+            LoggingUtil.WriteLog($"User External Provider with ID {request.UserId} not found");
             throw new UserNotFoundException();
         }
 
@@ -36,5 +36,6 @@ public class UserGrpcService : UserGrpc.UserGrpcBase
             CreatedAt = userExternalProvider.CreatedAt.ToString(),
         };
     }
+
 
 }
