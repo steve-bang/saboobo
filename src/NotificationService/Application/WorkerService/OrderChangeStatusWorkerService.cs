@@ -7,6 +7,7 @@ using RabbitMQ.Client.Events;
 using RabbitMqService.Constants;
 using SaBooBo.Domain.Shared.Utils;
 using SaBooBo.NotificationService.Application.Features.Commands;
+using SaBooBo.NotificationService.Clients;
 using SaBooBo.NotificationService.Domain.Models;
 
 namespace SaBooBo.NotificationService.Application.WorkerService;
@@ -61,6 +62,12 @@ public class OrderChangeStatusWorkerService : BackgroundService
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
                 await mediator.Send(new SendMessageOrderCommand(order));
+
+                // Send notification for order completed.
+                if(order.Status == OrderStatus.Completed)
+                {
+                    await mediator.Send(new OrderCompletedCommand(order));
+                }
             }
             else
             {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useResizeObserver } from 'usehooks-ts'
 import { Button, Text, useNavigate, useSnackbar } from 'zmp-ui'
-import { events, EventName } from "zmp-sdk/apis";
+import { events, EventName, CheckoutSDK } from "zmp-sdk/apis";
 
 import { formatMoney } from '@/utils/format'
 
@@ -43,29 +43,39 @@ export function CartTotal() {
         // Lựa chọn phương thức thành công
         const { method, isCustom, logo, displayName, subMethod } = data;
 
-        const orderId = await createOrder(
-          {
-            desc: `Thanh toán đơn hàng với mã ${id} vào lúc ${new Date().toLocaleString()}`,
-            amount: total,
-            item: Object.values(items).map((item) => ({
-              id: item.productId,
-              amount: (item.unitPrice * item.quantity).toString(),
-            })),
-            extradata: JSON.stringify({
-              notes: "Thanh toán đơn hàng với mã " + id,
-            }),
-            method: JSON.stringify({
-              id: method,
-              isCustom: false,
-              subMethod: subMethod
-            }),
-          },
-          (error: any) => {
-            console.log("Error creating order: ", error);
-          }
-        )
+        // const orderId = await createOrder(
+        //   {
+        //     desc: `Thanh toán đơn hàng với mã ${id} vào lúc ${new Date().toLocaleString()}`,
+        //     amount: total,
+        //     item: Object.values(items).map((item) => ({
+        //       id: item.productId,
+        //       amount: (item.unitPrice * item.quantity).toString(),
+        //     })),
+        //     extradata: JSON.stringify({
+        //       notes: "Thanh toán đơn hàng với mã " + id,
+        //     }),
+        //     method: JSON.stringify({
+        //       id: method,
+        //       isCustom: false,
+        //       subMethod: subMethod
+        //     }),
+        //   },
+        //   (error: any) => {
+        //     console.log("Error creating order: ", error);
+        //   }
+        // )
 
-        console.log("Order created: ", orderId);
+        try {
+          const { orderId } = await CheckoutSDK.purchase({
+            desc: `Thanh toán đơn hàng với ${formatMoney(total)}`,
+            amount: total,
+            method: method,
+          });
+          console.log("Order created: ", orderId);
+        } catch (error) {
+          // xử lý lỗi
+          console.log('Error creating order: ', error);
+        }
 
       },
       fail: (err: any) => {

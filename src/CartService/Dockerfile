@@ -28,5 +28,5 @@ ENTRYPOINT ["dotnet", "CartService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-cart-api:2.0.0 -f src/CartService/Dockerfile .
-#   docker push mrstevebang/saboobo-cart-api:2.0.0
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-cart-api:3.0.0 -f src/CartService/Dockerfile .
+#   docker push mrstevebang/saboobo-cart-api:3.0.0

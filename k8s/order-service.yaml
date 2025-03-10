@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: order-service-api
-        image: mrstevebang/saboobo-order-api:1.1.0
+        image: mrstevebang/saboobo-order-api:2.0.1
         ports:
         - containerPort: 8080
         env:

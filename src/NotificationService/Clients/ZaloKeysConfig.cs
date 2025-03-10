@@ -13,6 +13,12 @@ public class ZaloKeysConfig
     public const string AppId = "app_id";
 
     /// <summary>
+    /// The mini app ID key.
+    /// You can visit https://mini.zalo.me/miniapp/{appId}/statistic/overviewto get the mini app ID.
+    /// </summary>
+    public const string MiniAppId = "mini_app_id";
+
+    /// <summary>
     /// The OAuth code key.
     /// This code is recieved from callback URL after the user has authorized the app.
     /// You can visit hhttps://developers.zalo.me/app/{{appId}}/oa/settings to get the app ID.

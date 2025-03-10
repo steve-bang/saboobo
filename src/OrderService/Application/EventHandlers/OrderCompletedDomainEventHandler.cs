@@ -42,11 +42,11 @@ namespace SaBooBo.OrderService.Application.EventHandlers
                         objectSerialize
                     );
                     
-                    await _rabbitMqProducer.PublishAsync(
-                        exchange: string.Empty,
-                        routingKey: RouteKeys.OrderCompleted,
-                        objectSerialize
-                    );
+                    // await _rabbitMqProducer.PublishAsync(
+                    //     exchange: string.Empty,
+                    //     routingKey: RouteKeys.OrderCompleted,
+                    //     objectSerialize
+                    // );
 
                     LoggingUtil.WriteLog($"Sent order completed event to RabbitMQ for order {notification.Order.Id}");
                     return; // Success - exit the retry loop

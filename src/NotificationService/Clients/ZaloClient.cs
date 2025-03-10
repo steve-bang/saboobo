@@ -197,14 +197,12 @@ namespace SaBooBo.OrderService.Clients
             {
                 client.BaseAddress = new Uri(endpoint);
 
-                client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-
                 var payloadData = new
                 {
                     appId = miniAppId,
                     orderId = orderId,
                     resultCode = (short)resultCode,
-                    hmac = hmac
+                    mac = hmac
                 };
 
                 var json = JsonSerializer.Serialize(payloadData);

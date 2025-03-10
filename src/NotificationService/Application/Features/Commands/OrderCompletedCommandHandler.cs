@@ -38,7 +38,7 @@ public class OrderCompletedCommandHandler(
                 LoggingUtil.WriteLog($"Start update order status COD for order {request.Order.Id} with zalo order id {request.Order.ZaloOrderId}");
 
                 await _zaloClient.UpdateOrderStatusCODAsync(
-                    miniAppId: zaloChannelConfig.Metadata[ZaloKeysConfig.AppId],
+                    miniAppId: zaloChannelConfig.Metadata[ZaloKeysConfig.MiniAppId],
                     privateKey: zaloChannelConfig.Metadata[ZaloKeysConfig.PrivateKey],
                     orderId: request.Order.ZaloOrderId,
                     resultCode: ResultCodes.Success

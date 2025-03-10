@@ -79,14 +79,14 @@ public class ChannelConfig : AggregateRoot
     {
         Metadata[ZaloKeysConfig.AccessToken] = accessToken;
         Metadata[ZaloKeysConfig.RefreshToken] = refreshToken;
-        Metadata[ZaloKeysConfig.ExpiresIn] = DateTime.Now.AddSeconds(
+        Metadata[ZaloKeysConfig.ExpiresIn] = DateTime.UtcNow.AddSeconds(
             double.Parse(expiresIn)
         ).ToString();
 
         // Update refresh token expiration time if exists
         if (string.IsNullOrEmpty(refreshTokenExpiresIn) == false)
         {
-            Metadata[ZaloKeysConfig.RefreshTokenExpiresIn] = DateTime.Now.AddSeconds(
+            Metadata[ZaloKeysConfig.RefreshTokenExpiresIn] = DateTime.UtcNow.AddSeconds(
                 double.Parse(refreshTokenExpiresIn)
             ).ToString();
         }
@@ -108,11 +108,11 @@ public class ChannelConfig : AggregateRoot
         var expiresAtAccessToken = DateTime.Parse(Metadata[ZaloKeysConfig.ExpiresIn]);
 
         LoggingUtil.WriteLog($"Expires at access token: {expiresAtAccessToken}", nameof(IsAccessTokenAvailable));
-        LoggingUtil.WriteLog($"Current time: {DateTime.Now}", nameof(IsAccessTokenAvailable));
-        LoggingUtil.WriteLog($"Is access token available: {DateTime.Now < expiresAtAccessToken}", nameof(IsAccessTokenAvailable));
+        LoggingUtil.WriteLog($"Current time: {DateTime.UtcNow}", nameof(IsAccessTokenAvailable));
+        LoggingUtil.WriteLog($"Is access token available: {DateTime.UtcNow < expiresAtAccessToken}", nameof(IsAccessTokenAvailable));
     
 
-        return DateTime.Now < expiresAtAccessToken;
+        return DateTime.UtcNow < expiresAtAccessToken;
         
     }
 }

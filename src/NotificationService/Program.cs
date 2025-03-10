@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using SaBooBo.Domain.Shared.Extentions;
 using SaBooBo.NotificationService.Apis;
 using SaBooBo.NotificationService.Application.WorkerService;
@@ -15,7 +16,15 @@ builder.Services.AddServiceDefault();
 
 builder.Services.AddHostedService<ZaloOAuthCallbackWorkerService>();
 builder.Services.AddHostedService<OrderChangeStatusWorkerService>();
-builder.Services.AddHostedService<OrderCompletedWorkerService>();
+
+// Settup the Kestrel server 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2; // Support HTTP/1 and HTTP/2
+    });
+});
 
 var app = builder.Build();
 

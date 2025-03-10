@@ -29,5 +29,5 @@ ENTRYPOINT ["dotnet", "NotificationService.dll"]
 
 # Exec: 
 #   Cd root project
-#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-notification-api:2.1.11 -f src/NotificationService/Dockerfile .
-#   docker push mrstevebang/saboobo-notification-api:2.1.11
+#   docker buildx build --platform linux/amd64 -t mrstevebang/saboobo-notification-api:2.2.1 -f src/NotificationService/Dockerfile .
+#   docker push mrstevebang/saboobo-notification-api:2.2.1
