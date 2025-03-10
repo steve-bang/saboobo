@@ -1,4 +1,6 @@
 
+using SaBooBo.Utils;
+
 namespace SaBooBo.Domain.Common;
 
 public class ZaloMessageDeliveryTemplate : ZaloMessageTemplate
@@ -65,11 +67,11 @@ public class ZaloMessageDeliveryTemplate : ZaloMessageTemplate
                                     },
                                     new {
                                         key="Phí giao hàng",
-                                        value=ShippingTotal.ToString("C0")
+                                        value=CurrencyUtil.Format(ShippingTotal, CurrencyEnum.VND)
                                     },
                                     new {
                                         key="Thành tiền",
-                                        value=TotalPrice.ToString("C0")
+                                        value=CurrencyUtil.Format(TotalPrice, CurrencyEnum.VND)
                                     }
                                 }
                             }

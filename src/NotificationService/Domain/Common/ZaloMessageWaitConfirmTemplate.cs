@@ -1,4 +1,6 @@
 
+using SaBooBo.Utils;
+
 namespace SaBooBo.Domain.Common;
 
 public class ZaloMessageWaitConfirmTemplate : ZaloMessageTemplate
@@ -70,7 +72,7 @@ public class ZaloMessageWaitConfirmTemplate : ZaloMessageTemplate
                                     },
                                     new {
                                         key="Thành tiền",
-                                        value=TotalPrice.ToString("C0")
+                                        value=CurrencyUtil.Format(TotalPrice, CurrencyEnum.VND)
                                     },
                                 }
                             }
